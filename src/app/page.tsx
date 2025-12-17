@@ -1,7 +1,25 @@
-export default function Home() {
+import {
+  Hero,
+  SocialProof,
+  Features,
+  HowItWorks,
+  InstallPWA,
+  TechStack,
+  Privacy,
+  Analytics,
+} from "@/pages/home/ui";
+
+export default function Page() {
   return (
-    <div>
-      <h1>GutVault</h1>
-    </div>
+    <>
+      <Hero />
+      <SocialProof />
+      <Features />
+      <HowItWorks />
+      <Privacy />
+      <TechStack />
+      <Analytics />
+      <InstallPWA />
+    </>
   );
 }
