@@ -1,0 +1,121 @@
+"use client";
+
+import { motion } from "motion/react";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import {
+  useLogs,
+  BRISTOL_DESCRIPTIONS,
+  SYMPTOM_LABELS,
+  type LogEntry,
+} from "@/shared/db";
+import { Card } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
+
+function LogEntryItem({ log }: { log: LogEntry }) {
+  const time = new Date(log.timestamp).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  const getIcon = () => {
+    switch (log.type) {
+      case "bowel_movement":
+        return log.bristolType
+          ? BRISTOL_DESCRIPTIONS[log.bristolType].emoji
+          : "💩";
+      case "meal":
+        return "🍽️";
+      case "symptom":
+        return "🤕";
+      case "medication":
+        return "💊";
+      default:
+        return "📝";
+    }
+  };
+
+  const getTitle = () => {
+    switch (log.type) {
+      case "bowel_movement":
+        return log.bristolType
+          ? `Bristol Type ${log.bristolType}`
+          : "Bowel Movement";
+      case "meal":
+        return log.foods?.join(", ") || "Meal";
+      case "symptom":
+        return (
+          log.symptoms?.map((s) => SYMPTOM_LABELS[s]).join(", ") || "Symptoms"
+        );
+      case "medication":
+        return log.medication || "Medication";
+      default:
+        return "Log Entry";
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+    >
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl bg-white dark:bg-slate-700 shadow-sm">
+        {getIcon()}
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="font-medium text-slate-900 dark:text-slate-100 truncate">
+          {getTitle()}
+        </p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          {time}
+          {log.painLevel && ` · Pain: ${log.painLevel}/10`}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+export function RecentLogs() {
+  const logs = useLogs(3);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.2 }}
+    >
+      <Card className="p-4 bg-white dark:bg-slate-900 rounded-3xl border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            Recent Logs
+          </h2>
+          <Link href="/history">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-emerald-600 dark:text-emerald-400 rounded-xl"
+            >
+              View All
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </Link>
+        </div>
+
+        {logs && logs.length > 0 ? (
+          <div className="space-y-2">
+            {logs.map((log, index) => (
+              <LogEntryItem key={log.id ?? index} log={log} />
+            ))}
+          </div>
+        ) : (
+          <div className="py-8 text-center">
+            <p className="text-slate-400 dark:text-slate-500 text-sm">
+              No logs yet. Tap the + button to start tracking!
+            </p>
+          </div>
+        )}
+      </Card>
+    </motion.div>
+  );
+}

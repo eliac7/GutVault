@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/shared/ui/button";
 import { ChevronRight, Database, Shield, Zap } from "lucide-react";
 
@@ -28,10 +29,12 @@ export const Hero = () => {
               tracking, and insights that stay securely on your device.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-2">
-              <Button size="lg" className="shadow-emerald-500/20 shadow-lg">
-                Try GutVault
-                <ChevronRight className="w-4 h-4 ml-2" />
-              </Button>
+              <Link href="/dashboard">
+                <Button variant="cta" size="lg" className="w-full">
+                  Try GutVault
+                  <ChevronRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
               <Button size="lg" variant="outline">
                 See How It Works
               </Button>

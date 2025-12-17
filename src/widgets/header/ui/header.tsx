@@ -19,6 +19,7 @@ import {
 } from "@/shared/ui/sheet";
 import { cn } from "@/shared/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { ThemeToggle } from "@/features/theme-toggle";
 
 const Header = () => {
@@ -77,7 +78,11 @@ const Header = () => {
                 <ThemeToggle />
               </NavigationMenuList>
             </NavigationMenu>
-            <Button size="sm">Get Started</Button>
+            <Link href="/dashboard">
+              <Button size="sm" variant="cta">
+                Get Started
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu */}
@@ -104,7 +109,7 @@ const Header = () => {
                     </span>
                   </SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col gap-4 mt-8">
+                <div className="flex flex-col gap-4 mt-8 px-2">
                   {navLinks.map((link) => (
                     <a
                       key={link.name}
@@ -114,7 +119,11 @@ const Header = () => {
                       {link.name}
                     </a>
                   ))}
-                  <Button className="w-full">Get Started</Button>
+                  <Link href="/dashboard">
+                    <Button className="w-full" variant="cta">
+                      Get Started
+                    </Button>
+                  </Link>
                 </div>
               </SheetContent>
             </Sheet>
