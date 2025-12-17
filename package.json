@@ -1,7 +1,9 @@
 {
   "name": "gutvault",
   "version": "0.1.0",
+  "description": "A privacy-first, offline-ready IBS tracker featuring AI voice logging and local-first architecture. Built with Next.js 15, FastAPI, and Dexie.js",
   "private": true,
+  "author": "Ilias Nikolaos Thalassochoritis",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
