@@ -7,7 +7,7 @@ import {
   TechStack,
   Privacy,
   Analytics,
-} from "@/pages/home/ui";
+} from "@/sections/home/ui";
 
 export default function Page() {
   return (

@@ -40,26 +40,26 @@ export const Analytics = () => {
   ];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white dark:bg-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-slate-900">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
             Computed on-device.
           </h2>
-          <p className="text-slate-500 mt-2">
+          <p className="text-slate-500 dark:text-slate-400 mt-2">
             Charts generated instantly in your browser using Recharts.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {/*Symptom Trends */}
-          <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 relative h-96">
-            <h3 className="font-semibold text-slate-900 mb-6 flex items-center gap-2">
+          <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6 sm:p-8 border border-slate-100 dark:border-slate-800 relative h-96">
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2">
               <Activity className="w-5 h-5 text-emerald-500" />
               Symptom Severity Trend
             </h3>
             <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={256} minWidth={0}>
                 <AreaChart data={symptomData}>
                   <defs>
                     <linearGradient
@@ -77,6 +77,7 @@ export const Analytics = () => {
                     strokeDasharray="3 3"
                     vertical={false}
                     stroke="#e2e8f0"
+                    className="dark:stroke-slate-700"
                   />
                   <XAxis
                     dataKey="day"
@@ -91,8 +92,16 @@ export const Analytics = () => {
                       borderRadius: "8px",
                       border: "none",
                       boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                      backgroundColor: "var(--background)",
+                      color: "var(--foreground)",
                     }}
-                    cursor={{ stroke: "#cbd5e1" }}
+                    labelStyle={{
+                      color: "var(--foreground)",
+                    }}
+                    itemStyle={{
+                      color: "var(--foreground)",
+                    }}
+                    cursor={{ stroke: "#cbd5e1", strokeOpacity: 0.3 }}
                   />
                   <Area
                     type="monotone"
@@ -108,14 +117,14 @@ export const Analytics = () => {
           </div>
 
           {/*Correlations */}
-          <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 h-96">
-            <h3 className="font-semibold text-slate-900 mb-6 flex items-center gap-2">
+          <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6 sm:p-8 border border-slate-100 dark:border-slate-800 h-96">
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-blue-500" />
               Food vs. Symptoms
             </h3>
 
             <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={256} minWidth={0}>
                 <BarChart
                   layout="vertical"
                   data={correlationData}
@@ -126,6 +135,7 @@ export const Analytics = () => {
                     horizontal={true}
                     vertical={false}
                     stroke="#e2e8f0"
+                    className="dark:stroke-slate-700"
                   />
                   <XAxis type="number" hide domain={[0, 100]} />
                   <YAxis
@@ -137,11 +147,19 @@ export const Analytics = () => {
                     tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
                   />
                   <Tooltip
-                    cursor={{ fill: "#f1f5f9" }}
+                    cursor={false}
                     contentStyle={{
                       borderRadius: "8px",
                       border: "none",
                       boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                      backgroundColor: "var(--background)",
+                      color: "var(--foreground)",
+                    }}
+                    labelStyle={{
+                      color: "var(--foreground)",
+                    }}
+                    itemStyle={{
+                      color: "var(--foreground)",
                     }}
                   />
                   <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={20}>

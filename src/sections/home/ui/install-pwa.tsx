@@ -2,9 +2,9 @@ import { Smartphone } from "lucide-react";
 
 export const InstallPWA = () => {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white dark:bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-linear-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 sm:p-16 text-white text-center overflow-hidden relative">
+        <div className="bg-linear-to-br from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 rounded-3xl p-8 sm:p-16 text-white text-center overflow-hidden relative">
           <div className="relative z-10 max-w-2xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">
               Install like an app.

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { Nunito } from "next/font/google";
-import Header from "@/widgets/header/ui/header";
-import { Footer } from "@/widgets/ui/footer";
+import "./globals.css";
+import { AppProviders } from "@/shared/providers";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -32,11 +31,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body className={`${nunito.className} antialiased min-h-screen `}>
-        <Header />
-        {children}
-        <Footer />
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );
