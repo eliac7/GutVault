@@ -1,12 +1,13 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { X, Check } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import {
   addLog,
+  updateLog,
+  type LogEntry,
+  type LogType,
   type BristolType,
   type PainLevel,
   type Symptom,
@@ -22,13 +23,16 @@ import { ChipSelector } from "./chip-selector";
 interface ManualLogDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  initialLog?: LogEntry | null;
 }
 
-export function ManualLogDialog({ open, onOpenChange }: ManualLogDialogProps) {
+export function ManualLogDialog({
+  open,
+  onOpenChange,
+  initialLog,
+}: ManualLogDialogProps) {
   const [step, setStep] = useState<"type" | "details">("type");
-  const [logType, setLogType] = useState<"bowel_movement" | "meal" | "symptom">(
-    "bowel_movement"
-  );
+  const [logType, setLogType] = useState<LogType>("bowel_movement");
 
   const [bristolType, setBristolType] = useState<BristolType | null>(null);
   const [painLevel, setPainLevel] = useState<PainLevel>(5);
@@ -36,6 +40,19 @@ export function ManualLogDialog({ open, onOpenChange }: ManualLogDialogProps) {
 
   const [triggerFoods, setTriggerFoods] = useState<TriggerFood[]>([]);
   const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    if (open && initialLog) {
+      setLogType(initialLog.type);
+      setBristolType(initialLog.bristolType || null);
+      setPainLevel(initialLog.painLevel || 5);
+      setSymptoms(initialLog.symptoms || []);
+      setTriggerFoods(initialLog.triggerFoods || []);
+      setNotes(initialLog.notes || "");
+      // Jump to details if it's not a simple bowel movement logging (optional preference)
+      // keeping at 'type' allows reviewing the main category/bristol score first.
+    }
+  }, [open, initialLog]);
 
   const resetForm = () => {
     setStep("type");
@@ -49,16 +66,24 @@ export function ManualLogDialog({ open, onOpenChange }: ManualLogDialogProps) {
 
   const handleSave = async () => {
     try {
-      await addLog({
+      const logData = {
         type: logType,
-        timestamp: new Date(),
         bristolType:
           logType === "bowel_movement" ? bristolType ?? undefined : undefined,
         painLevel: painLevel,
         symptoms: symptoms.length > 0 ? symptoms : undefined,
         triggerFoods: triggerFoods.length > 0 ? triggerFoods : undefined,
         notes: notes || undefined,
-      });
+      };
+
+      if (initialLog?.id) {
+        await updateLog(initialLog.id, logData);
+      } else {
+        await addLog({
+          ...logData,
+          timestamp: new Date(),
+        });
+      }
 
       resetForm();
       onOpenChange(false);
@@ -101,7 +126,11 @@ export function ManualLogDialog({ open, onOpenChange }: ManualLogDialogProps) {
           >
             <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
               <Dialog.Title className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                {step === "type" ? "New Log" : "Log Details"}
+                {initialLog
+                  ? "Edit Log"
+                  : step === "type"
+                  ? "New Log"
+                  : "Log Details"}
               </Dialog.Title>
               <Dialog.Close asChild>
                 <Button variant="ghost" size="icon" className="rounded-xl">
@@ -224,7 +253,7 @@ export function ManualLogDialog({ open, onOpenChange }: ManualLogDialogProps) {
                 ) : (
                   <>
                     <Check className="w-5 h-5 mr-2" />
-                    Save Log
+                    {initialLog ? "Update Log" : "Save Log"}
                   </>
                 )}
               </Button>

@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "motion/react";
-import { Trash2 } from "lucide-react";
+import { Trash2, Pencil } from "lucide-react";
 import { useLogs, deleteLog, type LogEntry, SYMPTOM_LABELS } from "@/shared/db";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
+import { ManualLogDialog } from "@/features/logging/ui/manual-log-dialog";
 
 interface GroupedLogs {
   date: string;
@@ -14,7 +15,15 @@ interface GroupedLogs {
   logs: LogEntry[];
 }
 
-function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
+function LogItem({
+  log,
+  onDelete,
+  onEdit,
+}: {
+  log: LogEntry;
+  onDelete: () => void;
+  onEdit: () => void;
+}) {
   const time = new Date(log.timestamp).toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
@@ -77,6 +86,12 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
     return details.join(" · ");
   };
 
+  // Only allow editing for types supported by ManualLogDialog
+  const canEdit =
+    log.type === "bowel_movement" ||
+    log.type === "meal" ||
+    log.type === "symptom";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -100,14 +115,27 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
             </p>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onDelete}
-            className="rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 shrink-0"
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
+          <div className="flex items-center gap-1">
+            {canEdit && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onEdit}
+                className="rounded-xl text-slate-400 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 shrink-0"
+              >
+                <Pencil className="w-4 h-4" />
+              </Button>
+            )}
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onDelete}
+              className="rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 shrink-0"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
 
         {getDetails() && (
@@ -122,6 +150,7 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
 
 export function HistoryList() {
   const logs = useLogs();
+  const [editingLog, setEditingLog] = useState<LogEntry | null>(null);
 
   // Group logs by date
   const groupedLogs = useMemo(() => {
@@ -200,11 +229,18 @@ export function HistoryList() {
                 key={log.id}
                 log={log}
                 onDelete={() => log.id && handleDelete(log.id)}
+                onEdit={() => setEditingLog(log)}
               />
             ))}
           </div>
         </div>
       ))}
+
+      <ManualLogDialog
+        open={!!editingLog}
+        onOpenChange={(open) => !open && setEditingLog(null)}
+        initialLog={editingLog}
+      />
     </div>
   );
 }
