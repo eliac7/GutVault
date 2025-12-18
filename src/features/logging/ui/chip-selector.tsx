@@ -37,6 +37,7 @@ export function ChipSelector<T extends string>({
           return (
             <button
               key={option.value}
+              type="button"
               onClick={() => toggleOption(option.value)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 isSelected

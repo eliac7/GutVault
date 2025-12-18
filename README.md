@@ -108,10 +108,11 @@ All user data is stored persistently within the user's browser using **IndexedDB
 
 The application requires the following environment variables for AI features:
 
-| Variable             | Description                               | Default                        |
-| :------------------- | :---------------------------------------- | :----------------------------- |
-| `OPENROUTER_API_KEY` | API Key for OpenRouter to access LLMs.    | Required                       |
-| `OPENROUTER_MODEL`   | The specific model ID to use for parsing. | `mistralai/devstral-2512:free` |
+| Variable               | Description                                    | Default                        |
+| :--------------------- | :--------------------------------------------- | :----------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | The Site URL of the app running in production. | Required                       |
+| `OPENROUTER_API_KEY`   | API Key for OpenRouter to access LLMs.         | Required                       |
+| `OPENROUTER_MODEL`     | The specific model ID to use for parsing.      | `mistralai/devstral-2512:free` |
 
 ---
 

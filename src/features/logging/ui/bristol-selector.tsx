@@ -33,6 +33,7 @@ export function BristolSelector({ value, onChange }: BristolSelectorProps) {
           return (
             <button
               key={type}
+              type="button"
               onClick={() => onChange(type)}
               className={`aspect-square rounded-2xl flex flex-col items-center justify-center transition-all ${
                 isSelected
@@ -68,7 +69,7 @@ export function BristolSelector({ value, onChange }: BristolSelectorProps) {
         })}
       </div>
 
-      {value && (
+      {value && BRISTOL_DESCRIPTIONS[value] && (
         <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
           {BRISTOL_DESCRIPTIONS[value].description}
         </p>

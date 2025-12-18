@@ -7,16 +7,18 @@ import { BristolImage } from "@/shared/ui/bristol-image";
 import { Button } from "@/shared/ui/button";
 import type { LogItemProps } from "../types";
 
-const EDITABLE_LOG_TYPES = ["bowel_movement", "meal", "symptom"] as const;
+const EDITABLE_LOG_TYPES = [
+  "bowel_movement",
+  "meal",
+  "symptom",
+  "medication",
+] as const;
 
 function getLogIcon(log: LogEntry): React.ReactNode {
   switch (log.type) {
     case "bowel_movement":
       return log.bristolType ? (
-        <BristolImage
-          type={log.bristolType}
-          className="size-12 md:size-16 lg:size-18"
-        />
+        <BristolImage type={log.bristolType} className="size-6 lg:size-8" />
       ) : (
         "💩"
       );

@@ -18,10 +18,7 @@ function LogEntryItem({ log }: { log: LogEntry }) {
     switch (log.type) {
       case "bowel_movement":
         return log.bristolType ? (
-          <BristolImage
-            type={log.bristolType}
-            className="size-12 md:size-16 lg:size-18"
-          />
+          <BristolImage type={log.bristolType} className="size-6 lg:size-8" />
         ) : (
           "💩"
         );
