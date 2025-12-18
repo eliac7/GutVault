@@ -8,7 +8,7 @@ interface BristolSelectorProps {
 }
 
 export function BristolSelector({ value, onChange }: BristolSelectorProps) {
-  const bristolTypes: BristolType[] = [1, 2, 3, 4, 5, 6, 7];
+  const bristolTypes: BristolType[] = Object.keys(BRISTOL_DESCRIPTIONS).map(Number) as BristolType[];
 
   return (
     <div className="space-y-3">

@@ -79,7 +79,7 @@ export const Hero = () => {
                   <div className="absolute -bottom-4 -left-12 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg shadow-lg border border-slate-100 dark:border-slate-700 flex items-center gap-2 animate-bounce-slow delay-75">
                     <Zap className="w-3 h-3 text-amber-400" />
                     <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      Gemini Flash
+                      OpenRouter AI models
                     </span>
                   </div>
                 </div>

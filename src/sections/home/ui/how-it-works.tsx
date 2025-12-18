@@ -10,7 +10,7 @@ export const HowItWorks = () => {
     },
     {
       title: "Stateless Extraction",
-      desc: "Gemini processes speech to JSON instantly.",
+      desc: "AI processes speech to JSON instantly.",
     },
     {
       title: "Save Locally",

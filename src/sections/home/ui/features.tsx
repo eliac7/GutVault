@@ -5,7 +5,7 @@ export const Features = () => {
     {
       icon: Mic,
       title: "AI Voice Logging",
-      desc: "Hold to record. Gemini turns natural speech into structured logs, identifying foods, symptoms, and Bristol scale automatically.",
+      desc: "Hold to record. AI turns natural speech into structured logs, identifying foods, symptoms, and Bristol scale automatically.",
       color: "bg-blue-50 text-blue-600",
     },
     {

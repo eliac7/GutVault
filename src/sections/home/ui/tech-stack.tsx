@@ -13,7 +13,7 @@ export const TechStack = () => {
             "Next.js 16",
             "FastAPI",
             "Dexie.js",
-            "Gemini",
+            "OpenRouter AI models",
             "Tailwind CSS",
             "shadcn/ui",
           ].map((tech) => (

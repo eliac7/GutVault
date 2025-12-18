@@ -44,9 +44,11 @@ export function AppHeader({
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button variant="ghost" size="icon" className="rounded-xl">
-            <Settings className="w-5 h-5" />
-          </Button>
+          <Link href="/settings">
+            <Button variant="ghost" size="icon" className="rounded-xl">
+              <Settings className="w-5 h-5" />
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

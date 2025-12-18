@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from "motion/react";
 import { Plus, Mic, PenLine } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { ManualLogDialog } from "./manual-log-dialog";
+import { VoiceLogDialog } from "./voice-log-dialog";
 
 export function LogFAB() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showManualLog, setShowManualLog] = useState(false);
+  const [showVoiceLog, setShowVoiceLog] = useState(false);
 
   const handleManualLog = () => {
     setIsExpanded(false);
@@ -17,8 +19,7 @@ export function LogFAB() {
 
   const handleVoiceLog = () => {
     setIsExpanded(false);
-    // TODO: Implement voice logging
-    alert("Voice logging coming soon!");
+    setShowVoiceLog(true);
   };
 
   return (
@@ -83,6 +84,7 @@ export function LogFAB() {
       </div>
 
       <ManualLogDialog open={showManualLog} onOpenChange={setShowManualLog} />
+      <VoiceLogDialog open={showVoiceLog} onOpenChange={setShowVoiceLog} />
     </>
   );
 }
