@@ -6,6 +6,7 @@ import {
   SYMPTOM_LABELS,
   type Symptom,
 } from "@/shared/db";
+import { BristolImage } from "@/shared/ui/bristol-image";
 import {
   TriggerFood,
   type BristolType,
@@ -387,13 +388,10 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
 
                         {parsedData.bristolType && (
                           <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                            <span className="text-2xl">
-                              {
-                                BRISTOL_DESCRIPTIONS[
-                                  parsedData.bristolType as BristolType
-                                ].emoji
-                              }
-                            </span>
+                            <BristolImage
+                              type={parsedData.bristolType as BristolType}
+                              size={32}
+                            />
                             <div>
                               <p className="font-medium text-slate-900 dark:text-slate-100">
                                 Bristol Type {parsedData.bristolType}

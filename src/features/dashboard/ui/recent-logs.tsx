@@ -9,6 +9,7 @@ import {
   SYMPTOM_LABELS,
   type LogEntry,
 } from "@/shared/db";
+import { BristolImage } from "@/shared/ui/bristol-image";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 
@@ -21,9 +22,11 @@ function LogEntryItem({ log }: { log: LogEntry }) {
   const getIcon = () => {
     switch (log.type) {
       case "bowel_movement":
-        return log.bristolType
-          ? BRISTOL_DESCRIPTIONS[log.bristolType].emoji
-          : "💩";
+        return log.bristolType ? (
+          <BristolImage type={log.bristolType} size={28} />
+        ) : (
+          "💩"
+        );
       case "meal":
         return "🍽️";
       case "symptom":

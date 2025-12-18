@@ -1,6 +1,7 @@
 "use client";
 
 import { type BristolType, BRISTOL_DESCRIPTIONS } from "@/shared/db";
+import { BristolImage } from "@/shared/ui/bristol-image";
 
 interface BristolSelectorProps {
   value: BristolType | null;
@@ -8,7 +9,9 @@ interface BristolSelectorProps {
 }
 
 export function BristolSelector({ value, onChange }: BristolSelectorProps) {
-  const bristolTypes: BristolType[] = Object.keys(BRISTOL_DESCRIPTIONS).map(Number) as BristolType[];
+  const bristolTypes: BristolType[] = Object.keys(BRISTOL_DESCRIPTIONS).map(
+    Number
+  ) as BristolType[];
 
   return (
     <div className="space-y-3">
@@ -54,8 +57,8 @@ export function BristolSelector({ value, onChange }: BristolSelectorProps) {
                   : undefined,
               }}
             >
-              <span className="text-lg">{info.emoji}</span>
-              <span className="text-xs font-bold text-slate-700 dark:text-slate-300 mt-1">
+              <BristolImage type={type} size={90} />
+              <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 mt-1">
                 {type}
               </span>
             </button>

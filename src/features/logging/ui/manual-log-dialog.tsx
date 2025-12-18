@@ -14,6 +14,7 @@ import {
   SYMPTOM_LABELS,
   TRIGGER_FOOD_LABELS,
 } from "@/shared/db";
+import { BristolImage } from "@/shared/ui/bristol-image";
 import { BristolSelector } from "./bristol-selector";
 import { PainSlider } from "./pain-slider";
 import { ChipSelector } from "./chip-selector";
@@ -121,16 +122,20 @@ export function ManualLogDialog({ open, onOpenChange }: ManualLogDialogProps) {
                         <button
                           key={option.value}
                           onClick={() => setLogType(option.value)}
-                          className={`p-4 rounded-2xl border-2 transition-all ${
+                          className={`p-4 rounded-2xl border-2 transition-all flex flex-col items-center justify-center ${
                             logType === option.value
                               ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20"
                               : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
                           }`}
                         >
-                          <span className="text-2xl block mb-2">
-                            {option.emoji}
-                          </span>
-                          <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                          <div className="text-2xl h-8 mb-2 flex items-center justify-center">
+                            {option.value === "bowel_movement" ? (
+                              <BristolImage type={4} size={32} />
+                            ) : (
+                              option.emoji
+                            )}
+                          </div>
+                          <span className="text-xs font-medium text-slate-700 dark:text-slate-300 text-center">
                             {option.label}
                           </span>
                         </button>

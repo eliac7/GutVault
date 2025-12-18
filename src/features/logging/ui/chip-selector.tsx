@@ -31,7 +31,7 @@ export function ChipSelector<T extends string>({
       <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
         {label}
       </label>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mt-4">
         {options.map((option) => {
           const isSelected = selected.includes(option.value);
           return (

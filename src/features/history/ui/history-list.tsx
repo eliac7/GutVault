@@ -10,6 +10,7 @@ import {
   BRISTOL_DESCRIPTIONS,
   SYMPTOM_LABELS,
 } from "@/shared/db";
+import { BristolImage } from "@/shared/ui/bristol-image";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 
@@ -28,7 +29,11 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
   const getIcon = () => {
     switch (log.type) {
       case "bowel_movement":
-        return log.bristolType ? BRISTOL_DESCRIPTIONS[log.bristolType].emoji : "💩";
+        return log.bristolType ? (
+          <BristolImage type={log.bristolType} size={32} />
+        ) : (
+          "💩"
+        );
       case "meal":
         return "🍽️";
       case "symptom":
@@ -59,19 +64,19 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
 
   const getDetails = () => {
     const details: string[] = [];
-    
+
     if (log.painLevel) {
       details.push(`Pain: ${log.painLevel}/10`);
     }
-    
+
     if (log.symptoms && log.symptoms.length > 0) {
       details.push(log.symptoms.map((s) => SYMPTOM_LABELS[s]).join(", "));
     }
-    
+
     if (log.notes) {
       details.push(log.notes);
     }
-    
+
     return details.join(" · ");
   };
 
@@ -86,7 +91,7 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
       <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl bg-slate-100 dark:bg-slate-700 shrink-0">
         {getIcon()}
       </div>
-      
+
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div>
@@ -97,7 +102,7 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
               {time}
             </p>
           </div>
-          
+
           <Button
             variant="ghost"
             size="icon"
@@ -107,7 +112,7 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
-        
+
         {getDetails() && (
           <p className="text-sm text-slate-600 dark:text-slate-300 mt-2 line-clamp-2">
             {getDetails()}
@@ -126,11 +131,11 @@ export function HistoryList() {
     if (!logs || logs.length === 0) return [];
 
     const groups: Record<string, LogEntry[]> = {};
-    
+
     logs.forEach((log) => {
       const date = new Date(log.timestamp);
       const key = date.toDateString();
-      
+
       if (!groups[key]) {
         groups[key] = [];
       }
@@ -178,7 +183,8 @@ export function HistoryList() {
           No logs yet
         </h3>
         <p className="text-slate-500 dark:text-slate-400">
-          Start tracking your gut health by tapping the + button on the dashboard.
+          Start tracking your gut health by tapping the + button on the
+          dashboard.
         </p>
       </Card>
     );
@@ -205,4 +211,3 @@ export function HistoryList() {
     </div>
   );
 }
-
