@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Palette, Globe } from "lucide-react";
+import { Palette, Globe, Bell, Clock } from "lucide-react";
 import { Card } from "@/shared/ui/card";
 import { useTheme } from "next-themes";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/shared/db";
 import {
   SPEECH_LANGUAGES,
   type SpeechLanguageCode,
@@ -28,6 +30,36 @@ export function Preferences() {
   const handleLanguageChange = (code: SpeechLanguageCode) => {
     setDefaultLanguage(code);
     localStorage.setItem("gutvault-voice-language", code);
+  };
+
+  // Reminders Logic
+  const settings = useLiveQuery(() => db.settings.toArray());
+  const remindersEnabled =
+    settings?.find((s) => s.id === "remindersEnabled")?.value ?? false;
+  const reminderTime =
+    settings?.find((s) => s.id === "reminderTime")?.value ?? "09:00";
+
+  const handleToggleReminders = async () => {
+    if (!remindersEnabled) {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        await db.settings.put({ id: "remindersEnabled", value: true });
+        new Notification("Reminders enabled!", {
+          body: "You'll be reminded to log daily.",
+          icon: "/favicon-96x96.png",
+        });
+        // Set default time if not set
+        if (!reminderTime) {
+          await db.settings.put({ id: "reminderTime", value: "09:00" });
+        }
+      }
+    } else {
+      await db.settings.put({ id: "remindersEnabled", value: false });
+    }
+  };
+
+  const handleTimeChange = async (newTime: string) => {
+    await db.settings.put({ id: "reminderTime", value: newTime });
   };
 
   return (
@@ -86,6 +118,52 @@ export function Preferences() {
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Daily Reminders */}
+          <div>
+            <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+              <Bell className="w-4 h-4" />
+              Daily Reminders
+            </label>
+            <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+              <div className="flex-1">
+                <div className="font-medium text-slate-900 dark:text-slate-100">
+                  Enable Reminders
+                </div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">
+                  Get notified to log your symptoms
+                </div>
+              </div>
+              <button
+                onClick={handleToggleReminders}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${
+                  remindersEnabled
+                    ? "bg-purple-500"
+                    : "bg-slate-200 dark:bg-slate-700"
+                }`}
+              >
+                <span
+                  className={`${
+                    remindersEnabled ? "translate-x-6" : "translate-x-1"
+                  } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                />
+              </button>
+            </div>
+            {remindersEnabled && (
+              <div className="mt-3 flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                <Clock className="w-4 h-4 text-slate-400" />
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Remind me at:
+                </span>
+                <input
+                  type="time"
+                  value={reminderTime}
+                  onChange={(e) => handleTimeChange(e.target.value)}
+                  className="bg-transparent border-0 p-0 text-sm font-medium text-slate-900 dark:text-slate-100 focus:ring-0 cursor-pointer"
+                />
+              </div>
+            )}
           </div>
         </div>
       </Card>

@@ -108,3 +108,8 @@ export const TRIGGER_FOOD_LABELS: Record<TriggerFood, string> = {
   carbonated_drinks: "Carbonated",
   processed_foods: "Processed",
 };
+
+export interface AppSetting {
+  id: string; // key, e.g., 'reminderEnabled', 'reminderTime'
+  value: any;
+}

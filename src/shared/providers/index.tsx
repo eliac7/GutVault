@@ -1,8 +1,25 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
+import { useEffect } from "react";
+import { useReminders } from "@/features/settings/hooks/use-reminders";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
+  useReminders();
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("SW registered callback", registration);
+        })
+        .catch((error) => {
+          console.error("SW registration failed", error);
+        });
+    }
+  }, []);
+
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       {children}
