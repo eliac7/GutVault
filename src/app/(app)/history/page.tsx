@@ -1,7 +1,10 @@
-"use client";
-
 import { HistoryList } from "@/features/history/ui/history-list";
 import { AppHeader } from "@/widgets/app-header/ui/app-header";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "History",
+};
 
 export default function HistoryPage() {
   return (

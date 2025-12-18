@@ -1,10 +1,13 @@
-"use client";
-
 import { AtAGlance } from "@/features/dashboard/ui/at-a-glance";
 import { PainChart } from "@/features/dashboard/ui/pain-chart";
 import { RecentLogs } from "@/features/dashboard/ui/recent-logs";
 import { LogFAB } from "@/features/logging/ui/log-fab";
 import { AppHeader } from "@/widgets/app-header/ui/app-header";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default function DashboardPage() {
   return (

@@ -122,6 +122,16 @@ export function PainChart() {
                   strokeWidth={2}
                   fill="url(#painGradient)"
                   connectNulls
+                  dot={{
+                    fill: "#f59e0b",
+                    strokeWidth: 2,
+                    r: 4,
+                    stroke: "var(--color-card)",
+                  }}
+                  activeDot={{
+                    r: 6,
+                    strokeWidth: 2,
+                  }}
                 />
               </AreaChart>
             </ResponsiveContainer>
