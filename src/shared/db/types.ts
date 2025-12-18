@@ -111,5 +111,5 @@ export const TRIGGER_FOOD_LABELS: Record<TriggerFood, string> = {
 
 export interface AppSetting {
   id: string; // key, e.g., 'reminderEnabled', 'reminderTime'
-  value: any;
+  value: unknown;
 }

@@ -5,7 +5,16 @@ import { motion } from "motion/react";
 import { Database, Download, Upload, Trash2 } from "lucide-react";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
-import { exportLogs, importLogs, clearAllLogs, useLogCount } from "@/shared/db";
+import {
+  exportLogs,
+  importLogs,
+  clearAllLogs,
+  useLogCount,
+  getLogs,
+} from "@/shared/db";
+import { ExportDialog } from "./export-dialog";
+import { generatePDF } from "@/shared/lib/pdf-generator";
+import type { DateRange } from "react-day-picker";
 
 export function DataManagement() {
   const totalLogs = useLogCount();
@@ -16,31 +25,49 @@ export function DataManagement() {
     quota?: number;
   }>({});
 
-  const handleExport = async () => {
+  const runExport = async (
+    format: "json" | "pdf",
+    range: DateRange | undefined
+  ) => {
     setIsExporting(true);
     try {
-      const logs = await exportLogs();
-      const dataStr = JSON.stringify(
-        {
-          version: "1.0",
-          exportedAt: new Date().toISOString(),
-          logs,
-        },
-        null,
-        2
-      );
+      if (format === "json") {
+        // Existing JSON Export Logic
+        const logs = await exportLogs();
 
-      const blob = new Blob([dataStr], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `gutvault-backup-${
-        new Date().toISOString().split("T")[0]
-      }.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+        const dataToExport = range
+          ? await getLogs(range.from, range.to)
+          : await exportLogs();
+
+        const dataStr = JSON.stringify(
+          {
+            version: "1.0",
+            exportedAt: new Date().toISOString(),
+            logs: dataToExport,
+          },
+          null,
+          2
+        );
+
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `gutvault-export-${
+          new Date().toISOString().split("T")[0]
+        }.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+        // PDF Export
+        const logs = await getLogs(range?.from, range?.to);
+        await generatePDF(
+          logs,
+          range ? { start: range.from, end: range.to } : undefined
+        );
+      }
 
       alert("✅ Data exported successfully!");
     } catch (error) {
@@ -161,20 +188,25 @@ export function DataManagement() {
             )}
           </div>
 
-          <Button
-            onClick={handleExport}
-            disabled={isExporting || totalLogs === 0}
-            variant="outline"
-            className="w-full justify-start h-12 rounded-xl"
-          >
-            <Download className="w-5 h-5 mr-3 text-emerald-500" />
-            <div className="text-left">
-              <div className="font-medium">Export Data</div>
-              <div className="text-xs text-slate-500">
-                Download backup as JSON
-              </div>
-            </div>
-          </Button>
+          <ExportDialog
+            onExport={runExport}
+            isExporting={isExporting}
+            trigger={
+              <Button
+                variant="outline"
+                disabled={isExporting || totalLogs === 0}
+                className="w-full justify-start h-12 rounded-xl"
+              >
+                <Download className="w-5 h-5 mr-3 text-emerald-500" />
+                <div className="text-left">
+                  <div className="font-medium">Export Data</div>
+                  <div className="text-xs text-slate-500">
+                    Download as PDF or JSON
+                  </div>
+                </div>
+              </Button>
+            }
+          />
 
           <div>
             <input

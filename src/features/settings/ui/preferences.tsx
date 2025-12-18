@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import { Palette, Globe, Bell, Clock } from "lucide-react";
 import { Card } from "@/shared/ui/card";
@@ -22,21 +22,20 @@ import ReactCountryFlag from "react-country-flag";
 
 export function Preferences() {
   const { theme, setTheme } = useTheme();
-  const [defaultLanguage, setDefaultLanguage] =
-    useState<SpeechLanguageCode>("en-US");
-
-  useEffect(() => {
-    const stored = localStorage.getItem(
-      "gutvault-voice-language"
-    ) as SpeechLanguageCode;
-    if (stored) {
-      setDefaultLanguage(stored);
-    }
-  }, []);
+  const [defaultLanguage, setDefaultLanguage] = useState<SpeechLanguageCode>(
+    () =>
+      (typeof window !== "undefined"
+        ? (localStorage.getItem(
+            "gutvault-voice-language"
+          ) as SpeechLanguageCode)
+        : null) || "en-US"
+  );
 
   const handleLanguageChange = (code: SpeechLanguageCode) => {
     setDefaultLanguage(code);
-    localStorage.setItem("gutvault-voice-language", code);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("gutvault-voice-language", code);
+    }
   };
 
   // Reminders Logic
@@ -175,7 +174,7 @@ export function Preferences() {
                 </span>
                 <input
                   type="time"
-                  value={reminderTime}
+                  value={reminderTime as string}
                   onChange={(e) => handleTimeChange(e.target.value)}
                   className="bg-transparent border-0 p-0 text-sm font-medium text-slate-900 dark:text-slate-100 focus:ring-0 cursor-pointer"
                 />

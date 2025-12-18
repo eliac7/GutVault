@@ -32,4 +32,5 @@ export {
   clearAllLogs,
   exportLogs,
   importLogs,
-} from "./hooks";
+  getLogs,
+} from "./operations";
