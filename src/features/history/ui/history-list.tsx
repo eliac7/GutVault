@@ -3,13 +3,7 @@
 import { useMemo } from "react";
 import { motion } from "motion/react";
 import { Trash2 } from "lucide-react";
-import {
-  useLogs,
-  deleteLog,
-  type LogEntry,
-  BRISTOL_DESCRIPTIONS,
-  SYMPTOM_LABELS,
-} from "@/shared/db";
+import { useLogs, deleteLog, type LogEntry, SYMPTOM_LABELS } from "@/shared/db";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
@@ -30,7 +24,10 @@ function LogItem({ log, onDelete }: { log: LogEntry; onDelete: () => void }) {
     switch (log.type) {
       case "bowel_movement":
         return log.bristolType ? (
-          <BristolImage type={log.bristolType} size={32} />
+          <BristolImage
+            type={log.bristolType}
+            className="size-12 md:size-16 lg:size-18"
+          />
         ) : (
           "💩"
         );

@@ -20,7 +20,6 @@ export function BristolSelector({ value, onChange }: BristolSelectorProps) {
       </label>
       <div className="grid grid-cols-7 gap-2">
         {bristolTypes.map((type) => {
-          const info = BRISTOL_DESCRIPTIONS[type];
           const isSelected = value === type;
 
           const getColor = () => {
@@ -57,7 +56,10 @@ export function BristolSelector({ value, onChange }: BristolSelectorProps) {
                   : undefined,
               }}
             >
-              <BristolImage type={type} size={90} />
+              <BristolImage
+                type={type}
+                className="size-16 md:size-20 lg:size-40"
+              />
               <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 mt-1">
                 {type}
               </span>

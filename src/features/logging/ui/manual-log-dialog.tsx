@@ -130,7 +130,10 @@ export function ManualLogDialog({ open, onOpenChange }: ManualLogDialogProps) {
                         >
                           <div className="text-2xl h-8 mb-2 flex items-center justify-center">
                             {option.value === "bowel_movement" ? (
-                              <BristolImage type={4} size={32} />
+                              <BristolImage
+                                type={4}
+                                className="size-16 md:size-20 lg:size-32"
+                              />
                             ) : (
                               option.emoji
                             )}

@@ -3,12 +3,7 @@
 import { motion } from "motion/react";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import {
-  useLogs,
-  BRISTOL_DESCRIPTIONS,
-  SYMPTOM_LABELS,
-  type LogEntry,
-} from "@/shared/db";
+import { useLogs, SYMPTOM_LABELS, type LogEntry } from "@/shared/db";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
@@ -23,7 +18,10 @@ function LogEntryItem({ log }: { log: LogEntry }) {
     switch (log.type) {
       case "bowel_movement":
         return log.bristolType ? (
-          <BristolImage type={log.bristolType} size={28} />
+          <BristolImage
+            type={log.bristolType}
+            className="size-12 md:size-16 lg:size-18"
+          />
         ) : (
           "💩"
         );
