@@ -44,7 +44,8 @@ const logEntrySchema = z.object({
     .array(z.enum(Object.keys(TRIGGER_FOOD_LABELS)))
     .optional()
     .describe("Known trigger food categories if the foods fall into them"),
-  medication: z.string().optional().describe("Any medication mentioned"),
+  medication: z.string().optional().describe("Any medication name mentioned"),
+  medicationDose: z.string().optional().describe("Any medication dose mentioned (e.g., '200mg', '2 tablets')"),
   notes: z
     .string()
     .optional()

@@ -1,13 +1,25 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { motion } from "motion/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { X, Check } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/shared/ui/form";
+import { Input } from "@/shared/ui/input";
+import {
   addLog,
   updateLog,
   type LogEntry,
-  type LogType,
   type BristolType,
   type PainLevel,
   type Symptom,
@@ -19,6 +31,41 @@ import { BristolImage } from "@/shared/ui/bristol-image";
 import { BristolSelector } from "./bristol-selector";
 import { PainSlider } from "./pain-slider";
 import { ChipSelector } from "./chip-selector";
+
+const formSchema = z.object({
+  logType: z.enum(["bowel_movement", "meal", "symptom", "medication"]),
+  bristolType: z.number().min(1).max(7).nullable(),
+  painLevel: z.number().min(1).max(10),
+  symptoms: z.array(z.string()),
+  triggerFoods: z.array(z.string()),
+  medication: z.string(),
+  medicationDose: z.string(),
+  notes: z.string(),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
+const defaultValues: FormValues = {
+  logType: "bowel_movement",
+  bristolType: null,
+  painLevel: 5,
+  symptoms: [],
+  triggerFoods: [],
+  medication: "",
+  medicationDose: "",
+  notes: "",
+};
+
+const getFormValuesFromLog = (log: LogEntry): FormValues => ({
+  logType: log.type,
+  bristolType: log.bristolType || null,
+  painLevel: log.painLevel || 5,
+  symptoms: log.symptoms || [],
+  triggerFoods: log.triggerFoods || [],
+  medication: log.medication || "",
+  medicationDose: log.medicationDose || "",
+  notes: log.notes || "",
+});
 
 interface ManualLogDialogProps {
   open: boolean;
@@ -32,48 +79,58 @@ export function ManualLogDialog({
   initialLog,
 }: ManualLogDialogProps) {
   const [step, setStep] = useState<"type" | "details">("type");
-  const [logType, setLogType] = useState<LogType>("bowel_movement");
 
-  const [bristolType, setBristolType] = useState<BristolType | null>(null);
-  const [painLevel, setPainLevel] = useState<PainLevel>(5);
-  const [symptoms, setSymptoms] = useState<Symptom[]>([]);
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues,
+  });
 
-  const [triggerFoods, setTriggerFoods] = useState<TriggerFood[]>([]);
-  const [notes, setNotes] = useState("");
+  const logType = useWatch({ control: form.control, name: "logType" });
 
+  // Reset form when initialLog changes (for editing different logs)
   useEffect(() => {
     if (open && initialLog) {
-      setLogType(initialLog.type);
-      setBristolType(initialLog.bristolType || null);
-      setPainLevel(initialLog.painLevel || 5);
-      setSymptoms(initialLog.symptoms || []);
-      setTriggerFoods(initialLog.triggerFoods || []);
-      setNotes(initialLog.notes || "");
-      // Jump to details if it's not a simple bowel movement logging (optional preference)
-      // keeping at 'type' allows reviewing the main category/bristol score first.
+      form.reset(getFormValuesFromLog(initialLog));
     }
-  }, [open, initialLog]);
+  }, [initialLog, open, form]);
 
-  const resetForm = () => {
+  const handleOpen = () => {
+    form.reset(initialLog ? getFormValuesFromLog(initialLog) : defaultValues);
     setStep("type");
-    setLogType("bowel_movement");
-    setBristolType(null);
-    setPainLevel(5);
-    setSymptoms([]);
-    setTriggerFoods([]);
-    setNotes("");
   };
 
-  const handleSave = async () => {
+  const handleClose = () => {
+    form.reset(defaultValues);
+    setStep("type");
+    onOpenChange(false);
+  };
+
+  const handleSave = async (values: FormValues) => {
     try {
       const logData = {
-        type: logType,
+        type: values.logType,
         bristolType:
-          logType === "bowel_movement" ? bristolType ?? undefined : undefined,
-        painLevel: painLevel,
-        symptoms: symptoms.length > 0 ? symptoms : undefined,
-        triggerFoods: triggerFoods.length > 0 ? triggerFoods : undefined,
-        notes: notes || undefined,
+          values.logType === "bowel_movement"
+            ? (values.bristolType as BristolType) ?? undefined
+            : undefined,
+        painLevel: values.painLevel as PainLevel,
+        symptoms:
+          values.symptoms.length > 0
+            ? (values.symptoms as Symptom[])
+            : undefined,
+        triggerFoods:
+          values.triggerFoods.length > 0
+            ? (values.triggerFoods as TriggerFood[])
+            : undefined,
+        medication:
+          values.logType === "medication" && values.medication
+            ? values.medication
+            : undefined,
+        medicationDose:
+          values.logType === "medication" && values.medicationDose
+            ? values.medicationDose
+            : undefined,
+        notes: values.notes || undefined,
       };
 
       if (initialLog?.id) {
@@ -85,8 +142,7 @@ export function ManualLogDialog({
         });
       }
 
-      resetForm();
-      onOpenChange(false);
+      handleClose();
     } catch (error) {
       console.error("Failed to save log:", error);
     }
@@ -96,14 +152,19 @@ export function ManualLogDialog({
     { value: "bowel_movement", label: "Bowel Movement", emoji: "💩" },
     { value: "meal", label: "Meal / Food", emoji: "🍽️" },
     { value: "symptom", label: "Symptom Only", emoji: "🤕" },
+    { value: "medication", label: "Medication", emoji: "💊" },
   ] as const;
 
   return (
     <Dialog.Root
       open={open}
       onOpenChange={(newOpen) => {
-        if (!newOpen) resetForm();
-        onOpenChange(newOpen);
+        if (newOpen) {
+          handleOpen();
+          onOpenChange(true);
+        } else {
+          handleClose();
+        }
       }}
     >
       <Dialog.Portal>
@@ -139,125 +200,231 @@ export function ManualLogDialog({
               </Dialog.Close>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-6">
-              {step === "type" ? (
-                <>
-                  <div className="space-y-3">
-                    <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                      What are you logging?
-                    </label>
-                    <div className="grid grid-cols-3 gap-3">
-                      {logTypeOptions.map((option) => (
-                        <button
-                          key={option.value}
-                          onClick={() => setLogType(option.value)}
-                          className={`p-4 rounded-2xl border-2 transition-all flex flex-col items-center justify-center ${
-                            logType === option.value
-                              ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20"
-                              : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-                          }`}
-                        >
-                          <div className="text-2xl h-8 mb-2 flex items-center justify-center">
-                            {option.value === "bowel_movement" ? (
-                              <BristolImage
-                                type={4}
-                                className="size-16 md:size-20 lg:size-32"
-                              />
-                            ) : (
-                              option.emoji
-                            )}
-                          </div>
-                          <span className="text-xs font-medium text-slate-700 dark:text-slate-300 text-center">
-                            {option.label}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {logType === "bowel_movement" && (
-                    <BristolSelector
-                      value={bristolType}
-                      onChange={setBristolType}
-                    />
-                  )}
-
-                  {logType === "meal" && (
-                    <ChipSelector
-                      label="Trigger Foods (optional)"
-                      options={Object.entries(TRIGGER_FOOD_LABELS).map(
-                        ([value, label]) => ({
-                          value: value as TriggerFood,
-                          label,
-                        })
-                      )}
-                      selected={triggerFoods}
-                      onChange={setTriggerFoods}
-                    />
-                  )}
-                </>
-              ) : (
-                <>
-                  <PainSlider value={painLevel} onChange={setPainLevel} />
-
-                  <ChipSelector
-                    label="Symptoms (optional)"
-                    options={Object.entries(SYMPTOM_LABELS).map(
-                      ([value, label]) => ({
-                        value: value as Symptom,
-                        label,
-                      })
-                    )}
-                    selected={symptoms}
-                    onChange={setSymptoms}
-                  />
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                      Notes (optional)
-                    </label>
-                    <textarea
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                      placeholder="Any additional notes..."
-                      className="w-full p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border-0 resize-none h-24 text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex gap-3">
-              {step === "details" && (
-                <Button
-                  variant="outline"
-                  onClick={() => setStep("type")}
-                  className="flex-1 h-14 rounded-2xl"
-                >
-                  Back
-                </Button>
-              )}
-
-              <Button
-                onClick={() => {
-                  if (step === "type") {
-                    setStep("details");
-                  } else {
-                    handleSave();
-                  }
-                }}
-                className="flex-1 h-14 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(handleSave)}
+                className="flex-1 flex flex-col overflow-hidden"
               >
-                {step === "type" ? (
-                  "Next"
-                ) : (
-                  <>
-                    <Check className="w-5 h-5 mr-2" />
-                    {initialLog ? "Update Log" : "Save Log"}
-                  </>
-                )}
-              </Button>
-            </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-6">
+                  {step === "type" ? (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="logType"
+                        render={({ field }) => (
+                          <FormItem className="space-y-3">
+                            <FormLabel className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                              What are you logging?
+                            </FormLabel>
+                            <FormControl>
+                              <div className="grid grid-cols-3 gap-3">
+                                {logTypeOptions.map((option) => (
+                                  <button
+                                    key={option.value}
+                                    type="button"
+                                    onClick={() => field.onChange(option.value)}
+                                    className={`p-4 rounded-2xl border-2 transition-all flex flex-col items-center justify-center ${
+                                      field.value === option.value
+                                        ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20"
+                                        : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+                                    }`}
+                                  >
+                                    <div className="text-2xl h-8 mb-2 flex items-center justify-center">
+                                      {option.value === "bowel_movement" ? (
+                                        <BristolImage
+                                          type={4}
+                                          className="size-16 md:size-20 lg:size-32"
+                                        />
+                                      ) : (
+                                        option.emoji
+                                      )}
+                                    </div>
+                                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300 text-center">
+                                      {option.label}
+                                    </span>
+                                  </button>
+                                ))}
+                              </div>
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+
+                      {logType === "bowel_movement" && (
+                        <FormField
+                          control={form.control}
+                          name="bristolType"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <BristolSelector
+                                  value={field.value as BristolType | null}
+                                  onChange={field.onChange}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      )}
+
+                      {logType === "meal" && (
+                        <FormField
+                          control={form.control}
+                          name="triggerFoods"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <ChipSelector
+                                  label="Trigger Foods (optional)"
+                                  options={Object.entries(
+                                    TRIGGER_FOOD_LABELS
+                                  ).map(([value, label]) => ({
+                                    value: value as TriggerFood,
+                                    label,
+                                  }))}
+                                  selected={field.value as TriggerFood[]}
+                                  onChange={field.onChange}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      )}
+
+                      {logType === "medication" && (
+                        <div className="space-y-4">
+                          <FormField
+                            control={form.control}
+                            name="medication"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                                  Medication Name
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    {...field}
+                                    placeholder="e.g., Ibuprofen, Probiotics..."
+                                    className="w-full p-3 h-auto rounded-2xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="medicationDose"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                                  Dose (optional)
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    {...field}
+                                    placeholder="e.g., 200mg, 1 tablet..."
+                                    className="w-full p-3 h-auto rounded-2xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="painLevel"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <PainSlider
+                                value={field.value as PainLevel}
+                                onChange={field.onChange}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="symptoms"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <ChipSelector
+                                label="Symptoms (optional)"
+                                options={Object.entries(SYMPTOM_LABELS).map(
+                                  ([value, label]) => ({
+                                    value: value as Symptom,
+                                    label,
+                                  })
+                                )}
+                                selected={field.value as Symptom[]}
+                                onChange={field.onChange}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="notes"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                              Notes (optional)
+                            </FormLabel>
+                            <FormControl>
+                              <textarea
+                                {...field}
+                                placeholder="Any additional notes..."
+                                className="w-full p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border-0 resize-none h-24 text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </>
+                  )}
+                </div>
+
+                <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex gap-3">
+                  {step === "details" && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setStep("type")}
+                      className="flex-1 h-14 rounded-2xl"
+                    >
+                      Back
+                    </Button>
+                  )}
+
+                  {step === "type" ? (
+                    <Button
+                      type="button"
+                      onClick={() => setStep("details")}
+                      className="flex-1 h-14 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white"
+                    >
+                      Next
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      className="flex-1 h-14 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white"
+                    >
+                      <Check className="w-5 h-5 mr-2" />
+                      {initialLog ? "Update Log" : "Save Log"}
+                    </Button>
+                  )}
+                </div>
+              </form>
+            </Form>
           </motion.div>
         </Dialog.Content>
       </Dialog.Portal>

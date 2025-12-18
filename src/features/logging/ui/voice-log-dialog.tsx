@@ -129,6 +129,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
         foods: parsedData.foods as string[],
         triggerFoods: parsedData.triggerFoods as TriggerFood[],
         medication: parsedData.medication,
+        medicationDose: parsedData.medicationDose,
         notes: parsedData.notes,
         aiGenerated: true,
         rawTranscript: transcript,
@@ -469,6 +470,22 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                                   {food}
                                 </span>
                               ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {parsedData.medication && (
+                          <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                            <span className="text-2xl">💊</span>
+                            <div>
+                              <p className="font-medium text-slate-900 dark:text-slate-100">
+                                {parsedData.medication}
+                              </p>
+                              <p className="text-xs text-slate-500">
+                                {parsedData.medicationDose
+                                  ? `Dose: ${parsedData.medicationDose}`
+                                  : "Medication"}
+                              </p>
                             </div>
                           </div>
                         )}
