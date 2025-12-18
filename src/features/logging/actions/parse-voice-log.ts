@@ -33,7 +33,7 @@ const logEntrySchema = z.object({
     .optional()
     .describe("Pain level from 1-10 if mentioned"),
   symptoms: z
-    .array(z.enum(SYMPTOM_LABELS))
+    .array(z.enum(Object.keys(SYMPTOM_LABELS) as [keyof typeof SYMPTOM_LABELS]))
     .optional()
     .describe("Any symptoms mentioned by the user"),
   foods: z

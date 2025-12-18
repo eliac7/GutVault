@@ -1,16 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import * as Dialog from "@radix-ui/react-dialog";
-import { X, Mic, MicOff, Check, Loader2, Sparkles, Globe } from "lucide-react";
-import { Button } from "@/shared/ui/button";
-import {
-  useSpeechRecognition,
-  SPEECH_LANGUAGES,
-  type SpeechLanguageCode,
-} from "../hooks/use-speech-recognition";
-import { parseVoiceLog, type ParsedLogEntry } from "../actions/parse-voice-log";
 import {
   addLog,
   BRISTOL_DESCRIPTIONS,
@@ -22,7 +11,18 @@ import {
   type BristolType,
   type PainLevel,
 } from "@/shared/db/types";
+import { Button } from "@/shared/ui/button";
+import * as Dialog from "@radix-ui/react-dialog";
+import { Check, Loader2, Mic, MicOff, Sparkles, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
+import { parseVoiceLog, type ParsedLogEntry } from "../actions/parse-voice-log";
+import {
+  SPEECH_LANGUAGES,
+  useSpeechRecognition,
+  type SpeechLanguageCode,
+} from "../hooks/use-speech-recognition";
 
 interface VoiceLogDialogProps {
   open: boolean;
@@ -436,14 +436,19 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                                 Symptoms
                               </p>
                               <div className="flex flex-wrap gap-2">
-                                {parsedData.symptoms.map((symptom) => (
-                                  <span
-                                    key={symptom}
-                                    className="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs"
-                                  >
-                                    {SYMPTOM_LABELS[symptom as Symptom]}
-                                  </span>
-                                ))}
+                                {parsedData.symptoms.map((symptom) => {
+                                  const displayLabel =
+                                    SYMPTOM_LABELS[symptom as Symptom] ||
+                                    symptom;
+                                  return (
+                                    <span
+                                      key={symptom}
+                                      className="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs"
+                                    >
+                                      {displayLabel}
+                                    </span>
+                                  );
+                                })}
                               </div>
                             </div>
                           )}

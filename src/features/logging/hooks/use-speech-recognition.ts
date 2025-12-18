@@ -123,10 +123,19 @@ export function useSpeechRecognition(
 
       for (let i = 0; i < event.results.length; i++) {
         const result = event.results[i];
+        let text = result[0].transcript;
+
+        if (i > 0) {
+          const prevText = event.results[i - 1][0].transcript;
+          if (text.startsWith(prevText)) {
+            text = text.slice(prevText.length);
+          }
+        }
+
         if (result.isFinal) {
-          finalText += result[0].transcript;
+          finalText += text;
         } else {
-          interimText += result[0].transcript;
+          interimText += text;
         }
       }
 
