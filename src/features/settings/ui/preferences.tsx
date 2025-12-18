@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Palette, Globe, Bell, Clock } from "lucide-react";
 import { Card } from "@/shared/ui/card";
@@ -20,26 +20,30 @@ import {
 } from "@/features/logging/hooks/use-speech-recognition";
 import ReactCountryFlag from "react-country-flag";
 
+const DEFAULT_VOICE_LANGUAGE: SpeechLanguageCode = "en-US";
+
 export function Preferences() {
   const { theme, setTheme } = useTheme();
-  const [defaultLanguage, setDefaultLanguage] = useState<SpeechLanguageCode>(
-    () =>
-      (typeof window !== "undefined"
-        ? (localStorage.getItem(
-            "gutvault-voice-language"
-          ) as SpeechLanguageCode)
-        : null) || "en-US"
-  );
+  const [mounted, setMounted] = useState(false);
 
-  const handleLanguageChange = (code: SpeechLanguageCode) => {
-    setDefaultLanguage(code);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("gutvault-voice-language", code);
-    }
+  useEffect(() => {
+    setTimeout(() => {
+      setMounted(true);
+    }, 0);
+  }, []);
+
+  // All settings from DB
+  const settings = useLiveQuery(() => db.settings.toArray());
+
+  const voiceLanguage =
+    (settings?.find((s) => s.id === "voiceLanguage")
+      ?.value as SpeechLanguageCode) ?? DEFAULT_VOICE_LANGUAGE;
+
+  const handleLanguageChange = async (code: SpeechLanguageCode) => {
+    await db.settings.put({ id: "voiceLanguage", value: code });
   };
 
-  // Reminders Logic
-  const settings = useLiveQuery(() => db.settings.toArray());
+  // Reminders
   const remindersEnabled =
     settings?.find((s) => s.id === "remindersEnabled")?.value ?? false;
   const reminderTime =
@@ -86,17 +90,16 @@ export function Preferences() {
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
               Theme
             </label>
-            <div className="grid grid-cols-3 gap-2" suppressHydrationWarning>
+            <div className="grid grid-cols-3 gap-2">
               {["light", "dark", "system"].map((t) => (
                 <button
                   key={t}
                   onClick={() => setTheme(t)}
                   className={`p-3 rounded-xl text-sm font-medium capitalize transition-all ${
-                    theme === t
+                    mounted && theme === t
                       ? "bg-purple-500 text-white"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
-                  suppressHydrationWarning
                 >
                   {t}
                 </button>
@@ -111,7 +114,7 @@ export function Preferences() {
               Default Voice Language
             </label>
             <Select
-              value={defaultLanguage}
+              value={voiceLanguage}
               onValueChange={(value) =>
                 handleLanguageChange(value as SpeechLanguageCode)
               }

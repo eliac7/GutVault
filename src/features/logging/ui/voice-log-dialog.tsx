@@ -2,6 +2,7 @@
 
 import {
   addLog,
+  db,
   BRISTOL_DESCRIPTIONS,
   SYMPTOM_LABELS,
   type Symptom,
@@ -14,6 +15,7 @@ import {
 } from "@/shared/db/types";
 import { Button } from "@/shared/ui/button";
 import * as Dialog from "@radix-ui/react-dialog";
+import { useLiveQuery } from "dexie-react-hooks";
 import { Check, Loader2, Mic, MicOff, Sparkles, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
@@ -24,6 +26,8 @@ import {
   useSpeechRecognition,
   type SpeechLanguageCode,
 } from "../hooks/use-speech-recognition";
+
+const DEFAULT_VOICE_LANGUAGE: SpeechLanguageCode = "en-US";
 
 interface VoiceLogDialogProps {
   open: boolean;
@@ -36,17 +40,19 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
   const [step, setStep] = useState<Step>("recording");
   const [parsedData, setParsedData] = useState<ParsedLogEntry | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [language, setLanguage] = useState<SpeechLanguageCode>(() => {
-    if (typeof window !== "undefined") {
-      return (
-        (localStorage.getItem(
-          "gutvault-voice-language"
-        ) as SpeechLanguageCode) || "en-US"
-      );
-    }
-    return "en-US";
-  });
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+
+  // Get language preference from DB
+  const savedLanguage = useLiveQuery(() =>
+    db.settings.get("voiceLanguage").then((s) => s?.value as SpeechLanguageCode)
+  );
+  const language = savedLanguage ?? DEFAULT_VOICE_LANGUAGE;
+
+  const handleLanguageChange = async (code: SpeechLanguageCode) => {
+    await db.settings.put({ id: "voiceLanguage", value: code });
+    setShowLanguageMenu(false);
+    resetTranscript();
+  };
 
   const {
     isListening,
@@ -235,11 +241,9 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                               {SPEECH_LANGUAGES.map((lang) => (
                                 <button
                                   key={lang.code}
-                                  onClick={() => {
-                                    setLanguage(lang.code);
-                                    setShowLanguageMenu(false);
-                                    resetTranscript();
-                                  }}
+                                  onClick={() =>
+                                    handleLanguageChange(lang.code)
+                                  }
                                   className={`w-full px-4 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${
                                     language === lang.code
                                       ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"

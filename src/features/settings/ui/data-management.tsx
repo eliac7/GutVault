@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
+import { toast } from "sonner";
 import { Database, Download, Upload, Trash2 } from "lucide-react";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
+import { ConfirmDialog } from "@/shared/ui/confirm-dialog";
 import {
   exportLogs,
   importLogs,
@@ -16,10 +18,13 @@ import { ExportDialog } from "./export-dialog";
 import { generatePDF } from "@/shared/lib/pdf-generator";
 import type { DateRange } from "react-day-picker";
 
+type DeleteStep = "idle" | "first" | "final";
+
 export function DataManagement() {
   const totalLogs = useLogCount();
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [deleteStep, setDeleteStep] = useState<DeleteStep>("idle");
   const [storageInfo, setStorageInfo] = useState<{
     used?: number;
     quota?: number;
@@ -32,9 +37,6 @@ export function DataManagement() {
     setIsExporting(true);
     try {
       if (format === "json") {
-        // Existing JSON Export Logic
-        const logs = await exportLogs();
-
         const dataToExport = range
           ? await getLogs(range.from, range.to)
           : await exportLogs();
@@ -69,10 +71,10 @@ export function DataManagement() {
         );
       }
 
-      alert("✅ Data exported successfully!");
+      toast.success("Data exported successfully!");
     } catch (error) {
       console.error("Export failed:", error);
-      alert("❌ Failed to export data. Please try again.");
+      toast.error("Failed to export data. Please try again.");
     } finally {
       setIsExporting(false);
     }
@@ -99,37 +101,31 @@ export function DataManagement() {
       }));
 
       await importLogs(logs);
-      alert(`✅ Successfully imported ${logs.length} logs!`);
+      toast.success(`Successfully imported ${logs.length} logs!`);
     } catch (error) {
       console.error("Import failed:", error);
-      alert("❌ Failed to import data. Please check the file and try again.");
+      toast.error(
+        "Failed to import data. Please check the file and try again."
+      );
     } finally {
       setIsImporting(false);
       event.target.value = "";
     }
   };
 
-  const handleClearData = async () => {
-    // TODO: Add confirmation modal using shadcn
-    const confirmed = window.confirm(
-      `⚠️ Are you sure you want to delete ALL ${totalLogs} logs?\n\nThis action CANNOT be undone!\n\nMake sure you've exported your data first.`
-    );
+  const handleFirstConfirm = () => {
+    setDeleteStep("final");
+  };
 
-    if (confirmed) {
-      //TODO: Add confirmation modal using shadcn
-      const doubleConfirm = window.confirm(
-        "🚨 FINAL WARNING: This will permanently delete all your health data. Are you ABSOLUTELY sure?"
-      );
-
-      if (doubleConfirm) {
-        try {
-          await clearAllLogs();
-          alert("✅ All data has been deleted.");
-        } catch (error) {
-          console.error("Failed to clear data:", error);
-          alert("❌ Failed to delete data. Please try again.");
-        }
-      }
+  const handleFinalConfirm = async () => {
+    try {
+      await clearAllLogs();
+      toast.success("All data has been deleted.");
+    } catch (error) {
+      console.error("Failed to clear data:", error);
+      toast.error("Failed to delete data. Please try again.");
+    } finally {
+      setDeleteStep("idle");
     }
   };
 
@@ -237,7 +233,7 @@ export function DataManagement() {
           </div>
 
           <Button
-            onClick={handleClearData}
+            onClick={() => setDeleteStep("first")}
             disabled={totalLogs === 0}
             variant="outline"
             className="w-full justify-start h-12 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
@@ -252,6 +248,26 @@ export function DataManagement() {
           </Button>
         </div>
       </Card>
+
+      <ConfirmDialog
+        open={deleteStep === "first"}
+        onOpenChange={(open) => !open && setDeleteStep("idle")}
+        onConfirm={handleFirstConfirm}
+        title="Delete all data?"
+        description={`Are you sure you want to delete ALL ${totalLogs} logs? This action CANNOT be undone! Make sure you've exported your data first.`}
+        confirmText="Continue"
+        variant="destructive"
+      />
+
+      <ConfirmDialog
+        open={deleteStep === "final"}
+        onOpenChange={(open) => !open && setDeleteStep("idle")}
+        onConfirm={handleFinalConfirm}
+        title="Final warning"
+        description="This will permanently delete all your health data. Are you ABSOLUTELY sure?"
+        confirmText="Delete Everything"
+        variant="destructive"
+      />
     </motion.div>
   );
 }

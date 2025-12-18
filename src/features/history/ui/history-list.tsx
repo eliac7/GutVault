@@ -12,6 +12,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/shared/ui/pagination";
+import { ConfirmDialog } from "@/shared/ui/confirm-dialog";
 
 import { useGroupedLogs } from "../hooks";
 import { LogItem } from "./log-item";
@@ -20,12 +21,14 @@ import type { GroupedLogs } from "../types";
 
 export function HistoryList() {
   const [editingLog, setEditingLog] = useState<LogEntry | null>(null);
+  const [deletingLogId, setDeletingLogId] = useState<number | null>(null);
   const { paginatedGroups, totalPages, currentPage, setCurrentPage, isEmpty } =
     useGroupedLogs();
 
-  const handleDelete = async (id: number) => {
-    if (confirm("Are you sure you want to delete this log?")) {
-      await deleteLog(id);
+  const handleConfirmDelete = async () => {
+    if (deletingLogId !== null) {
+      await deleteLog(deletingLogId);
+      setDeletingLogId(null);
     }
   };
 
@@ -37,7 +40,7 @@ export function HistoryList() {
     <div className="space-y-6">
       <LogGroups
         groups={paginatedGroups}
-        onDelete={handleDelete}
+        onDelete={setDeletingLogId}
         onEdit={setEditingLog}
       />
 
@@ -53,6 +56,16 @@ export function HistoryList() {
         open={!!editingLog}
         onOpenChange={(open) => !open && setEditingLog(null)}
         initialLog={editingLog}
+      />
+
+      <ConfirmDialog
+        open={deletingLogId !== null}
+        onOpenChange={(open) => !open && setDeletingLogId(null)}
+        onConfirm={handleConfirmDelete}
+        title="Delete log"
+        description="Are you sure you want to delete this log? This action cannot be undone."
+        confirmText="Delete"
+        variant="destructive"
       />
     </div>
   );

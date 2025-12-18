@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { useReminders } from "@/features/settings/hooks/use-reminders";
 
@@ -23,6 +24,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       {children}
+      <Toaster richColors position="top-center" />
     </ThemeProvider>
   );
 }
