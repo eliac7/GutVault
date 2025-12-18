@@ -22,6 +22,7 @@ import {
   type BristolType,
   type PainLevel,
 } from "@/shared/db/types";
+import ReactCountryFlag from "react-country-flag";
 
 interface VoiceLogDialogProps {
   open: boolean;
@@ -205,12 +206,15 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           disabled={isListening}
                           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
                         >
-                          <Globe className="w-4 h-4" />
-                          <span>
-                            {
+                          <ReactCountryFlag
+                            countryCode={
                               SPEECH_LANGUAGES.find((l) => l.code === language)
-                                ?.flag
-                            }{" "}
+                                ?.flag || "US"
+                            }
+                            className="size-6"
+                            svg
+                          />
+                          <span>
                             {
                               SPEECH_LANGUAGES.find((l) => l.code === language)
                                 ?.label
@@ -241,7 +245,11 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                                       : "text-slate-700 dark:text-slate-300"
                                   }`}
                                 >
-                                  <span className="text-lg">{lang.flag}</span>
+                                  <ReactCountryFlag
+                                    countryCode={lang.flag}
+                                    svg
+                                    className="size-6"
+                                  />
                                   <span>{lang.label}</span>
                                   {language === lang.code && (
                                     <Check className="w-4 h-4 ml-auto" />

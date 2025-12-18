@@ -8,6 +8,13 @@ import { useTheme } from "next-themes";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/shared/db";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/ui/select";
+import {
   SPEECH_LANGUAGES,
   type SpeechLanguageCode,
 } from "@/features/logging/hooks/use-speech-recognition";
@@ -104,20 +111,30 @@ export function Preferences() {
               <Globe className="w-4 h-4" />
               Default Voice Language
             </label>
-            <select
+            <Select
               value={defaultLanguage}
-              onChange={(e) =>
-                handleLanguageChange(e.target.value as SpeechLanguageCode)
+              onValueChange={(value) =>
+                handleLanguageChange(value as SpeechLanguageCode)
               }
-              className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100"
             >
-              {SPEECH_LANGUAGES.map((lang) => (
-                <option key={lang.code} value={lang.code}>
-                  <ReactCountryFlag countryCode={lang.code} svg />
-                  {lang.label}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full p-3 h-auto rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                {SPEECH_LANGUAGES.map((lang) => (
+                  <SelectItem key={lang.code} value={lang.code}>
+                    <div className="flex items-center gap-2">
+                      <ReactCountryFlag
+                        countryCode={lang.flag}
+                        svg
+                        className="w-4 h-4"
+                      />
+                      <span>{lang.label}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Daily Reminders */}

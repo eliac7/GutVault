@@ -3,22 +3,22 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 
 export const SPEECH_LANGUAGES = [
-  { code: "en-US", label: "English (US)", flag: "🇺🇸" },
-  { code: "el-GR", label: "Ελληνικά", flag: "🇬🇷" },
-  { code: "en-GB", label: "English (UK)", flag: "🇬🇧" },
-  { code: "es-ES", label: "Español", flag: "🇪🇸" },
-  { code: "fr-FR", label: "Français", flag: "🇫🇷" },
-  { code: "de-DE", label: "Deutsch", flag: "🇩🇪" },
-  { code: "it-IT", label: "Italiano", flag: "🇮🇹" },
-  { code: "pt-BR", label: "Português (BR)", flag: "🇧🇷" },
-  { code: "nl-NL", label: "Nederlands", flag: "🇳🇱" },
-  { code: "pl-PL", label: "Polski", flag: "🇵🇱" },
-  { code: "ru-RU", label: "Русский", flag: "🇷🇺" },
-  { code: "ja-JP", label: "日本語", flag: "🇯🇵" },
-  { code: "ko-KR", label: "한국어", flag: "🇰🇷" },
-  { code: "zh-CN", label: "中文 (简体)", flag: "🇨🇳" },
-  { code: "ar-SA", label: "العربية", flag: "🇸🇦" },
-  { code: "hi-IN", label: "हिन्दी", flag: "🇮🇳" },
+  { code: "en-US", label: "English (US)", flag: "US" },
+  { code: "el-GR", label: "Ελληνικά", flag: "GR" },
+  { code: "en-GB", label: "English (UK)", flag: "GB" },
+  { code: "es-ES", label: "Español", flag: "ES" },
+  { code: "fr-FR", label: "Français", flag: "FR" },
+  { code: "de-DE", label: "Deutsch", flag: "DE" },
+  { code: "it-IT", label: "Italiano", flag: "IT" },
+  { code: "pt-BR", label: "Português (BR)", flag: "BR" },
+  { code: "nl-NL", label: "Nederlands", flag: "NL" },
+  { code: "pl-PL", label: "Polski", flag: "PL" },
+  { code: "ru-RU", label: "Русский", flag: "RU" },
+  { code: "ja-JP", label: "日本語", flag: "JP" },
+  { code: "ko-KR", label: "한국어", flag: "KR" },
+  { code: "zh-CN", label: "中文 (简体)", flag: "CN" },
+  { code: "ar-SA", label: "العربية", flag: "SA" },
+  { code: "hi-IN", label: "हिन्दी", flag: "IN" },
 ] as const;
 
 export type SpeechLanguageCode = (typeof SPEECH_LANGUAGES)[number]["code"];
