@@ -5,6 +5,7 @@ import { Calendar as CalendarIcon, Search, X } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
+import { BristolImage } from "@/shared/ui/bristol-image";
 import { Calendar } from "@/shared/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import {
@@ -76,8 +77,15 @@ export function HistoryFilters({
             ).map((type) => (
               <SelectItem key={type} value={type.toString()}>
                 <span className="flex items-center gap-2">
-                  <span>{BRISTOL_DESCRIPTIONS[type].emoji}</span>
-                  <span>Type {type}</span>
+                  <BristolImage type={type} className="w-8 h-8" />
+                  <div className="flex flex-col text-left">
+                    <span className="font-medium">
+                      {BRISTOL_DESCRIPTIONS[type].label}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {BRISTOL_DESCRIPTIONS[type].description}
+                    </span>
+                  </div>
                 </span>
               </SelectItem>
             ))}

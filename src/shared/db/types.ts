@@ -66,15 +66,15 @@ export type NewLogEntry = Omit<LogEntry, "id" | "createdAt" | "updatedAt">;
 
 export const BRISTOL_DESCRIPTIONS: Record<
   BristolType,
-  { label: string; description: string; emoji: string }
+  { label: string; description: string }
 > = {
-  1: { label: "Type 1", description: "Separate hard lumps", emoji: "🔴" },
-  2: { label: "Type 2", description: "Lumpy, sausage-shaped", emoji: "🟠" },
-  3: { label: "Type 3", description: "Sausage with cracks", emoji: "🟡" },
-  4: { label: "Type 4", description: "Smooth, soft sausage", emoji: "🟢" },
-  5: { label: "Type 5", description: "Soft blobs with edges", emoji: "🟡" },
-  6: { label: "Type 6", description: "Fluffy, mushy pieces", emoji: "🟠" },
-  7: { label: "Type 7", description: "Watery, no solid", emoji: "🔴" },
+  1: { label: "Type 1", description: "Separate hard lumps" },
+  2: { label: "Type 2", description: "Lumpy, sausage-shaped" },
+  3: { label: "Type 3", description: "Sausage with cracks" },
+  4: { label: "Type 4", description: "Smooth, soft sausage" },
+  5: { label: "Type 5", description: "Soft blobs with edges" },
+  6: { label: "Type 6", description: "Fluffy, mushy pieces" },
+  7: { label: "Type 7", description: "Watery, no solid" },
 };
 
 // Symptom labels for UI
