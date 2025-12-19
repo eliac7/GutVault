@@ -17,14 +17,35 @@ import { ConfirmDialog } from "@/shared/ui/confirm-dialog";
 import { useGroupedLogs } from "../hooks";
 import { LogItem } from "./log-item";
 import { HistoryEmptyState } from "./empty-state";
+import { HistoryLogFilters } from "../types";
 
-export function HistoryList() {
+export function HistoryList({ filters }: { filters?: HistoryLogFilters }) {
   const [editingLog, setEditingLog] = useState<LogEntry | null>(null);
   const [deletingLogId, setDeletingLogId] = useState<number | null>(null);
-  const { paginatedGroups, totalPages, currentPage, setCurrentPage, isEmpty } =
-    useGroupedLogs();
+  const {
+    paginatedGroups,
+    totalPages,
+    currentPage,
+    setCurrentPage,
+    isEmpty,
+    totalFilteredLogs,
+  } = useGroupedLogs(filters);
 
   if (isEmpty) return <HistoryEmptyState />;
+
+  if (totalFilteredLogs === 0 && filters) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <div className="text-4xl mb-4">🔍</div>
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+          No logs found
+        </h3>
+        <p className="text-slate-500 dark:text-slate-400">
+          Try adjusting your filters to see more results.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

@@ -1,4 +1,4 @@
-import { HistoryList } from "@/features/history/ui/history-list";
+import { HistoryContent } from "@/features/history/ui/history-content";
 import { AppHeader } from "@/widgets/app-header/ui/app-header";
 import { Metadata } from "next";
 
@@ -12,7 +12,7 @@ export default function HistoryPage() {
       <AppHeader title="History" showBack />
 
       <div className="px-4 py-6 max-w-2xl mx-auto">
-        <HistoryList />
+        <HistoryContent />
       </div>
     </>
   );

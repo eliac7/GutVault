@@ -1,6 +1,10 @@
 import { useState, useMemo } from "react";
 import { useLogs, type LogEntry } from "@/shared/db";
-import type { GroupedLogs, UseGroupedLogsResult } from "../types";
+import type {
+  GroupedLogs,
+  UseGroupedLogsResult,
+  HistoryLogFilters,
+} from "../types";
 
 const ITEMS_PER_PAGE = 7;
 
@@ -53,21 +57,99 @@ function paginateGroups(
   return groups.slice(startIndex, endIndex);
 }
 
-export function useGroupedLogs(): UseGroupedLogsResult {
+function filterLogs(logs: LogEntry[], filters: HistoryLogFilters): LogEntry[] {
+  return logs.filter((log) => {
+    // Date Range
+    if (filters.dateRange?.from) {
+      const logDate = new Date(log.timestamp);
+      const checkDate = new Date(
+        logDate.getFullYear(),
+        logDate.getMonth(),
+        logDate.getDate()
+      );
+      const fromDate = new Date(
+        filters.dateRange.from.getFullYear(),
+        filters.dateRange.from.getMonth(),
+        filters.dateRange.from.getDate()
+      );
+
+      if (checkDate < fromDate) return false;
+
+      if (filters.dateRange.to) {
+        const toDate = new Date(
+          filters.dateRange.to.getFullYear(),
+          filters.dateRange.to.getMonth(),
+          filters.dateRange.to.getDate()
+        );
+        if (checkDate > toDate) return false;
+      }
+    }
+
+    // Bristol Type
+    if (filters.bristolType !== null) {
+      if (log.bristolType !== filters.bristolType) return false;
+    }
+
+    // Search
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      const notes = log.notes?.toLowerCase() || "";
+      const symptoms = log.symptoms?.join(" ").toLowerCase() || "";
+      const foods = log.foods?.join(" ").toLowerCase() || "";
+
+      const searchContent = `${notes} ${symptoms} ${foods}`;
+      if (!searchContent.includes(searchTerm)) return false;
+    }
+
+    return true;
+  });
+}
+
+export function useGroupedLogs(
+  filters?: HistoryLogFilters
+): UseGroupedLogsResult {
   const logs = useLogs();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { paginatedGroups, totalPages, isEmpty } = useMemo(() => {
-    if (!logs || logs.length === 0) {
-      return { paginatedGroups: [], totalPages: 0, isEmpty: true };
-    }
+  const { paginatedGroups, totalPages, isEmpty, totalFilteredLogs } =
+    useMemo(() => {
+      if (!logs || logs.length === 0) {
+        return {
+          paginatedGroups: [],
+          totalPages: 0,
+          isEmpty: true,
+          totalFilteredLogs: 0,
+        };
+      }
 
-    const allGroups = groupLogsByDate(logs);
-    const totalPages = Math.ceil(allGroups.length / ITEMS_PER_PAGE);
-    const paginatedGroups = paginateGroups(allGroups, currentPage);
+      let processedLogs = logs;
 
-    return { paginatedGroups, totalPages, isEmpty: false };
-  }, [logs, currentPage]);
+      if (filters) {
+        processedLogs = filterLogs(logs, filters);
+      }
+
+      const totalFilteredLogs = processedLogs.length;
+
+      if (processedLogs.length === 0) {
+        return {
+          paginatedGroups: [],
+          totalPages: 0,
+          isEmpty: logs.length === 0,
+          totalFilteredLogs: 0,
+        };
+      }
+
+      const allGroups = groupLogsByDate(processedLogs);
+      const totalPages = Math.ceil(allGroups.length / ITEMS_PER_PAGE);
+      const safePage = Math.min(
+        Math.max(1, currentPage),
+        Math.max(1, totalPages)
+      );
+
+      const paginatedGroups = paginateGroups(allGroups, safePage);
+
+      return { paginatedGroups, totalPages, isEmpty: false, totalFilteredLogs };
+    }, [logs, currentPage, filters]);
 
   return {
     paginatedGroups,
@@ -75,6 +157,6 @@ export function useGroupedLogs(): UseGroupedLogsResult {
     currentPage,
     setCurrentPage,
     isEmpty,
+    totalFilteredLogs,
   };
 }
-
