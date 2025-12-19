@@ -35,10 +35,15 @@ All user data is stored persistently within the user's browser using **IndexedDB
 
 - **🛡️ Local-First Storage:** 100% of health data is stored locally on the device using IndexedDB. No data is ever persisted to a backend database.
 - **🎙️ AI Voice Logging:** Natural language processing to convert voice dictations into structured logs (Foods, Symptoms, Bristol Stool Scale, Pain Levels).
+- **📝 Manual Logging:** Detailed forms for logging Bowel Movements (with intuitive Bristol Stool visuals), Meals, Symptoms (with impact sliders), and Medications.
+- **🧠 Smart Correlations:** Advanced temporal analysis to identify trigger foods. The app looks ahead 24 hours from each meal to detect associations with high pain or irregular bowel movements.
 - **📶 Offline Support:** Fully functional PWA that works without an internet connection (syncing only required for AI processing).
 - **🔐 Privacy Centric:** Zero-knowledge architecture regarding user health data.
-- **📊 Dashboard Analytics:** Client-side computation of symptom trends and food correlations using Recharts.
-- **💾 Data Management:** Full control to export (JSON), import, or wipe local data.
+- **📊 Comprehensive Dashboard:**
+  - **At a Glance:** Immediate insights into your daily status.
+  - **Pain Trends:** Interactive visualization of pain levels over time.
+  - **Correlation Analysis:** Dedicated tab for discovering food triggers with probability scores.
+- **📜 History & Management:** Full history view with edit capabilities, data export (JSON, PDF), import, and backup options.
 - **📱 Responsive Design:** Optimized for mobile and desktop usage with dark mode support.
 
 ---
