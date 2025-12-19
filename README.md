@@ -33,18 +33,26 @@ All user data is stored persistently within the user's browser using **IndexedDB
 
 ## ✨ Features
 
-- **🛡️ Local-First Storage:** 100% of health data is stored locally on the device using IndexedDB. No data is ever persisted to a backend database.
-- **🎙️ AI Voice Logging:** Natural language processing to convert voice dictations into structured logs (Foods, Symptoms, Bristol Stool Scale, Pain Levels).
-- **📝 Manual Logging:** Detailed forms for logging Bowel Movements (with intuitive Bristol Stool visuals), Meals, Symptoms (with impact sliders), and Medications.
-- **🧠 Smart Correlations:** Advanced temporal analysis to identify trigger foods. The app looks ahead 24 hours from each meal to detect associations with high pain or irregular bowel movements.
-- **📶 Offline Support:** Fully functional PWA that works without an internet connection (syncing only required for AI processing).
-- **🔐 Privacy Centric:** Zero-knowledge architecture regarding user health data.
-- **📊 Comprehensive Dashboard:**
-  - **At a Glance:** Immediate insights into your daily status.
-  - **Pain Trends:** Interactive visualization of pain levels over time.
-  - **Correlation Analysis:** Dedicated tab for discovering food triggers with probability scores.
-- **📜 History & Management:** Full history view with edit capabilities, data export (JSON, PDF), import, and backup options.
-- **📱 Responsive Design:** Optimized for mobile and desktop usage with dark mode support.
+- **🛡️ Local-First Storage:** 100% of health data is stored locally on the device using IndexedDB (Dexie.js). Includes a **Storage Quota** view to track your data usage.
+- **🎙️ Multi-Language AI Voice Logging:** - Speak naturally in **16+ languages** (English, Greek, Spanish, French, etc.).
+  - **Review Mode:** Verify AI-parsed data against your raw transcript before saving to ensure accuracy.
+  - Automatically extracts: Foods, Symptoms, Bristol Stool Scale, Pain Levels, and Medications.
+- **🔔 Daily Reminders:** Built-in browser notifications to remind you to log your symptoms at a specific time every day.
+- **📝 Comprehensive Manual Logging:** - **Bowel Movements:** Interactive Bristol Stool Scale visuals (Types 1-7).
+  - **Symptoms:** Intensity sliders (1-10) with dynamic color coding and emoji indicators.
+  - **Meals:** Tag trigger foods (Gluten, Dairy, etc.) alongside free text.
+  - **Medications:** Track names and dosages.
+- **🧠 Smart Correlations:** - Looks ahead 24 hours from every meal to detect associations with high pain or irregular bowel movements.
+  - **Trigger Probability:** Visual bar charts showing the likelihood of specific foods causing symptoms.
+- **🔍 Advanced History Management:** - Filter logs by **Date Range**, **Bristol Type**, or **Text Search** (find specific notes or foods).
+  - Edit or delete any entry.
+  - **Pagination** for smooth performance with large datasets.
+- **📊 Dashboard Insights:**
+  - **At a Glance:** Time since last BM, daily log count, and current pain level.
+  - **Pain Trends:** 7-day interactive area chart.
+- **💾 Import/Export:** - Full JSON backup and restore.
+  - **PDF Reports:** Generate readable reports for your doctor (supports UTF-8 characters/Greek via custom font embedding).
+- **📶 Offline PWA:** Installable on iOS/Android, fully functional without internet (sync required only for AI voice parsing).
 
 ---
 
