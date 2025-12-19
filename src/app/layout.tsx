@@ -59,7 +59,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
-      <body className={`${nunito.className} antialiased min-h-screen `}>
+      <body
+        className={`${nunito.className} antialiased min-h-screen`}
+        suppressHydrationWarning
+      >
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

@@ -11,7 +11,7 @@ export default function HistoryPage() {
     <>
       <AppHeader title="History" showBack />
 
-      <div className="px-4 py-6 max-w-2xl mx-auto">
+      <div className="px-4 py-6 max-w-7xl mx-auto w-full">
         <HistoryContent />
       </div>
     </>

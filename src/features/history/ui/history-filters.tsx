@@ -42,26 +42,21 @@ export function HistoryFilters({
   };
 
   const hasActiveFilters =
-    filters.search || filters.bristolType || filters.dateRange;
+    !!filters.search || filters.bristolType !== null || !!filters.dateRange;
 
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-4 sm:flex-row sm:items-center",
-        className
-      )}
-    >
-      <div className="relative flex-1">
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+    <div className={cn("grid gap-3", className)}>
+      <div className="relative">
+        <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
         <Input
           placeholder="Search notes, symptoms..."
           value={filters.search}
           onChange={(e) => updateFilters({ search: e.target.value })}
-          className="pl-9 bg-background/50"
+          className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 w-full"
         />
       </div>
 
-      <div className="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
         <Select
           value={filters.bristolType?.toString() || "all"}
           onValueChange={(value) => {
@@ -71,7 +66,7 @@ export function HistoryFilters({
             });
           }}
         >
-          <SelectTrigger className="w-[140px] bg-background/50">
+          <SelectTrigger className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700">
             <SelectValue placeholder="Bristol Type" />
           </SelectTrigger>
           <SelectContent>
@@ -94,23 +89,25 @@ export function HistoryFilters({
             <Button
               variant={"outline"}
               className={cn(
-                "w-[240px] justify-start text-left font-normal bg-background/50",
-                !filters.dateRange && "text-muted-foreground"
+                "w-full justify-start text-left font-normal bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 px-3",
+                !filters.dateRange && "text-slate-500"
               )}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {filters.dateRange?.from ? (
-                filters.dateRange.to ? (
-                  <>
-                    {format(filters.dateRange.from, "LLL dd, y")} -{" "}
-                    {format(filters.dateRange.to, "LLL dd, y")}
-                  </>
+              <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+              <span className="truncate">
+                {filters.dateRange?.from ? (
+                  filters.dateRange.to ? (
+                    <>
+                      {format(filters.dateRange.from, "LLL dd")} -{" "}
+                      {format(filters.dateRange.to, "LLL dd")}
+                    </>
+                  ) : (
+                    format(filters.dateRange.from, "LLL dd, yyyy")
+                  )
                 ) : (
-                  format(filters.dateRange.from, "LLL dd, y")
-                )
-              ) : (
-                <span>Pick a date</span>
-              )}
+                  <span>Pick a date</span>
+                )}
+              </span>
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -120,23 +117,23 @@ export function HistoryFilters({
               defaultMonth={filters.dateRange?.from}
               selected={filters.dateRange}
               onSelect={(range) => updateFilters({ dateRange: range })}
-              numberOfMonths={2}
+              numberOfMonths={1}
             />
           </PopoverContent>
         </Popover>
-
-        {hasActiveFilters && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={clearFilters}
-            className="shrink-0"
-            title="Clear filters"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        )}
       </div>
+
+      {hasActiveFilters && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={clearFilters}
+          className="w-full text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+        >
+          <X className="mr-2 h-4 w-4" />
+          Clear Filters
+        </Button>
+      )}
     </div>
   );
 }
