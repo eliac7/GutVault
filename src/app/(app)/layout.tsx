@@ -1,5 +1,6 @@
 "use client";
 
+import { LogFAB } from "@/features/logging/ui";
 import { motion } from "motion/react";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -12,6 +13,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         className="pb-24 pt-safe"
       >
         {children}
+        <LogFAB />
       </motion.main>
     </div>
   );

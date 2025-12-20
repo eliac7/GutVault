@@ -26,6 +26,10 @@ import {
   useSpeechRecognition,
   type SpeechLanguageCode,
 } from "../hooks/use-speech-recognition";
+import { BristolPicker } from "./bristol-picker";
+import { TagInput } from "@/shared/ui/tag-input";
+import { ChipSelector } from "./chip-selector";
+import { PainSlider } from "./pain-slider";
 
 const DEFAULT_VOICE_LANGUAGE: SpeechLanguageCode = "en-US";
 
@@ -367,12 +371,13 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                       <div className="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-4">
                         <p className="text-sm text-purple-700 dark:text-purple-300 flex items-center gap-2">
                           <Sparkles className="w-4 h-4" />
-                          AI extracted the following from your voice:
+                          Review and edit your log before saving:
                         </p>
                       </div>
 
-                      {/* Parsed Data Display */}
-                      <div className="space-y-3">
+                      {/* Parsed Data Display & Edit */}
+                      <div className="space-y-4">
+                        {/* Log Type Header */}
                         <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
                           <span className="text-2xl">
                             {parsedData.type === "bowel_movement"
@@ -391,11 +396,19 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           </div>
                         </div>
 
-                        {parsedData.bristolType && (
+                        {parsedData.type === "bowel_movement" && (
                           <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                            <BristolImage
-                              type={parsedData.bristolType as BristolType}
-                              className="size-16 md:size-20 lg:size-10"
+                            <BristolPicker
+                              value={
+                                (parsedData.bristolType as BristolType) || 4
+                              }
+                              onChange={(newType) =>
+                                setParsedData({
+                                  ...parsedData,
+                                  bristolType: newType,
+                                })
+                              }
+                              className="size-16 md:size-20 lg:size-10 shrink-0"
                             />
                             <div>
                               <p className="font-medium text-slate-900 dark:text-slate-100">
@@ -404,7 +417,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                               <p className="text-xs text-slate-500">
                                 {
                                   BRISTOL_DESCRIPTIONS[
-                                    parsedData.bristolType as BristolType
+                                    (parsedData.bristolType as BristolType) || 4
                                   ].description
                                 }
                               </p>
@@ -412,67 +425,53 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           </div>
                         )}
 
-                        {parsedData.painLevel && (
-                          <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                            <span className="text-2xl">
-                              {parsedData.painLevel <= 3
-                                ? "😊"
-                                : parsedData.painLevel <= 6
-                                ? "😣"
-                                : "😖"}
-                            </span>
-                            <div>
-                              <p className="font-medium text-slate-900 dark:text-slate-100">
-                                Pain Level: {parsedData.painLevel}/10
-                              </p>
-                              <p className="text-xs text-slate-500">
-                                Pain Scale
-                              </p>
-                            </div>
-                          </div>
-                        )}
-
-                        {parsedData.symptoms &&
-                          parsedData.symptoms.length > 0 && (
-                            <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                              <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-2">
-                                Symptoms
-                              </p>
-                              <div className="flex flex-wrap gap-2">
-                                {parsedData.symptoms.map((symptom) => {
-                                  const displayLabel =
-                                    SYMPTOM_LABELS[symptom as Symptom] ||
-                                    symptom;
-                                  return (
-                                    <span
-                                      key={symptom}
-                                      className="px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs"
-                                    >
-                                      {displayLabel}
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          )}
-
-                        {parsedData.foods && parsedData.foods.length > 0 && (
+                        {(parsedData.type === "bowel_movement" ||
+                          parsedData.type === "symptom") && (
                           <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                            <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-2">
-                              Foods
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {parsedData.foods.map((food) => (
-                                <span
-                                  key={food}
-                                  className="px-2 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full text-xs"
-                                >
-                                  {food}
-                                </span>
-                              ))}
-                            </div>
+                            <label className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 block">
+                              Pain Level
+                            </label>
+                            <PainSlider
+                              value={(parsedData.painLevel as PainLevel) || 0}
+                              onChange={(level) =>
+                                setParsedData({
+                                  ...parsedData,
+                                  painLevel: level,
+                                })
+                              }
+                            />
                           </div>
                         )}
+
+                        <ChipSelector
+                          label="Symptoms"
+                          options={Object.entries(SYMPTOM_LABELS).map(
+                            ([value, label]) => ({
+                              value: value as Symptom,
+                              label,
+                            })
+                          )}
+                          selected={(parsedData.symptoms as Symptom[]) || []}
+                          onChange={(newSymptoms) =>
+                            setParsedData({
+                              ...parsedData,
+                              symptoms: newSymptoms,
+                            })
+                          }
+                        />
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                            Foods
+                          </label>
+                          <TagInput
+                            tags={parsedData.foods || []}
+                            onTagsChange={(newFoods) =>
+                              setParsedData({ ...parsedData, foods: newFoods })
+                            }
+                            placeholder="Add food..."
+                          />
+                        </div>
 
                         {parsedData.medication && (
                           <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
@@ -490,16 +489,22 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           </div>
                         )}
 
-                        {parsedData.notes && (
-                          <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                            <p className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-1">
-                              Notes
-                            </p>
-                            <p className="text-sm text-slate-600 dark:text-slate-300">
-                              {parsedData.notes}
-                            </p>
-                          </div>
-                        )}
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                            Notes
+                          </label>
+                          <textarea
+                            value={parsedData.notes || ""}
+                            onChange={(e) =>
+                              setParsedData({
+                                ...parsedData,
+                                notes: e.target.value,
+                              })
+                            }
+                            className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-500/20 outline-none resize-none h-24 text-sm"
+                            placeholder="Add any additional notes..."
+                          />
+                        </div>
                       </div>
 
                       {/* Original Transcript */}
