@@ -38,7 +38,7 @@ export function PinKeypad({
   return (
     <div className={cn("grid grid-cols-3 gap-3", className)}>
       {KEYPAD_KEYS.map((key, index) => {
-        if (key === "") return <div key={index} />;
+        if (key === "") return <div key={`key-${index}`} />;
 
         const isBackspace = key === "⌫";
         const buttonStyle = isBackspace
@@ -47,7 +47,7 @@ export function PinKeypad({
 
         return (
           <button
-            key={key}
+            key={`key-${index}`}
             onClick={() => onKeyPress(key)}
             disabled={disabled}
             className={cn(

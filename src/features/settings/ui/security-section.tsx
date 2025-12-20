@@ -55,6 +55,15 @@ export function SecuritySection() {
   const [disableError, setDisableError] = useState<string | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
 
+  // Remove credential verification state
+  const [showRemoveVerification, setShowRemoveVerification] = useState(false);
+  const [removeTarget, setRemoveTarget] = useState<"pin" | "biometric" | null>(
+    null
+  );
+  const [removePin, setRemovePin] = useState("");
+  const [removeError, setRemoveError] = useState<string | null>(null);
+  const [isRemoving, setIsRemoving] = useState(false);
+
   // Common PIN key handler
   const handlePinKey = useCallback(
     (
@@ -230,36 +239,137 @@ export function SecuritySection() {
     setIsSettingUp(false);
   }, [lockEnabled, setLockEnabled, setAuthMethod, setBiometricRegistered]);
 
-  const handleRemoveBiometric = useCallback(async () => {
-    clearBiometricRegistration();
-    await setBiometricRegistered(false);
-    if (authMethod === "biometric") {
-      if (hasPin) {
-        await setAuthMethod("pin");
-      } else {
-        await setLockEnabled(false);
-      }
+  // Request verification before removing biometric
+  const handleRequestRemoveBiometric = useCallback(() => {
+    setRemoveTarget("biometric");
+    setShowRemoveVerification(true);
+    setRemovePin("");
+    setRemoveError(null);
+  }, []);
+
+  // Request verification before removing PIN
+  const handleRequestRemovePin = useCallback(() => {
+    setRemoveTarget("pin");
+    setShowRemoveVerification(true);
+    setRemovePin("");
+    setRemoveError(null);
+  }, []);
+
+  // Remove credential verification handlers
+  const handleRemovePinKeyPress = useCallback(
+    (key: string) => {
+      handlePinKey(key, removePin, setRemovePin, setRemoveError);
+    },
+    [removePin, handlePinKey]
+  );
+
+  const handleRemoveWithPin = useCallback(async () => {
+    if (removePin.length !== 4) {
+      setRemoveError("Enter your 4-digit PIN");
+      return;
     }
-    toast.success("Biometric authentication removed");
+
+    setIsRemoving(true);
+    const success = await authenticateWithPin(removePin);
+    setIsRemoving(false);
+
+    if (success) {
+      if (removeTarget === "biometric") {
+        clearBiometricRegistration();
+        await setBiometricRegistered(false);
+        if (authMethod === "biometric") {
+          if (hasPin) {
+            await setAuthMethod("pin");
+          } else {
+            await setLockEnabled(false);
+          }
+        }
+        toast.success("Biometric authentication removed");
+      } else if (removeTarget === "pin") {
+        await clearPin();
+        if (authMethod === "pin") {
+          if (hasBiometric) {
+            await setAuthMethod("biometric");
+          } else {
+            await setLockEnabled(false);
+          }
+        }
+        toast.success("PIN removed");
+      }
+      setShowRemoveVerification(false);
+      setRemovePin("");
+      setRemoveTarget(null);
+    } else {
+      setRemoveError("Incorrect PIN");
+      setRemovePin("");
+    }
   }, [
+    removePin,
+    removeTarget,
+    authenticateWithPin,
     authMethod,
     hasPin,
+    hasBiometric,
+    clearPin,
     setAuthMethod,
     setLockEnabled,
     setBiometricRegistered,
   ]);
 
-  const handleRemovePin = useCallback(async () => {
-    await clearPin();
-    if (authMethod === "pin") {
-      if (hasBiometric) {
-        await setAuthMethod("biometric");
-      } else {
-        await setLockEnabled(false);
+  const handleRemoveWithBiometric = useCallback(async () => {
+    setIsRemoving(true);
+    setRemoveError(null);
+
+    const success = await authenticateWithBiometric();
+    setIsRemoving(false);
+
+    if (success) {
+      if (removeTarget === "biometric") {
+        clearBiometricRegistration();
+        await setBiometricRegistered(false);
+        if (authMethod === "biometric") {
+          if (hasPin) {
+            await setAuthMethod("pin");
+          } else {
+            await setLockEnabled(false);
+          }
+        }
+        toast.success("Biometric authentication removed");
+      } else if (removeTarget === "pin") {
+        await clearPin();
+        if (authMethod === "pin") {
+          if (hasBiometric) {
+            await setAuthMethod("biometric");
+          } else {
+            await setLockEnabled(false);
+          }
+        }
+        toast.success("PIN removed");
       }
+      setShowRemoveVerification(false);
+      setRemovePin("");
+      setRemoveTarget(null);
+    } else {
+      setRemoveError("Biometric verification failed");
     }
-    toast.success("PIN removed");
-  }, [authMethod, hasBiometric, clearPin, setAuthMethod, setLockEnabled]);
+  }, [
+    removeTarget,
+    authenticateWithBiometric,
+    authMethod,
+    hasPin,
+    hasBiometric,
+    clearPin,
+    setAuthMethod,
+    setLockEnabled,
+    setBiometricRegistered,
+  ]);
+
+  const handleCancelRemove = useCallback(() => {
+    setShowRemoveVerification(false);
+    setRemovePin("");
+    setRemoveError(null);
+    setRemoveTarget(null);
+  }, []);
 
   const handleSelectAuthMethod = useCallback(
     async (method: AuthMethod) => {
@@ -366,7 +476,7 @@ export function SecuritySection() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={handleRemovePin}
+                            onClick={handleRequestRemovePin}
                             className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
                           >
                             Remove
@@ -413,7 +523,7 @@ export function SecuritySection() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={handleRemoveBiometric}
+                            onClick={handleRequestRemoveBiometric}
                             className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
                           >
                             Remove
@@ -587,6 +697,68 @@ export function SecuritySection() {
                   className="flex-1 rounded-xl bg-red-500 hover:bg-red-600 text-white"
                 >
                   {isVerifying ? <Spinner size="md" /> : "Disable Lock"}
+                </Button>
+              )}
+            </div>
+          </PinModal>
+
+          {/* Remove Credential Verification Modal */}
+          <PinModal
+            show={showRemoveVerification}
+            onClose={handleCancelRemove}
+            icon={removeTarget === "pin" ? KeyRound : Fingerprint}
+            iconBg="bg-orange-100 dark:bg-orange-900/30"
+            iconColor="text-orange-600 dark:text-orange-400"
+            title={removeTarget === "pin" ? "Remove PIN" : "Remove Biometric"}
+            subtitle="Verify your identity to remove this credential"
+          >
+            {hasPin && (
+              <>
+                <PinDots
+                  length={removePin.length}
+                  activeColor="bg-orange-500"
+                  className="mb-6"
+                />
+                <PinKeypad
+                  onKeyPress={handleRemovePinKeyPress}
+                  disabled={isRemoving}
+                  className="mb-6"
+                />
+              </>
+            )}
+            {removeError && (
+              <div className="text-center text-red-500 text-sm mb-4">
+                {removeError}
+              </div>
+            )}
+            {hasBiometric && biometricAvailable && (
+              <div className="mb-6">
+                <Button
+                  variant="outline"
+                  onClick={handleRemoveWithBiometric}
+                  disabled={isRemoving}
+                  className="w-full gap-2 rounded-xl"
+                >
+                  <Fingerprint className="w-5 h-5" />
+                  Use Biometric
+                </Button>
+              </div>
+            )}
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={handleCancelRemove}
+                className="flex-1 rounded-xl"
+              >
+                Cancel
+              </Button>
+              {hasPin && (
+                <Button
+                  onClick={handleRemoveWithPin}
+                  disabled={isRemoving || removePin.length !== 4}
+                  className="flex-1 rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
+                >
+                  {isRemoving ? <Spinner size="md" /> : "Remove"}
                 </Button>
               )}
             </div>

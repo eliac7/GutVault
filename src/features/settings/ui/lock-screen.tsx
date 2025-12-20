@@ -131,7 +131,7 @@ export function LockScreen() {
           >
             {[0, 1, 2, 3].map((i) => (
               <div
-                key={i}
+                key={`pin-dot-${i}`}
                 className={`w-4 h-4 rounded-full transition-all duration-200 ${
                   pin.length > i
                     ? "bg-emerald-400 shadow-lg shadow-emerald-400/50"
@@ -166,11 +166,11 @@ export function LockScreen() {
             className="grid grid-cols-3 gap-4 max-w-xs w-full"
           >
             {KEYPAD_KEYS.map((key, index) => {
-              if (key === "") return <div key={index} />;
+              if (key === "") return <div key={`keypad-${index}`} />;
 
               return (
                 <motion.button
-                  key={key}
+                  key={`keypad-${index}`}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleKeyPress(key)}
                   disabled={isAuthenticating}
