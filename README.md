@@ -52,6 +52,10 @@ All user data is stored persistently within the user's browser using **IndexedDB
   - **Pain Trends:** 7-day interactive area chart.
 - **💾 Import/Export:** - Full JSON backup and restore.
   - **PDF Reports:** Generate readable reports for your doctor (supports UTF-8 characters/Greek via custom font embedding).
+  - **🩺 Doctor Sharing Mode:** Specialized export with:
+    - **Trend Charts:** Visual Bristol Stool Scale and Symptom Frequency graphs.
+    - **Smart Filtering:** Last 30/60/90 days view.
+    - **Privacy:** Option to hide personal notes from the report.
 - **📶 Offline PWA:** Installable on iOS/Android, fully functional without internet (sync required only for AI voice parsing).
 
 ---
