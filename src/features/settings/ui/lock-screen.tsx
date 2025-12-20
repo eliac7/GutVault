@@ -77,13 +77,13 @@ export function LockScreen() {
 
   if (!canUsePin && !canUseBiometric) {
     return (
-      <div className="fixed inset-0 z-50 bg-slate-950 flex items-center justify-center p-6">
+      <div className="fixed inset-0 z-50 bg-white dark:bg-slate-950 flex items-center justify-center p-6">
         <div className="text-center space-y-4">
-          <Lock className="w-16 h-16 text-slate-400 mx-auto" />
-          <p className="text-slate-300">
+          <Lock className="w-16 h-16 text-slate-400 dark:text-slate-400 mx-auto" />
+          <p className="text-slate-600 dark:text-slate-300">
             App lock is enabled but no authentication method is configured.
           </p>
-          <p className="text-slate-500 text-sm">
+          <p className="text-slate-400 dark:text-slate-500 text-sm">
             Please clear app data and reconfigure.
           </p>
         </div>
@@ -97,7 +97,7 @@ export function LockScreen() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-linear-to-b from-slate-900 via-slate-950 to-slate-900 flex flex-col items-center justify-center p-6"
+        className="fixed inset-0 z-50 bg-linear-to-b from-slate-50 via-slate-100 to-slate-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 flex flex-col items-center justify-center p-6"
       >
         {/* Logo and title */}
         <motion.div
@@ -109,8 +109,10 @@ export function LockScreen() {
           <div className="w-16 h-16 bg-linear-to-br from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/20">
             <Lock className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-xl font-semibold text-white">GutVault Locked</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
+            GutVault Locked
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
             {authMethod === "biometric" && canUseBiometric
               ? "Use biometric or enter PIN"
               : "Enter your PIN to unlock"}
@@ -134,8 +136,8 @@ export function LockScreen() {
                 key={`pin-dot-${i}`}
                 className={`w-4 h-4 rounded-full transition-all duration-200 ${
                   pin.length > i
-                    ? "bg-emerald-400 shadow-lg shadow-emerald-400/50"
-                    : "bg-slate-700"
+                    ? "bg-emerald-500 shadow-lg shadow-emerald-500/50"
+                    : "bg-slate-300 dark:bg-slate-700"
                 }`}
               />
             ))}
@@ -149,7 +151,7 @@ export function LockScreen() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="flex items-center gap-2 text-red-400 text-sm mb-4"
+              className="flex items-center gap-2 text-red-500 dark:text-red-400 text-sm mb-4"
             >
               <AlertCircle className="w-4 h-4" />
               {error}
@@ -176,8 +178,8 @@ export function LockScreen() {
                   disabled={isAuthenticating}
                   className={`h-16 rounded-2xl font-semibold text-xl transition-colors duration-150 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed ${
                     key === "⌫"
-                      ? "bg-slate-800 text-slate-300 hover:bg-slate-700"
-                      : "bg-slate-800/50 text-white hover:bg-slate-700/50"
+                      ? "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700"
+                      : "bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50 border border-slate-200 dark:border-transparent shadow-sm"
                   }`}
                 >
                   {key === "⌫" ? <Delete className="w-6 h-6" /> : key}
@@ -200,7 +202,7 @@ export function LockScreen() {
               size="lg"
               onClick={handleBiometric}
               disabled={isAuthenticating}
-              className="gap-2 bg-slate-800/50 border-slate-700 text-white hover:bg-slate-700/50 hover:text-white rounded-2xl px-6"
+              className="gap-2 bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-2xl px-6"
             >
               <Fingerprint className="w-5 h-5" />
               Use Biometric
@@ -213,11 +215,11 @@ export function LockScreen() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 bg-slate-950/50 flex items-center justify-center"
+            className="absolute inset-0 bg-white/50 dark:bg-slate-950/50 flex items-center justify-center"
           >
             <Spinner
               size="lg"
-              color="border-emerald-400 border-t-transparent"
+              color="border-emerald-500 border-t-transparent"
             />
           </motion.div>
         )}
