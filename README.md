@@ -10,7 +10,7 @@
 
 <img src="public/og-image.png" alt="GutVault" width="500" />
 
-**A privacy-first, offline-ready IBS tracker featuring AI voice logging and local-first architecture.**
+**A privacy-first, offline-ready IBS tracker featuring AI voice logging, app lock security, and local-first architecture.**
 
 <p align="center">
   <a href="#-overview">Overview</a> •
@@ -25,7 +25,7 @@
 
 ## 📖 Overview
 
-GutVault is a Progressive Web Application (PWA) designed to simplify the tracking of Irritable Bowel Syndrome (IBS) symptoms, meals, and bowel movements. Unlike traditional health trackers that store sensitive medical data on remote servers, GutVault utilizes a **local-first architecture**.
+GutVault is a Progressive Web Application (PWA) designed to simplify the tracking of Irritable Bowel Syndrome (IBS) symptoms, meals, and bowel movements. Unlike traditional health trackers that store sensitive medical data on remote servers, GutVault utilizes a **local-first architecture** with **optional app lock security**.
 
 All user data is stored persistently within the user's browser using **IndexedDB** (via Dexie.js), ensuring complete privacy and offline functionality. The application leverages **AI Voice Logging** to reduce the friction of manual entry. Users can speak naturally to describe their meals or symptoms, and the application uses an LLM (via OpenRouter) to parse the speech into structured data points automatically.
 
@@ -34,6 +34,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
 ## ✨ Features
 
 - **🛡️ Local-First Storage:** 100% of health data is stored locally on the device using IndexedDB (Dexie.js). Includes a **Storage Quota** view to track your data usage.
+- **🔐 App Lock Security:** Optional PIN or biometric authentication to protect sensitive health data. Requires verification before disabling.
 - **🎙️ Multi-Language AI Voice Logging:** - Speak naturally in **16+ languages** (English, Greek, Spanish, French, etc.).
   - **Review Mode:** Verify AI-parsed data against your raw transcript before saving to ensure accuracy.
   - Automatically extracts: Foods, Symptoms, Bristol Stool Scale, Pain Levels, and Medications.
@@ -67,6 +68,8 @@ All user data is stored persistently within the user's browser using **IndexedDB
 | **Framework**  | **Next.js 16**      | App Router, React 19, Server Actions.        |
 | **Database**   | **Dexie.js**        | IndexedDB wrapper for local-first storage.   |
 | **AI & API**   | **Vercel AI SDK**   | AI integration via OpenRouter.               |
+| **Auth**       | **Web Authn**       | Biometric authentication via browser APIs.   |
+| **Security**   | **Web Crypto API**  | Client-side PIN hashing and encryption.      |
 | **Styling**    | **Tailwind CSS v4** | Next-gen utility CSS engine with shadcn/ui.  |
 | **Animations** | **Framer Motion**   | Smooth transitions and interactive elements. |
 | **Validation** | **Zod**             | Type-safe runtime schema validation.         |
@@ -150,9 +153,18 @@ src/
 ├── sections/         # Marketing page sections
 ├── shared/           # Shared utilities
 │   ├── db/           # Dexie.js database configuration
-│   ├── lib/          # Utility functions
+│   ├── lib/          # Utility functions (auth, pdf-generator, utils)
+│   │   ├── auth.ts   # PIN hashing & biometric authentication
 │   ├── providers/    # Context providers
+│   │   ├── lock-provider.tsx    # App lock state management
+│   ├── components/   # Shared components
+│   │   └── route-guard.tsx     # Route protection with lock
 │   └── ui/           # Reusable UI components
+│       ├── pin-dots.tsx        # PIN entry visual indicators
+│       ├── pin-keypad.tsx      # Numeric keypad for PIN entry
+│       ├── pin-modal.tsx       # PIN/biometric modal wrapper
+│       ├── spinner.tsx         # Loading spinner component
+│       └── [other UI components...]
 └── widgets/          # Composite UI blocks (Headers, Footers)
 ```
 

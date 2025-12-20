@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { useReminders } from "@/features/settings/hooks/use-reminders";
+import { LockProvider } from "./lock-provider";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   useReminders();
@@ -23,7 +24,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      {children}
+      <LockProvider>{children}</LockProvider>
       <Toaster richColors position="top-center" />
     </ThemeProvider>
   );
