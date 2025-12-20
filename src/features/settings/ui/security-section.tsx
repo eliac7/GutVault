@@ -389,9 +389,9 @@ export function SecuritySection() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
     >
-      <Card className="p-6 bg-white dark:bg-slate-900 rounded-3xl border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+      <Card className="p-6 bg-white dark:bg-slate-900/80 rounded-3xl border-slate-200/50 dark:border-teal-500/30 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-          <Shield className="w-5 h-5 text-emerald-500" />
+          <Shield className="w-5 h-5 text-amber-500 dark:text-amber-400" />
           Privacy & Security
         </h2>
 
@@ -400,8 +400,8 @@ export function SecuritySection() {
           <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                  <Lock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                  <Lock className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                 </div>
                 <div>
                   <div className="font-medium text-slate-900 dark:text-slate-100">
@@ -414,9 +414,9 @@ export function SecuritySection() {
               </div>
               <button
                 onClick={handleToggleLock}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${
                   lockEnabled
-                    ? "bg-emerald-500"
+                    ? "bg-teal-500 dark:bg-teal-500"
                     : "bg-slate-200 dark:bg-slate-700"
                 }`}
               >
@@ -555,7 +555,7 @@ export function SecuritySection() {
                         onClick={() => handleSelectAuthMethod("pin")}
                         className={`p-3 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                           authMethod === "pin"
-                            ? "bg-emerald-500 text-white"
+                            ? "bg-teal-500 dark:bg-teal-500 text-white dark:text-slate-900"
                             : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600"
                         }`}
                       >
@@ -566,7 +566,7 @@ export function SecuritySection() {
                         onClick={() => handleSelectAuthMethod("biometric")}
                         className={`p-3 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                           authMethod === "biometric"
-                            ? "bg-emerald-500 text-white"
+                            ? "bg-teal-500 dark:bg-teal-500 text-white dark:text-slate-900"
                             : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-600"
                         }`}
                       >
@@ -765,33 +765,39 @@ export function SecuritySection() {
           </PinModal>
 
           {/* Info sections */}
-          <div className="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl">
-            <p className="text-sm text-emerald-800 dark:text-emerald-300">
+          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-500/30">
+            <p className="text-sm text-emerald-800 dark:text-emerald-400">
               <strong>🔒 100% Local Storage</strong>
               <br />
-              All your health data is stored locally on your device using
-              IndexedDB. We never send your logs to any server.
+              <span className="text-emerald-700 dark:text-emerald-400/80">
+                All your health data is stored locally on your device using
+                IndexedDB. We never send your logs to any server.
+              </span>
             </p>
           </div>
 
-          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl">
-            <p className="text-sm text-blue-800 dark:text-blue-300">
+          <div className="p-4 bg-teal-50 dark:bg-teal-950/30 rounded-2xl border border-teal-200 dark:border-teal-500/30">
+            <p className="text-sm text-teal-800 dark:text-teal-400">
               <strong>🤖 AI Processing</strong>
               <br />
-              Voice transcripts are sent to OpenRouter AI models only for
-              parsing, then immediately discarded. Your raw audio never leaves
-              your device.
+              <span className="text-teal-700 dark:text-teal-400/80">
+                Voice transcripts are sent to OpenRouter AI models only for
+                parsing, then immediately discarded. Your raw audio never leaves
+                your device.
+              </span>
             </p>
           </div>
 
-          <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl">
-            <p className="text-sm text-amber-800 dark:text-amber-300 flex gap-2">
+          <div className="p-4 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-500/30">
+            <p className="text-sm text-amber-800 dark:text-amber-400 flex gap-2">
               <AlertTriangle className="w-5 h-5 shrink-0" />
               <span>
                 <strong>Backup Your Data</strong>
                 <br />
-                Since everything is local, clearing browser data will delete
-                your logs. Export regularly!
+                <span className="text-amber-700 dark:text-amber-400/80">
+                  Since everything is local, clearing browser data will delete
+                  your logs. Export regularly!
+                </span>
               </span>
             </p>
           </div>

@@ -12,11 +12,9 @@ export function AboutSection() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
     >
-      <Card className="p-6 bg-white dark:bg-slate-900 rounded-3xl border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+      <Card className="p-6 bg-white dark:bg-slate-900/80 rounded-3xl border-slate-200/50 dark:border-teal-500/30 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-          <span className="p-1 rounded-lg bg-slate-100 dark:bg-slate-800">
-            <Info className="w-5 h-5 text-slate-500" />
-          </span>
+          <Info className="w-5 h-5 text-slate-500 dark:text-slate-400" />
           About
         </h2>
 
@@ -29,22 +27,27 @@ export function AboutSection() {
           </div>
           <div className="flex justify-between">
             <span>Database</span>
-            <span className="font-medium text-slate-900 dark:text-slate-100">
+            <span className="font-medium text-teal-600 dark:text-cyan-400">
               Dexie.js + IndexedDB
             </span>
           </div>
           <div className="flex justify-between">
             <span>AI Model</span>
-            <span className="font-medium text-slate-900 dark:text-slate-100">
+            <span className="font-medium text-teal-600 dark:text-cyan-400">
               OpenRouter AI models
             </span>
           </div>
           <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
             <p className="text-xs text-center">
-              Made with ❤️ for people managing IBS
+              Made with <span className="text-red-500">❤️</span> for people
+              managing IBS
               <br />
               <span className="text-slate-400">
-                Local-First • Privacy-Focused • Open Source
+                Local-First •{" "}
+                <span className="text-teal-600 dark:text-cyan-400">
+                  Privacy-Focused
+                </span>{" "}
+                • Open Source
               </span>
             </p>
           </div>

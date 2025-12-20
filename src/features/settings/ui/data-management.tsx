@@ -152,14 +152,14 @@ export function DataManagement() {
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-      <Card className="p-6 bg-white dark:bg-slate-900 rounded-3xl border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+      <Card className="p-6 bg-white dark:bg-slate-900/80 rounded-3xl border-slate-200/50 dark:border-teal-500/30 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-          <Database className="w-5 h-5 text-emerald-500" />
+          <Database className="w-5 h-5 text-teal-500 dark:text-teal-400" />
           Data Management
         </h2>
 
         <div className="space-y-3">
-          <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl">
+          <div className="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-slate-600 dark:text-slate-400">
                 Total Logs
@@ -182,7 +182,7 @@ export function DataManagement() {
                 variant="ghost"
                 size="sm"
                 onClick={checkStorage}
-                className="text-xs"
+                className="text-xs text-primary"
               >
                 Check Storage
               </Button>
@@ -198,7 +198,7 @@ export function DataManagement() {
                 disabled={isExporting || totalLogs === 0}
                 className="w-full justify-start h-12 rounded-xl"
               >
-                <Download className="w-5 h-5 mr-3 text-emerald-500" />
+                <Download className="w-5 h-5 mr-3 text-teal-500 dark:text-teal-400" />
                 <div className="text-left">
                   <div className="font-medium">Export Data</div>
                   <div className="text-xs text-slate-500">
@@ -224,7 +224,7 @@ export function DataManagement() {
                   isImporting ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
-                <Upload className="w-5 h-5 mr-3 text-blue-500" />
+                <Upload className="w-5 h-5 mr-3 text-teal-500 dark:text-teal-400" />
                 <div className="text-left">
                   <div className="font-medium text-slate-900 dark:text-slate-100">
                     Import Data

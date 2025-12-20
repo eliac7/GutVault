@@ -78,9 +78,9 @@ export function Preferences() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
     >
-      <Card className="p-6 bg-white dark:bg-slate-900 rounded-3xl border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+      <Card className="p-6 bg-white dark:bg-slate-900/80 rounded-3xl border-slate-200/50 dark:border-teal-500/30 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-          <Palette className="w-5 h-5 text-purple-500" />
+          <Palette className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
           Preferences
         </h2>
 
@@ -97,7 +97,7 @@ export function Preferences() {
                   onClick={() => setTheme(t)}
                   className={`p-3 rounded-xl text-sm font-medium capitalize transition-all ${
                     mounted && theme === t
-                      ? "bg-purple-500 text-white"
+                      ? "bg-teal-500 dark:bg-teal-500 text-white dark:text-slate-900"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
@@ -110,7 +110,7 @@ export function Preferences() {
           {/* Default Voice Language */}
           <div>
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
-              <Globe className="w-4 h-4" />
+              <Globe className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
               Default Voice Language
             </label>
             <Select
@@ -142,7 +142,7 @@ export function Preferences() {
           {/* Daily Reminders */}
           <div>
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
-              <Bell className="w-4 h-4" />
+              <Bell className="w-4 h-4 text-amber-500 dark:text-amber-400" />
               Daily Reminders
             </label>
             <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
@@ -156,9 +156,9 @@ export function Preferences() {
               </div>
               <button
                 onClick={handleToggleReminders}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${
                   remindersEnabled
-                    ? "bg-purple-500"
+                    ? "bg-teal-500 dark:bg-teal-500"
                     : "bg-slate-200 dark:bg-slate-700"
                 }`}
               >
