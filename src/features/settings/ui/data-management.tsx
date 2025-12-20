@@ -15,7 +15,10 @@ import {
   getLogs,
 } from "@/shared/db";
 import { ExportDialog } from "./export-dialog";
-import { generatePDF } from "@/shared/lib/pdf-generator";
+import {
+  generatePDF,
+  type DoctorReportOptions,
+} from "@/shared/lib/pdf-generator";
 import type { DateRange } from "react-day-picker";
 
 type DeleteStep = "idle" | "first" | "final";
@@ -32,7 +35,8 @@ export function DataManagement() {
 
   const runExport = async (
     format: "json" | "pdf",
-    range: DateRange | undefined
+    range: DateRange | undefined,
+    doctorOptions?: DoctorReportOptions
   ) => {
     setIsExporting(true);
     try {
@@ -67,7 +71,8 @@ export function DataManagement() {
         const logs = await getLogs(range?.from, range?.to);
         await generatePDF(
           logs,
-          range ? { start: range.from, end: range.to } : undefined
+          range ? { start: range.from, end: range.to } : undefined,
+          doctorOptions
         );
       }
 

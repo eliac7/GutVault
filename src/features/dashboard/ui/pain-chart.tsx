@@ -67,8 +67,13 @@ export function PainChart() {
         </h2>
 
         {hasData ? (
-          <div className="h-48">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="h-48 min-w-0 min-h-48">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+              minWidth={0}
+              minHeight={0}
+            >
               <AreaChart
                 data={chartData}
                 margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
