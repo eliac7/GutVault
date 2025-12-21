@@ -30,7 +30,7 @@ export function LogFAB() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm z-40"
+            className="fixed inset-x-0 bottom-0 top-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm z-40"
             onClick={() => setIsExpanded(false)}
           />
         )}
