@@ -159,7 +159,7 @@ export function CorrelationAnalysis() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px] w-full mt-2">
+          <div className="h-75 w-full mt-2">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 layout="vertical"

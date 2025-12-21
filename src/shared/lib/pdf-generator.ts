@@ -102,7 +102,14 @@ export async function generatePDF(
     if (log.type === "bowel_movement") {
       details = `Bristol: ${log.bristolType ?? "-"}`;
     } else if (log.type === "meal") {
-      details = `Triggers: ${log.triggerFoods?.join(", ") ?? "None"}`;
+      const parts = [];
+      if (log.foods && log.foods.length > 0) {
+        parts.push(`Foods: ${log.foods.join(", ")}`);
+      }
+      if (log.triggerFoods && log.triggerFoods.length > 0) {
+        parts.push(`Triggers: ${log.triggerFoods.join(", ")}`);
+      }
+      details = parts.length > 0 ? parts.join("\n") : "No food details";
     } else if (log.type === "symptom") {
       details = `Symptoms: ${log.symptoms?.join(", ") ?? "None"}`;
     }
@@ -110,7 +117,6 @@ export async function generatePDF(
     return [
       date,
       log.type.replace("_", " ").toUpperCase(),
-      details,
       details,
       `Pain: ${log.painLevel}`,
       doctorOptions?.anonymize ? "-" : log.notes || "-",
