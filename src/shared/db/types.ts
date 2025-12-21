@@ -113,3 +113,11 @@ export interface AppSetting {
   id: string; // key, e.g., 'reminderEnabled', 'reminderTime'
   value: unknown;
 }
+
+export interface CachedFood {
+  name: string;
+  status: "low" | "medium" | "high";
+  category?: string;
+  notes?: string;
+  createdAt: Date;
+}

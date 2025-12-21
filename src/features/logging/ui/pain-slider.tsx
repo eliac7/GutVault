@@ -1,6 +1,7 @@
 "use client";
 
 import { type PainLevel } from "@/shared/db";
+import { getPainLevelColor } from "@/shared/lib/constants";
 
 interface PainSliderProps {
   value: PainLevel;
@@ -8,13 +9,8 @@ interface PainSliderProps {
 }
 
 export function PainSlider({ value, onChange }: PainSliderProps) {
-  const getColor = (level: number) => {
-    if (level <= 3) return { bg: "rgb(16 185 129)", light: "rgb(209 250 229)" }; // emerald
-    if (level <= 6) return { bg: "rgb(245 158 11)", light: "rgb(254 243 199)" }; // amber
-    return { bg: "rgb(239 68 68)", light: "rgb(254 226 226)" }; // red
-  };
-
-  const color = getColor(value);
+  const colorConfig = getPainLevelColor(value);
+  const color = { bg: `rgb(${colorConfig.rgb})`, light: `rgb(${colorConfig.lightRgb})` };
 
   const getEmoji = (level: number) => {
     if (level <= 2) return "😊";

@@ -4,3 +4,4 @@ export { VoiceLogDialog } from "./voice-log-dialog";
 export { BristolSelector } from "./bristol-selector";
 export { PainSlider } from "./pain-slider";
 export { ChipSelector } from "./chip-selector";
+export { FodmapPicker } from "./fodmap-picker";

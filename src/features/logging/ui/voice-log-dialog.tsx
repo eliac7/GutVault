@@ -27,7 +27,7 @@ import {
   type SpeechLanguageCode,
 } from "../hooks/use-speech-recognition";
 import { BristolPicker } from "./bristol-picker";
-import { TagInput } from "@/shared/ui/tag-input";
+import { FodmapPicker } from "./fodmap-picker";
 import { ChipSelector } from "./chip-selector";
 import { PainSlider } from "./pain-slider";
 
@@ -461,15 +461,11 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                         />
 
                         <div className="space-y-2">
-                          <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                            Foods
-                          </label>
-                          <TagInput
-                            tags={parsedData.foods || []}
-                            onTagsChange={(newFoods) =>
+                          <FodmapPicker
+                            selectedFoods={parsedData.foods || []}
+                            onChange={(newFoods) =>
                               setParsedData({ ...parsedData, foods: newFoods })
                             }
-                            placeholder="Add food..."
                           />
                         </div>
 

@@ -20,6 +20,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { useMonthlyStats, type DailyStat } from "../hooks/use-monthly-stats";
 import { cn } from "@/shared/lib/utils";
+import { getPainLevelColor, SEVERITY_COLORS } from "@/shared/lib/constants";
 import {
   Tooltip,
   TooltipContent,
@@ -51,9 +52,25 @@ export function SymptomHeatmap() {
       return "bg-slate-100 dark:bg-slate-800/50";
     if (stat.avgPain === null || stat.avgPain === 0)
       return "bg-slate-200 dark:bg-slate-700";
-    if (stat.avgPain <= 3) return "bg-emerald-400 dark:bg-emerald-600";
-    if (stat.avgPain <= 6) return "bg-amber-400 dark:bg-amber-600";
-    return "bg-red-400 dark:bg-red-600";
+    
+    const colors = getPainLevelColor(stat.avgPain);
+    // Use the tailwind classes from the config, mapping base to specific shades if needed, 
+    // or using the exact strings if they match.
+    // The heatmap used:
+    // <=3: bg-emerald-400 dark:bg-emerald-600
+    // <=6: bg-amber-400 dark:bg-amber-600
+    // >6: bg-red-400 dark:bg-red-600
+    
+    // The constant uses 100/700 and 900/400. 
+    // I should probably respect the Heatmap's specific needs or update the constant to include these 'chart' colors?
+    // Or just map the base color to the classes used here.
+    
+    switch (colors.base) {
+      case "emerald": return "bg-emerald-400 dark:bg-emerald-600";
+      case "amber": return "bg-amber-400 dark:bg-amber-600";
+      case "red": return "bg-red-400 dark:bg-red-600";
+      default: return "bg-slate-200 dark:bg-slate-700";
+    }
   };
 
   const variants = {

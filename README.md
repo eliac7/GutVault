@@ -43,7 +43,11 @@ All user data is stored persistently within the user's browser using **IndexedDB
   - **Symptoms:** Intensity sliders (1-10) with dynamic color coding and emoji indicators.
   - **Meals:** Tag trigger foods (Gluten, Dairy, etc.) alongside free text.
   - **Medications:** Track names and dosages.
-- **🧠 Smart Correlations:** - Looks ahead 24 hours from every meal to detect associations with high pain or irregular bowel movements.
+- **🧠 Smart FODMAP Analysis:** 
+  - **AI-Powered:** Uses LLMs to determine the FODMAP status of any food item.
+  - **Language Aware:** Automatically detects and translates food names from your local language to English for consistent tracking.
+  - **Local Caching:** Results are saved to your local database, making them instantly searchable for future entries without re-analyzing.
+- **📈 Smart Correlations:** - Looks ahead 24 hours from every meal to detect associations with high pain or irregular bowel movements.
   - **Trigger Probability:** Visual bar charts showing the likelihood of specific foods causing symptoms.
 - **🔍 Advanced History Management:** - Filter logs by **Date Range**, **Bristol Type**, or **Text Search** (find specific notes or foods).
   - Edit or delete any entry.

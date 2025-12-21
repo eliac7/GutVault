@@ -19,6 +19,7 @@ import { BristolImage } from "@/shared/ui/bristol-image";
 import { BristolSelector } from "./bristol-selector";
 import { PainSlider } from "./pain-slider";
 import { ChipSelector } from "./chip-selector";
+import { FodmapPicker } from "./fodmap-picker";
 
 interface ManualLogDialogProps {
   open: boolean;
@@ -36,6 +37,7 @@ export function ManualLogDialog({
   const [bristolType, setBristolType] = useState<BristolType | null>(null);
   const [painLevel, setPainLevel] = useState<PainLevel>(5);
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
+  const [foods, setFoods] = useState<string[]>([]);
   const [triggerFoods, setTriggerFoods] = useState<TriggerFood[]>([]);
   const [medication, setMedication] = useState("");
   const [medicationDose, setMedicationDose] = useState("");
@@ -51,6 +53,7 @@ export function ManualLogDialog({
       setBristolType(initialLog.bristolType ?? null);
       setPainLevel(initialLog.painLevel ?? 5);
       setSymptoms(initialLog.symptoms ?? []);
+      setFoods(initialLog.foods ?? []);
       setTriggerFoods(initialLog.triggerFoods ?? []);
       setMedication(initialLog.medication ?? "");
       setMedicationDose(initialLog.medicationDose ?? "");
@@ -64,6 +67,7 @@ export function ManualLogDialog({
     setBristolType(null);
     setPainLevel(5);
     setSymptoms([]);
+    setFoods([]);
     setTriggerFoods([]);
     setMedication("");
     setMedicationDose("");
@@ -78,6 +82,7 @@ export function ManualLogDialog({
           logType === "bowel_movement" ? bristolType ?? undefined : undefined,
         painLevel: painLevel,
         symptoms: symptoms.length > 0 ? symptoms : undefined,
+        foods: logType === "meal" ? (foods.length > 0 ? foods : undefined) : undefined,
         triggerFoods: triggerFoods.length > 0 ? triggerFoods : undefined,
         medication:
           logType === "medication" ? medication || undefined : undefined,
@@ -194,17 +199,24 @@ export function ManualLogDialog({
                   )}
 
                   {logType === "meal" && (
-                    <ChipSelector
-                      label="Trigger Foods (optional)"
-                      options={Object.entries(TRIGGER_FOOD_LABELS).map(
-                        ([value, label]) => ({
-                          value: value as TriggerFood,
-                          label,
-                        })
-                      )}
-                      selected={triggerFoods}
-                      onChange={setTriggerFoods}
-                    />
+                    <div className="space-y-6">
+                      <FodmapPicker 
+                        selectedFoods={foods}
+                        onChange={setFoods}
+                      />
+                      
+                      <ChipSelector
+                        label="Common Categories (optional)"
+                        options={Object.entries(TRIGGER_FOOD_LABELS).map(
+                          ([value, label]) => ({
+                            value: value as TriggerFood,
+                            label,
+                          })
+                        )}
+                        selected={triggerFoods}
+                        onChange={setTriggerFoods}
+                      />
+                    </div>
                   )}
 
                   {logType === "medication" && (

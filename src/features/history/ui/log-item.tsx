@@ -2,10 +2,13 @@
 
 import { motion } from "motion/react";
 import { Trash2, Pencil } from "lucide-react";
-import { SYMPTOM_LABELS, type LogEntry } from "@/shared/db";
+import { SYMPTOM_LABELS, TRIGGER_FOOD_LABELS, type LogEntry } from "@/shared/db";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Button } from "@/shared/ui/button";
 import type { LogItemProps } from "../types";
+import { FODMAP_STATUS_COLORS } from "@/features/logging/lib/fodmap-data";
+import { useFoodStatus } from "@/features/logging/hooks/use-food-status";
+import { cn } from "@/shared/lib/utils";
 
 const EDITABLE_LOG_TYPES = [
   "bowel_movement",
@@ -40,7 +43,7 @@ function getLogTitle(log: LogEntry): string {
         ? `Bristol Type ${log.bristolType}`
         : "Bowel Movement";
     case "meal":
-      return log.foods?.join(", ") || "Meal";
+      return "Meal Logged";
     case "symptom":
       return "Symptoms Logged";
     case "medication":
@@ -59,6 +62,10 @@ function getLogDetails(log: LogEntry): string {
 
   if (log.symptoms && log.symptoms.length > 0) {
     details.push(log.symptoms.map((s) => SYMPTOM_LABELS[s]).join(", "));
+  }
+
+  if (log.triggerFoods && log.triggerFoods.length > 0) {
+    details.push(log.triggerFoods.map((f) => TRIGGER_FOOD_LABELS[f]).join(", "));
   }
 
   if (log.notes) {
@@ -102,9 +109,42 @@ export function LogItem({ log, onDelete, onEdit }: LogItemProps) {
           onEdit={onEdit}
           onDelete={onDelete}
         />
+        {log.type === "meal" && log.foods && log.foods.length > 0 && (
+          <FoodChips foods={log.foods} />
+        )}
         {details && <LogDetails details={details} />}
       </div>
     </motion.div>
+  );
+}
+
+function FoodChips({ foods }: { foods: string[] }) {
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-2">
+      {foods.map((food) => (
+        <FoodChip key={food} food={food} />
+      ))}
+    </div>
+  );
+}
+
+function FoodChip({ food }: { food: string }) {
+  const { status, isLoading } = useFoodStatus(food);
+  
+  return (
+    <span
+      className={cn(
+        "px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors duration-300",
+        status 
+          ? FODMAP_STATUS_COLORS[status]
+          : "bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400"
+      )}
+    >
+      {food}
+      {isLoading && (
+        <span className="inline-block w-1 h-1 ml-1 rounded-full bg-slate-400 animate-pulse" />
+      )}
+    </span>
   );
 }
 
