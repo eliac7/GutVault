@@ -10,6 +10,9 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+    : new URL("http://localhost:3000"),
   icons: {
     icon: [
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
@@ -25,7 +28,7 @@ export const metadata: Metadata = {
     },
     description:
       "A privacy-first, offline-ready IBS tracker featuring AI voice logging and local-first architecture.",
-    images: ["/og-image.png"],
+    images: ["/og-image.webp"],
   },
   twitter: {
     card: "summary_large_image",
@@ -35,7 +38,7 @@ export const metadata: Metadata = {
     },
     description:
       "A privacy-first, offline-ready IBS tracker featuring AI voice logging and local-first architecture.",
-    images: ["/og-image.png"],
+    images: ["/og-image.webp"],
   },
   manifest: "/site.webmanifest",
   appleWebApp: {
