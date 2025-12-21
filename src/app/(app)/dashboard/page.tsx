@@ -2,6 +2,7 @@ import { AtAGlance } from "@/features/dashboard/ui/at-a-glance";
 import { CorrelationAnalysis } from "@/features/dashboard/ui/correlation-analysis";
 import { PainChart } from "@/features/dashboard/ui/pain-chart";
 import { RecentLogs } from "@/features/dashboard/ui/recent-logs";
+import { FlareButton } from "@/features/flare";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { AppHeader } from "@/widgets/app-header/ui/app-header";
 import { Metadata } from "next";
