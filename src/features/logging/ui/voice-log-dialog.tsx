@@ -5,14 +5,14 @@ import {
   db,
   BRISTOL_DESCRIPTIONS,
   SYMPTOM_LABELS,
+  ANXIETY_MARKER_LABELS,
   type Symptom,
-} from "@/shared/db";
-import { BristolImage } from "@/shared/ui/bristol-image";
-import {
-  TriggerFood,
+  type AnxietyMarker,
   type BristolType,
   type PainLevel,
-} from "@/shared/db/types";
+  type StressLevel,
+  type TriggerFood,
+} from "@/shared/db";
 import { Button } from "@/shared/ui/button";
 import {
   Sheet,
@@ -34,7 +34,7 @@ import {
 import { BristolPicker } from "./bristol-picker";
 import { FodmapPicker } from "./fodmap-picker";
 import { ChipSelector } from "./chip-selector";
-import { PainSlider } from "./pain-slider";
+import { LevelSlider } from "./level-slider";
 
 const DEFAULT_VOICE_LANGUAGE: SpeechLanguageCode = "en-US";
 
@@ -134,7 +134,9 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
         timestamp: new Date(),
         bristolType: parsedData.bristolType as BristolType | undefined,
         painLevel: parsedData.painLevel as PainLevel | undefined,
+        stressLevel: parsedData.stressLevel as StressLevel | undefined,
         symptoms: parsedData.symptoms as Symptom[],
+        anxietyMarkers: parsedData.anxietyMarkers as AnxietyMarker[],
         foods: parsedData.foods as string[],
         triggerFoods: parsedData.triggerFoods as TriggerFood[],
         medication: parsedData.medication,
@@ -413,20 +415,33 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     {(parsedData.type === "bowel_movement" ||
                       parsedData.type === "symptom") && (
                       <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
-                        <label className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 block">
-                          Pain Level
-                        </label>
-                        <PainSlider
-                          value={(parsedData.painLevel as PainLevel) || 0}
+                        <LevelSlider
+                          label="Pain Level"
+                          value={(parsedData.painLevel as PainLevel) || 5}
                           onChange={(level) =>
                             setParsedData({
                               ...parsedData,
-                              painLevel: level,
+                              painLevel: level as PainLevel,
                             })
                           }
+                          type="pain"
                         />
                       </div>
                     )}
+
+                    <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                      <LevelSlider
+                        label="Stress Level"
+                        value={(parsedData.stressLevel as StressLevel) || 5}
+                        onChange={(level) =>
+                          setParsedData({
+                            ...parsedData,
+                            stressLevel: level as StressLevel,
+                          })
+                        }
+                        type="stress"
+                      />
+                    </div>
 
                     <ChipSelector
                       label="Symptoms"
@@ -441,6 +456,23 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                         setParsedData({
                           ...parsedData,
                           symptoms: newSymptoms,
+                        })
+                      }
+                    />
+
+                    <ChipSelector
+                      label="Mental State / Anxiety"
+                      options={Object.entries(ANXIETY_MARKER_LABELS).map(
+                        ([value, label]) => ({
+                          value: value as AnxietyMarker,
+                          label,
+                        })
+                      )}
+                      selected={(parsedData.anxietyMarkers as AnxietyMarker[]) || []}
+                      onChange={(newMarkers) =>
+                        setParsedData({
+                          ...parsedData,
+                          anxietyMarkers: newMarkers,
                         })
                       }
                     />

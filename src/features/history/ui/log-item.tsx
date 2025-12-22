@@ -2,7 +2,11 @@
 
 import { motion } from "motion/react";
 import { Trash2, Pencil } from "lucide-react";
-import { SYMPTOM_LABELS, TRIGGER_FOOD_LABELS, type LogEntry } from "@/shared/db";
+import {
+  SYMPTOM_LABELS,
+  TRIGGER_FOOD_LABELS,
+  type LogEntry,
+} from "@/shared/db";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Button } from "@/shared/ui/button";
 import type { LogItemProps } from "../types";
@@ -60,12 +64,26 @@ function getLogDetails(log: LogEntry): string {
     details.push(`Pain: ${log.painLevel}/10`);
   }
 
+  if (log.stressLevel) {
+    details.push(`Stress: ${log.stressLevel}/10`);
+  }
+
   if (log.symptoms && log.symptoms.length > 0) {
     details.push(log.symptoms.map((s) => SYMPTOM_LABELS[s]).join(", "));
   }
 
+  if (log.anxietyMarkers && log.anxietyMarkers.length > 0) {
+    details.push(
+      log.anxietyMarkers
+        .map((m) => m.charAt(0).toUpperCase() + m.slice(1).replace("_", " "))
+        .join(", ")
+    );
+  }
+
   if (log.triggerFoods && log.triggerFoods.length > 0) {
-    details.push(log.triggerFoods.map((f) => TRIGGER_FOOD_LABELS[f]).join(", "));
+    details.push(
+      log.triggerFoods.map((f) => TRIGGER_FOOD_LABELS[f]).join(", ")
+    );
   }
 
   if (log.notes) {
@@ -130,12 +148,12 @@ function FoodChips({ foods }: { foods: string[] }) {
 
 function FoodChip({ food }: { food: string }) {
   const { status, isLoading } = useFoodStatus(food);
-  
+
   return (
     <span
       className={cn(
         "px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors duration-300",
-        status 
+        status
           ? FODMAP_STATUS_COLORS[status]
           : "bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400"
       )}

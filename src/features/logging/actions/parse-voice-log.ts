@@ -3,8 +3,12 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateObject } from "ai";
 
+import {
+  ANXIETY_MARKER_LABELS,
+  SYMPTOM_LABELS,
+  TRIGGER_FOOD_LABELS,
+} from "@/shared/db";
 import { z } from "zod";
-import { SYMPTOM_LABELS, TRIGGER_FOOD_LABELS } from "@/shared/db";
 import { SpeechLanguageCode } from "../hooks/use-speech-recognition";
 
 const MODEL = process.env.OPENROUTER_MODEL || "mistralai/devstral-2512:free";
@@ -32,10 +36,26 @@ const logEntrySchema = z.object({
     .max(10)
     .optional()
     .describe("Pain level from 1-10 if mentioned"),
+  stressLevel: z
+    .number()
+    .min(1)
+    .max(10)
+    .optional()
+    .describe("Stress level from 1-10 if mentioned"),
   symptoms: z
     .array(z.enum(Object.keys(SYMPTOM_LABELS) as [keyof typeof SYMPTOM_LABELS]))
     .optional()
     .describe("Any symptoms mentioned by the user"),
+  anxietyMarkers: z
+    .array(
+      z.enum(
+        Object.keys(ANXIETY_MARKER_LABELS) as [
+          keyof typeof ANXIETY_MARKER_LABELS
+        ]
+      )
+    )
+    .optional()
+    .describe("Any mental state or anxiety markers mentioned"),
   foods: z
     .array(z.string())
     .optional()
@@ -45,7 +65,10 @@ const logEntrySchema = z.object({
     .optional()
     .describe("Known trigger food categories if the foods fall into them"),
   medication: z.string().optional().describe("Any medication name mentioned"),
-  medicationDose: z.string().optional().describe("Any medication dose mentioned (e.g., '200mg', '2 tablets')"),
+  medicationDose: z
+    .string()
+    .optional()
+    .describe("Any medication dose mentioned (e.g., '200mg', '2 tablets')"),
   notes: z
     .string()
     .optional()
@@ -77,7 +100,9 @@ IMPORTANT: Respond in the same language as the user's input. If the user speaks 
 Context about IBS tracking:
 - Bristol Stool Scale: Type 1 (hard lumps) to Type 7 (watery). Types 3-4 are considered normal.
 - Pain levels: 1-10 scale where 1 is minimal and 10 is severe
+- Stress levels: 1-10 scale where 1 is relaxed and 10 is extremely stressed
 - Common IBS symptoms: bloating, cramping, gas, nausea, urgency, incomplete evacuation
+- Anxiety/Mental State markers: calm, nervous, anxious, stressed, overwhelmed, panic, brain_fog, restless
 - Common trigger foods: dairy, gluten, caffeine, alcohol, spicy foods, fatty foods
 
 Be helpful and extract as much relevant information as possible from the user's description.

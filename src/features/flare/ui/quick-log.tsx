@@ -1,7 +1,8 @@
 "use client";
 
+import { LevelSlider } from "@/features/logging/ui/level-slider";
 import { addLog } from "@/shared/db/operations";
-import type { PainLevel, Symptom } from "@/shared/db/types";
+import type { PainLevel, StressLevel, Symptom } from "@/shared/db/types";
 import { Button } from "@/shared/ui/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -11,11 +12,12 @@ const QUICK_SYMPTOMS: { id: Symptom; label: string }[] = [
   { id: "cramping", label: "Cramping" },
   { id: "bloating", label: "Bloating" },
   { id: "nausea", label: "Nausea" },
-  { id: "anxiety", label: "Anxiety" },
+  { id: "urgency", label: "Urgency" },
 ];
 
 export function QuickLog({ onComplete }: { onComplete?: () => void }) {
   const [painLevel, setPainLevel] = useState<PainLevel>(5);
+  const [stressLevel, setStressLevel] = useState<StressLevel>(5);
   const [selectedSymptoms, setSelectedSymptoms] = useState<Symptom[]>([]);
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,6 +37,7 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
         type: "symptom",
         timestamp: new Date(),
         painLevel,
+        stressLevel,
         symptoms: selectedSymptoms,
         notes: notes || "Logged from Flare Mode",
         aiGenerated: false,
@@ -51,23 +54,20 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-3">
-        <label className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Pain Level: {painLevel}
-        </label>
-        <input
-          type="range"
-          min="1"
-          max="10"
+      <div className="space-y-4">
+        <LevelSlider
+          label="Pain Level"
           value={painLevel}
-          onChange={(e) => setPainLevel(Number(e.target.value) as PainLevel)}
-          className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-700 accent-indigo-600 dark:accent-indigo-500"
+          onChange={(v) => setPainLevel(v as PainLevel)}
+          type="pain"
         />
-        <div className="flex justify-between text-xs text-slate-400 px-1">
-          <span>Mild</span>
-          <span>Moderate</span>
-          <span>Severe</span>
-        </div>
+
+        <LevelSlider
+          label="Stress Level"
+          value={stressLevel}
+          onChange={(v) => setStressLevel(v as StressLevel)}
+          type="stress"
+        />
       </div>
 
       <div className="space-y-3">

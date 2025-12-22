@@ -111,14 +111,29 @@ export async function generatePDF(
       }
       details = parts.length > 0 ? parts.join("\n") : "No food details";
     } else if (log.type === "symptom") {
-      details = `Symptoms: ${log.symptoms?.join(", ") ?? "None"}`;
+      const parts = [];
+      if (log.symptoms && log.symptoms.length > 0) {
+        parts.push(`Symptoms: ${log.symptoms.join(", ")}`);
+      }
+      if (log.anxietyMarkers && log.anxietyMarkers.length > 0) {
+        const formattedMarkers = log.anxietyMarkers
+          .map((m) =>
+            m
+              .split("_")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ")
+          )
+          .join(", ");
+        parts.push(`Anxiety: ${formattedMarkers}`);
+      }
+      details = parts.length > 0 ? parts.join("\n") : "No details";
     }
 
     return [
       date,
       log.type.replace("_", " ").toUpperCase(),
       details,
-      `Pain: ${log.painLevel}`,
+      `Pain: ${log.painLevel ?? "-"}\nStress: ${log.stressLevel ?? "-"}`,
       doctorOptions?.anonymize ? "-" : log.notes || "-",
     ];
   });
@@ -126,7 +141,7 @@ export async function generatePDF(
   // Table Config
   const tableOptions: UserOptions = {
     startY: startY,
-    head: [["Date", "Type", "Details", "Pain", "Notes"]],
+    head: [["Date", "Type", "Details", "Levels", "Notes"]],
     body: tableData,
     theme: "striped",
     headStyles: { fillColor: [16, 185, 129] }, // Emerald-500 equivalent
@@ -138,7 +153,7 @@ export async function generatePDF(
       0: { cellWidth: 30 }, // Date
       1: { cellWidth: 25 }, // Type
       2: { cellWidth: 50 }, // Details
-      3: { cellWidth: 20 }, // Pain
+      3: { cellWidth: 25 }, // Levels (Pain/Stress)
       4: { cellWidth: "auto" }, // Notes
     },
   };

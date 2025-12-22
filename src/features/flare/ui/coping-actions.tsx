@@ -7,8 +7,11 @@ import { cn } from "@/shared/lib/utils";
 
 const DEFAULT_ACTIONS = [
   { id: "heat", label: "Use a heating pad on your abdomen" },
+  { id: "breathe", label: "Practice box breathing (4-4-4-4)" },
+  { id: "ground", label: "5-4-3-2-1 grounding technique" },
   { id: "position", label: "Lie down in a comfortable position" },
   { id: "sip", label: "Sip water slowly" },
+  { id: "massage", label: "Gentle self-massage on stomach" },
   { id: "tea", label: "Drink warm herbal tea (peppermint/ginger)" },
   { id: "music", label: "Listen to calming music or white noise" },
   { id: "screens", label: "Disconnect from screens for 10 minutes" },
@@ -20,7 +23,11 @@ export function CopingActions() {
   function toggle(id: string) {
     setDone((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
   }

@@ -1,30 +1,48 @@
 "use client";
 
-import { type PainLevel } from "@/shared/db";
 import { getPainLevelColor } from "@/shared/lib/constants";
 
-interface PainSliderProps {
-  value: PainLevel;
-  onChange: (value: PainLevel) => void;
+interface LevelSliderProps {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  type?: "pain" | "stress";
 }
 
-export function PainSlider({ value, onChange }: PainSliderProps) {
+export function LevelSlider({
+  label,
+  value,
+  onChange,
+  type = "pain",
+}: LevelSliderProps) {
   const colorConfig = getPainLevelColor(value);
-  const color = { bg: `rgb(${colorConfig.rgb})`, light: `rgb(${colorConfig.lightRgb})` };
+  const color = {
+    bg: `rgb(${colorConfig.rgb})`,
+    light: `rgb(${colorConfig.lightRgb})`,
+  };
 
   const getEmoji = (level: number) => {
-    if (level <= 2) return "😊";
-    if (level <= 4) return "😐";
-    if (level <= 6) return "😣";
-    if (level <= 8) return "😖";
-    return "😭";
+    if (type === "pain") {
+      if (level <= 2) return "😊";
+      if (level <= 4) return "😐";
+      if (level <= 6) return "😣";
+      if (level <= 8) return "😖";
+      return "😭";
+    } else {
+      // Stress emojis
+      if (level <= 2) return "😌";
+      if (level <= 4) return "😐";
+      if (level <= 6) return "😰";
+      if (level <= 8) return "🤯";
+      return "😵";
+    }
   };
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-          Pain Level
+          {label}
         </label>
         <div className="flex items-center gap-2">
           <span className="text-2xl">{getEmoji(value)}</span>
@@ -41,7 +59,7 @@ export function PainSlider({ value, onChange }: PainSliderProps) {
           min={1}
           max={10}
           value={value}
-          onChange={(e) => onChange(Number(e.target.value) as PainLevel)}
+          onChange={(e) => onChange(Number(e.target.value))}
           className="w-full h-3 rounded-full appearance-none cursor-pointer"
           style={{
             background: `linear-gradient(to right, ${color.bg} 0%, ${
@@ -80,9 +98,9 @@ export function PainSlider({ value, onChange }: PainSliderProps) {
       </div>
 
       <div className="flex justify-between text-xs text-slate-400">
-        <span>No Pain</span>
+        <span>Low</span>
         <span>Moderate</span>
-        <span>Severe</span>
+        <span>High</span>
       </div>
     </div>
   );

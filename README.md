@@ -41,6 +41,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
 - **🔔 Daily Reminders:** Built-in browser notifications to remind you to log your symptoms at a specific time every day.
 - **📝 Comprehensive Manual Logging:** - **Bowel Movements:** Interactive Bristol Stool Scale visuals (Types 1-7).
   - **Symptoms:** Intensity sliders (1-10) with dynamic color coding and emoji indicators.
+  - **Stress & Anxiety:** dedicated tracking with 1-10 stress slider and granular anxiety markers (e.g., "Overwhelmed", "Brain Fog").
   - **Meals:** Tag trigger foods (Gluten, Dairy, etc.) alongside free text.
   - **Medications:** Track names and dosages.
 - **🧠 Smart FODMAP Analysis:**
@@ -48,6 +49,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
   - **Language Aware:** Automatically detects and translates food names from your local language to English for consistent tracking.
   - **Local Caching:** Results are saved to your local database, making them instantly searchable for future entries without re-analyzing.
 - **📈 Smart Correlations:** - Looks ahead 24 hours from every meal to detect associations with high pain or irregular bowel movements.
+  - **Stress Analysis:** Identifies if high stress days are more likely to result in symptom flare-ups.
   - **Trigger Probability:** Visual bar charts showing the likelihood of specific foods causing symptoms.
 - **🔍 Advanced History Management:** - Filter logs by **Date Range**, **Bristol Type**, or **Text Search** (find specific notes or foods).
   - Edit or delete any entry.

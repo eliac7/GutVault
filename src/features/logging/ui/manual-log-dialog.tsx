@@ -1,12 +1,15 @@
 import {
   addLog,
+  ANXIETY_MARKER_LABELS,
   SYMPTOM_LABELS,
   TRIGGER_FOOD_LABELS,
   updateLog,
+  type AnxietyMarker,
   type BristolType,
   type LogEntry,
   type LogType,
   type PainLevel,
+  type StressLevel,
   type Symptom,
   type TriggerFood,
 } from "@/shared/db";
@@ -24,7 +27,7 @@ import { useState } from "react";
 import { BristolSelector } from "./bristol-selector";
 import { ChipSelector } from "./chip-selector";
 import { FodmapPicker } from "./fodmap-picker";
-import { PainSlider } from "./pain-slider";
+import { LevelSlider } from "./level-slider";
 
 interface ManualLogDialogProps {
   open: boolean;
@@ -41,7 +44,9 @@ export function ManualLogDialog({
   const [logType, setLogType] = useState<LogType>("bowel_movement");
   const [bristolType, setBristolType] = useState<BristolType | null>(null);
   const [painLevel, setPainLevel] = useState<PainLevel>(5);
+  const [stressLevel, setStressLevel] = useState<StressLevel>(5);
   const [symptoms, setSymptoms] = useState<Symptom[]>([]);
+  const [anxietyMarkers, setAnxietyMarkers] = useState<AnxietyMarker[]>([]);
   const [foods, setFoods] = useState<string[]>([]);
   const [triggerFoods, setTriggerFoods] = useState<TriggerFood[]>([]);
   const [medication, setMedication] = useState("");
@@ -57,7 +62,9 @@ export function ManualLogDialog({
       setLogType(initialLog.type);
       setBristolType(initialLog.bristolType ?? null);
       setPainLevel(initialLog.painLevel ?? 5);
+      setStressLevel(initialLog.stressLevel ?? 5);
       setSymptoms(initialLog.symptoms ?? []);
+      setAnxietyMarkers(initialLog.anxietyMarkers ?? []);
       setFoods(initialLog.foods ?? []);
       setTriggerFoods(initialLog.triggerFoods ?? []);
       setMedication(initialLog.medication ?? "");
@@ -71,7 +78,9 @@ export function ManualLogDialog({
     setLogType("bowel_movement");
     setBristolType(null);
     setPainLevel(5);
+    setStressLevel(5);
     setSymptoms([]);
+    setAnxietyMarkers([]);
     setFoods([]);
     setTriggerFoods([]);
     setMedication("");
@@ -81,12 +90,14 @@ export function ManualLogDialog({
 
   const handleSave = async () => {
     try {
-      const logData = {
+      const logData: Partial<LogEntry> = {
         type: logType,
         bristolType:
           logType === "bowel_movement" ? bristolType ?? undefined : undefined,
         painLevel: painLevel,
+        stressLevel: stressLevel,
         symptoms: symptoms.length > 0 ? symptoms : undefined,
+        anxietyMarkers: anxietyMarkers.length > 0 ? anxietyMarkers : undefined,
         foods:
           logType === "meal"
             ? foods.length > 0
@@ -107,7 +118,7 @@ export function ManualLogDialog({
         await addLog({
           ...logData,
           timestamp: new Date(),
-        });
+        } as LogEntry);
       }
 
       resetForm();
@@ -205,9 +216,23 @@ export function ManualLogDialog({
 
                 {(logType === "bowel_movement" || logType === "symptom") && (
                   <div className="space-y-4">
-                    <PainSlider value={painLevel} onChange={setPainLevel} />
+                    <LevelSlider
+                      label="Pain Level"
+                      value={painLevel}
+                      onChange={(v) => setPainLevel(v as PainLevel)}
+                      type="pain"
+                    />
                   </div>
                 )}
+
+                <div className="space-y-4">
+                  <LevelSlider
+                    label="Stress Level"
+                    value={stressLevel}
+                    onChange={(v) => setStressLevel(v as StressLevel)}
+                    type="stress"
+                  />
+                </div>
 
                 <ChipSelector
                   label="Symptoms"
@@ -219,6 +244,18 @@ export function ManualLogDialog({
                   )}
                   selected={symptoms}
                   onChange={setSymptoms}
+                />
+
+                <ChipSelector
+                  label="Mental State / Anxiety"
+                  options={Object.entries(ANXIETY_MARKER_LABELS).map(
+                    ([value, label]) => ({
+                      value: value as AnxietyMarker,
+                      label,
+                    })
+                  )}
+                  selected={anxietyMarkers}
+                  onChange={setAnxietyMarkers}
                 />
 
                 {logType === "meal" && (

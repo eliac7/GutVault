@@ -4,6 +4,20 @@ export type BristolType = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 // Pain Level (1-10)
 export type PainLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
+// Stress Level (1-10)
+export type StressLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
+// Anxiety Markers
+export type AnxietyMarker =
+  | "calm"
+  | "nervous"
+  | "anxious"
+  | "stressed"
+  | "overwhelmed"
+  | "panic"
+  | "brain_fog"
+  | "restless";
+
 // Common symptoms for IBS
 export type Symptom =
   | "bloating"
@@ -15,7 +29,6 @@ export type Symptom =
   | "constipation"
   | "diarrhea"
   | "fatigue"
-  | "anxiety"
   | "headache"
   | "back_pain";
 
@@ -45,7 +58,9 @@ export interface LogEntry {
 
   bristolType?: BristolType;
   painLevel?: PainLevel;
+  stressLevel?: StressLevel;
   symptoms?: Symptom[];
+  anxietyMarkers?: AnxietyMarker[];
 
   foods?: string[];
   triggerFoods?: TriggerFood[];
@@ -88,9 +103,20 @@ export const SYMPTOM_LABELS: Record<Symptom, string> = {
   constipation: "Constipation",
   diarrhea: "Diarrhea",
   fatigue: "Fatigue",
-  anxiety: "Anxiety",
   headache: "Headache",
   back_pain: "Back Pain",
+};
+
+// Anxiety Marker labels for UI
+export const ANXIETY_MARKER_LABELS: Record<AnxietyMarker, string> = {
+  calm: "Calm",
+  nervous: "Nervous",
+  anxious: "Anxious",
+  stressed: "Stressed",
+  overwhelmed: "Overwhelmed",
+  panic: "Panic",
+  brain_fog: "Brain Fog",
+  restless: "Restless",
 };
 
 // Trigger food labels for UI

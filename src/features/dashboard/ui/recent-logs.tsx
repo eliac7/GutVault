@@ -68,6 +68,7 @@ function LogEntryItem({ log }: { log: LogEntry }) {
         <p className="text-xs text-slate-500 dark:text-slate-400">
           {time}
           {log.painLevel && ` · Pain: ${log.painLevel}/10`}
+          {log.stressLevel && ` · Stress: ${log.stressLevel}/10`}
         </p>
       </div>
     </motion.div>
