@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { Info } from "lucide-react";
+import Link from "next/link";
 import { Card } from "@/shared/ui/card";
 import packageJson from "../../../../package.json";
 
@@ -36,6 +37,16 @@ export function AboutSection() {
             <span className="font-medium text-teal-600 dark:text-cyan-400">
               OpenRouter AI models
             </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span>Privacy Policy</span>
+            <Link
+              href="/privacy"
+              className="font-medium text-teal-600 dark:text-cyan-400 hover:underline"
+              target="_blank"
+            >
+              Read Policy
+            </Link>
           </div>
           <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
             <p className="text-xs text-center">

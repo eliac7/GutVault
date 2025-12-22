@@ -50,12 +50,15 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg">
-              <Image src="/logo.png" alt="Logo" width={35} height={35} />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-slate-100">
-              GutVault
-            </span>
+            <Link href="/" className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg">
+                {" "}
+                <Image src="/logo.png" alt="Logo" width={35} height={35} />
+              </div>
+              <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-slate-100">
+                GutVault
+              </span>
+            </Link>
           </div>
 
           {/* Desktop Nav */}

@@ -1,5 +1,6 @@
-import { Shield, Github } from "lucide-react";
-import { Button } from "@/shared/ui/button";
+import { buttonVariants } from "@/shared/ui/button";
+import { Github, Shield } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -22,10 +23,18 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex md:justify-end gap-4">
-            <Button variant="secondary" size="sm" className="gap-2">
+            <a
+              href="https://github.com/eliac7/gutvault"
+              target="_blank"
+              className={buttonVariants({
+                variant: "secondary",
+                size: "sm",
+                className: "gap-2",
+              })}
+            >
               <Github className="w-4 h-4" />
               View on GitHub
-            </Button>
+            </a>
             <div className="inline-flex items-center px-3 py-1.5 rounded-lg border border-slate-700 dark:border-slate-800 bg-slate-800 dark:bg-slate-900 text-xs font-medium">
               MIT License
             </div>
@@ -35,25 +44,33 @@ export default function Footer() {
         <div className="border-t border-slate-800 dark:border-slate-900 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
           <div>
             Built by{" "}
-            <span className="text-white dark:text-slate-200">
+            <a
+              href="https://ilias.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-white dark:text-slate-200 hover:underline"
+            >
               Ilias Nikolaos Thalassochoritis
-            </span>
+            </a>
           </div>
           <div className="flex gap-6">
             <a
-              href="#"
+              href="https://ilias.dev"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-white dark:hover:text-slate-200 transition-colors"
             >
               GitHub
             </a>
-            <a
-              href="#"
+            <Link
+              href="/dashboard"
+              prefetch
               className="hover:text-white dark:hover:text-slate-200 transition-colors"
             >
               Website
-            </a>
+            </Link>
             <a
-              href="#"
+              href="/privacy"
               className="hover:text-white dark:hover:text-slate-200 transition-colors"
             >
               Privacy
