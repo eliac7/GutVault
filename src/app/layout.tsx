@@ -13,6 +13,12 @@ export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL
     ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
     : new URL("http://localhost:3000"),
+  title: {
+    template: "%s | GutVault",
+    default: "GutVault",
+  },
+  description:
+    "A privacy-first, offline-ready IBS tracker featuring AI voice logging and local-first architecture.",
   icons: {
     icon: [
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
