@@ -61,7 +61,7 @@ export function AppHeader({
             />
           </Button>
           <ThemeToggle />
-          <Link href="/settings">
+          <Link href="/dashboard/settings" prefetch>
             <Button variant="ghost" size="icon" className="rounded-xl">
               <Settings className="w-5 h-5" />
             </Button>
