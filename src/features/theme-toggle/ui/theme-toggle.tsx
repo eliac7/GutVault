@@ -10,7 +10,9 @@ export const ThemeToggle = () => {
 
   // Avoid hydration mismatch
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => {
+      setMounted(true);
+    }, 0);
   }, []);
 
   if (!mounted) {

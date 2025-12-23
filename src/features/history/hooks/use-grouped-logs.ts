@@ -1,4 +1,7 @@
 import { useState, useMemo } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { format, isToday, isYesterday, formatISO } from "date-fns";
+import { el } from "date-fns/locale";
 import { useLogs, type LogEntry } from "@/shared/db";
 import type {
   GroupedLogs,
@@ -8,32 +11,34 @@ import type {
 
 const ITEMS_PER_PAGE = 7;
 
-function getDateLabel(date: Date): string {
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  if (date.toDateString() === today.toDateString()) {
-    return "Today";
+function getDateLabel(
+  date: Date,
+  locale: string,
+  t: (key: string) => string
+): string {
+  if (isToday(date)) {
+    return t("history.today");
   }
 
-  if (date.toDateString() === yesterday.toDateString()) {
-    return "Yesterday";
+  if (isYesterday(date)) {
+    return t("history.yesterday");
   }
 
-  return date.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
+  return format(date, "EEEE, MMM d", {
+    locale: locale === "el" ? el : undefined,
   });
 }
 
-function groupLogsByDate(logs: LogEntry[]): GroupedLogs[] {
+function groupLogsByDate(
+  logs: LogEntry[],
+  locale: string,
+  t: (key: string) => string
+): GroupedLogs[] {
   const groups: Record<string, LogEntry[]> = {};
 
   logs.forEach((log) => {
     const date = new Date(log.timestamp);
-    const key = date.toDateString();
+    const key = formatISO(date, { representation: "date" });
 
     if (!groups[key]) {
       groups[key] = [];
@@ -43,7 +48,7 @@ function groupLogsByDate(logs: LogEntry[]): GroupedLogs[] {
 
   return Object.entries(groups).map(([dateString, logs]) => ({
     date: dateString,
-    dateLabel: getDateLabel(new Date(dateString)),
+    dateLabel: getDateLabel(new Date(dateString + "T00:00:00.000Z"), locale, t),
     logs,
   }));
 }
@@ -110,6 +115,8 @@ export function useGroupedLogs(
 ): UseGroupedLogsResult {
   const logs = useLogs();
   const [currentPage, setCurrentPage] = useState(1);
+  const locale = useLocale();
+  const t = useTranslations();
 
   const { paginatedGroups, totalPages, isEmpty, totalFilteredLogs } =
     useMemo(() => {
@@ -139,7 +146,7 @@ export function useGroupedLogs(
         };
       }
 
-      const allGroups = groupLogsByDate(processedLogs);
+      const allGroups = groupLogsByDate(processedLogs, locale, t);
       const totalPages = Math.ceil(allGroups.length / ITEMS_PER_PAGE);
       const safePage = Math.min(
         Math.max(1, currentPage),
@@ -149,7 +156,7 @@ export function useGroupedLogs(
       const paginatedGroups = paginateGroups(allGroups, safePage);
 
       return { paginatedGroups, totalPages, isEmpty: false, totalFilteredLogs };
-    }, [logs, currentPage, filters]);
+    }, [logs, currentPage, filters, locale, t]);
 
   return {
     paginatedGroups,

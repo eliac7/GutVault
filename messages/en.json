@@ -50,7 +50,17 @@
       "needMoreLogs": "Log more entries to see correlations",
       "highCorrelation": "High correlation",
       "moderateCorrelation": "Moderate correlation",
-      "lowCorrelation": "Low correlation"
+      "lowCorrelation": "Low correlation",
+      "noLogs": "No logs available for analysis yet.",
+      "notEnoughData": "Not enough data to find correlations. Keep logging your meals, symptoms, and stress levels!",
+      "tryLoggingMore": "Try to log at least {threshold} times for a specific food.",
+      "stressConnectionTitle": "Stress Connection Detected",
+      "stressConnectionDescription": "High stress days appear to be {multiplier}x more likely to result in symptoms than low stress days.",
+      "foodTriggerTitle": "Potential Food Trigger",
+      "foodTriggerDescription": "{food} appears in {percentage}% of your logs associated with high pain (≥7) or difficult bowel movements.",
+      "foodTriggerProbabilityTitle": "Food Trigger Probability",
+      "probability": "Probability",
+      "chartDescription": "Percentage of times a food was followed by bad symptoms. Only showing foods logged at least 3 times."
     }
   },
   "history": {

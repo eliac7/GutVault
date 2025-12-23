@@ -1,10 +1,10 @@
 "use client";
 
-import * as React from "react";
-import { type BristolType, BRISTOL_DESCRIPTIONS } from "@/shared/db";
+import { type BristolType } from "@/shared/db";
+import { cn } from "@/shared/lib/utils";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
-import { cn } from "@/shared/lib/utils";
+import * as React from "react";
 
 interface BristolPickerProps {
   value: BristolType;

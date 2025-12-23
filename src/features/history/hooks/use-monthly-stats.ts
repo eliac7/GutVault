@@ -1,7 +1,6 @@
-import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/shared/db";
-import { startOfMonth, endOfMonth, isSameDay } from "date-fns";
-import { CloudCog } from "lucide-react";
+import { endOfMonth, isSameDay, startOfMonth } from "date-fns";
+import { useLiveQuery } from "dexie-react-hooks";
 
 export interface DailyStat {
   date: Date;

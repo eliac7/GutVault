@@ -6,7 +6,7 @@ export const Privacy = () => {
       id="privacy"
       className="py-24 bg-slate-900 dark:bg-slate-950 text-slate-50 overflow-hidden relative"
     >
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-900/20 dark:bg-emerald-900/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+      <div className="absolute top-0 right-0 size-125 bg-emerald-900/20 dark:bg-emerald-900/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -22,9 +22,9 @@ export const Privacy = () => {
               Zero tracking, by design.
             </h2>
             <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-              GutVault isn't just a privacy policy; it's a technical guarantee.
-              We built the app so we literally cannot see your data even if we
-              wanted to.
+              GutVault isn&apos;t just a privacy policy; it&apos;s a technical
+              guarantee. We built the app so we literally cannot see your data
+              even if we wanted to.
             </p>
 
             <ul className="space-y-4">

@@ -4,31 +4,25 @@ import { motion } from "motion/react";
 import { Clock, Activity, TrendingUp } from "lucide-react";
 import { useLastBowelMovement, useLogsLastDays } from "@/shared/db";
 import { Card } from "@/shared/ui/card";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDistanceToNow } from "date-fns";
+import { el } from "date-fns/locale";
 
 export function AtAGlance() {
   const t = useTranslations("dashboard.atAGlance");
+  const locale = useLocale();
   const lastBM = useLastBowelMovement();
   const recentLogs = useLogsLastDays(1);
 
   // Calculate time since last bowel movement
   const getTimeSince = () => {
-    if (!lastBM?.timestamp) return { value: "-", label: t("title") };
+    if (!lastBM?.timestamp) return "-";
 
-    const now = new Date();
     const lastTime = new Date(lastBM.timestamp);
-    const diffMs = now.getTime() - lastTime.getTime();
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-    if (diffHours >= 24) {
-      const days = Math.floor(diffHours / 24);
-      return { value: `${days}d`, label: `${diffHours % 24}h ${t("ago")}` };
-    }
-    if (diffHours > 0) {
-      return { value: `${diffHours}h`, label: `${diffMins}m ${t("ago")}` };
-    }
-    return { value: `${diffMins}m`, label: t("ago") };
+    return formatDistanceToNow(lastTime, {
+      addSuffix: false,
+      locale: locale === "el" ? el : undefined,
+    });
   };
 
   // Get today's log count
@@ -57,10 +51,10 @@ export function AtAGlance() {
               <Clock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
-              {timeSince.value}
+              {timeSince}
             </span>
             <span className="text-xs text-slate-500 dark:text-slate-400">
-              {timeSince.label}
+              {t("ago")}
             </span>
           </div>
 

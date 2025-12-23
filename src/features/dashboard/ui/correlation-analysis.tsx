@@ -15,11 +15,13 @@ import {
 } from "recharts";
 import { useMemo } from "react";
 import { BristolType } from "@/shared/db/types";
+import { useTranslations } from "next-intl";
 
 const MINIUM_CORRELATION_THRESHOLD = 3;
 
 export function CorrelationAnalysis() {
   const logs = useLogs();
+  const t = useTranslations("dashboard.correlations");
 
   const { foodCorrelations, stressCorrelation } = useMemo(() => {
     if (!logs) return { foodCorrelations: [], stressCorrelation: null };
@@ -123,7 +125,7 @@ export function CorrelationAnalysis() {
       <Card className="bg-white dark:bg-slate-900 border-slate-200/50 dark:border-slate-800/50 shadow-sm mt-6">
         <CardContent className="pt-6">
           <div className="text-center text-slate-500 dark:text-slate-400">
-            No logs available for analysis yet.
+            {t("noLogs")}
           </div>
         </CardContent>
       </Card>
@@ -135,11 +137,9 @@ export function CorrelationAnalysis() {
       <Card className="bg-white dark:bg-slate-900 border-slate-200/50 dark:border-slate-800/50 shadow-sm mt-6">
         <CardContent className="pt-6">
           <div className="text-center text-slate-500 dark:text-slate-400">
-            Not enough data to find correlations. Keep logging your meals,
-            symptoms, and stress levels!
+            {t("notEnoughData")}
             <p className="text-xs mt-2 text-slate-400">
-              Try to log at least {MINIUM_CORRELATION_THRESHOLD} times for a
-              specific food.
+              {t("tryLoggingMore", { threshold: MINIUM_CORRELATION_THRESHOLD })}
             </p>
           </div>
         </CardContent>
@@ -161,17 +161,14 @@ export function CorrelationAnalysis() {
               </div>
               <div>
                 <h3 className="font-semibold text-indigo-900 dark:text-indigo-200 text-base">
-                  Stress Connection Detected
+                  {t("stressConnectionTitle")}
                 </h3>
                 <p className="text-indigo-700 dark:text-indigo-300/80 mt-1 text-sm leading-relaxed">
-                  High stress days appear to be{" "}
-                  <span className="font-bold">
-                    {Math.round(
+                  {t("stressConnectionDescription", {
+                    multiplier: Math.round(
                       stressCorrelation.high / (stressCorrelation.low || 1)
-                    )}
-                    x
-                  </span>{" "}
-                  more likely to result in symptoms than low stress days.
+                    ),
+                  })}
                 </p>
               </div>
             </CardContent>
@@ -187,18 +184,13 @@ export function CorrelationAnalysis() {
             </div>
             <div>
               <h3 className="font-semibold text-amber-900 dark:text-amber-200 text-base">
-                Potential Food Trigger
+                {t("foodTriggerTitle")}
               </h3>
               <p className="text-amber-700 dark:text-amber-300/80 mt-1 text-sm leading-relaxed">
-                <span className="font-medium text-amber-800 dark:text-amber-200">
-                  {topTrigger.name}
-                </span>{" "}
-                appears in{" "}
-                <span className="font-bold">
-                  {Math.round(topTrigger.score)}%
-                </span>{" "}
-                of your logs associated with high pain (≥7) or difficult bowel
-                movements.
+                {t("foodTriggerDescription", {
+                  food: topTrigger.name,
+                  percentage: Math.round(topTrigger.score),
+                })}
               </p>
             </div>
           </CardContent>
@@ -211,7 +203,7 @@ export function CorrelationAnalysis() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg text-slate-800 dark:text-slate-100">
               <TrendingUp className="w-5 h-5 text-emerald-500" />
-              Food Trigger Probability
+              {t("foodTriggerProbabilityTitle")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -254,7 +246,7 @@ export function CorrelationAnalysis() {
                     itemStyle={{ color: "var(--color-foreground)" }}
                     formatter={(value: number | undefined) => [
                       value !== undefined ? `${Math.round(value)}%` : "0%",
-                      "Probability",
+                      t("probability"),
                     ]}
                   />
                   <Bar
@@ -280,9 +272,7 @@ export function CorrelationAnalysis() {
               </ResponsiveContainer>
             </div>
             <p className="text-center text-xs text-slate-400 dark:text-slate-500 mt-4">
-              Percentage of times a food was followed by bad symptoms.
-              <br />
-              Only showing foods logged at least 3 times.
+              {t("chartDescription")}
             </p>
           </CardContent>
         </Card>

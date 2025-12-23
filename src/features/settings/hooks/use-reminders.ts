@@ -1,15 +1,15 @@
-import { useEffect } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/shared/db";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useEffect } from "react";
 
 export function useReminders() {
   const settings = useLiveQuery(() => db.settings.toArray());
 
   // Parse settings into a map for easier access
   const settingsMap = settings?.reduce((acc, setting) => {
-    acc[setting.id] = setting.value;
+    acc[setting.id] = setting.value as string | boolean;
     return acc;
-  }, {} as Record<string, any>);
+  }, {} as Record<string, string | boolean>);
 
   const enabled = settingsMap?.["remindersEnabled"] ?? false;
   const time = settingsMap?.["reminderTime"] ?? "09:00"; // Default 9 AM
@@ -28,7 +28,7 @@ export function useReminders() {
       }
 
       // Check time
-      const [hours, minutes] = time.split(":").map(Number);
+      const [hours, minutes] = (time as string).split(":").map(Number);
       const reminderDate = new Date();
       reminderDate.setHours(hours, minutes, 0, 0);
 
