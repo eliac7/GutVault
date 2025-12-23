@@ -26,6 +26,7 @@ export default function Footer() {
             <a
               href="https://github.com/eliac7/gutvault"
               target="_blank"
+              rel="noopener noreferrer"
               className={buttonVariants({
                 variant: "secondary",
                 size: "sm",
