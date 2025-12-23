@@ -11,7 +11,6 @@ export const TechStack = () => {
         <div className="flex flex-wrap justify-center gap-4 sm:gap-8">
           {[
             "Next.js 16",
-            "FastAPI",
             "Dexie.js",
             "OpenRouter AI models",
             "Tailwind CSS",

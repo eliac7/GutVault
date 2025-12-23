@@ -55,7 +55,7 @@ export const Hero = () => {
                   <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
                 </div>
                 <div className="text-xs text-slate-400 dark:text-slate-500 font-mono">
-                  localhost:3000
+                  {process.env.NEXT_PUBLIC_SITE_URL}
                 </div>
               </div>
 
