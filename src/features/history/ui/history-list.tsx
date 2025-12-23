@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { deleteLog, type LogEntry } from "@/shared/db";
 import { cn } from "@/shared/lib/utils";
 import { ManualLogDialog } from "@/features/logging/ui/manual-log-dialog";
@@ -20,6 +21,7 @@ import { HistoryEmptyState } from "./empty-state";
 import { HistoryLogFilters } from "../types";
 
 export function HistoryList({ filters }: { filters?: HistoryLogFilters }) {
+  const t = useTranslations();
   const [editingLog, setEditingLog] = useState<LogEntry | null>(null);
   const [deletingLogId, setDeletingLogId] = useState<number | null>(null);
   const {
@@ -36,12 +38,11 @@ export function HistoryList({ filters }: { filters?: HistoryLogFilters }) {
   if (totalFilteredLogs === 0 && filters) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="text-4xl mb-4">🔍</div>
         <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-          No logs found
+          {t("history.noResults")}
         </h3>
         <p className="text-slate-500 dark:text-slate-400">
-          Try adjusting your filters to see more results.
+          {t("history.tryAdjusting")}
         </p>
       </div>
     );
@@ -132,9 +133,9 @@ export function HistoryList({ filters }: { filters?: HistoryLogFilters }) {
             setDeletingLogId(null);
           }
         }}
-        title="Delete log"
-        description="Are you sure you want to delete this log? This action cannot be undone."
-        confirmText="Delete"
+        title={t("history.deleteLog.title")}
+        description={t("history.deleteLog.description")}
+        confirmText={t("common.delete")}
         variant="destructive"
       />
     </div>

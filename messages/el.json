@@ -66,16 +66,31 @@
   "history": {
     "title": "Ιστορικό",
     "filters": "Φίλτρα",
-    "searchPlaceholder": "Αναζήτηση καταγραφών...",
-    "bristolType": "Τύπος Bristol",
+    "searchPlaceholder": "Αναζήτηση σημειώσεων, συμπτωμάτων...",
+    "bristolTypeLabel": "Τύπος Bristol",
     "allTypes": "Όλοι οι Τύποι",
     "dateRange": "Εύρος Ημερομηνιών",
+    "pickADate": "Επιλέξτε ημερομηνία",
     "clearFilters": "Καθαρισμός Φίλτρων",
     "noResults": "Δεν βρέθηκαν καταγραφές",
-    "tryAdjusting": "Δοκιμάστε να τροποποιήσετε τα φίλτρα",
+    "tryAdjusting": "Δοκιμάστε να τροποποιήσετε τα φίλτρα για περισσότερα αποτελέσματα.",
+    "deleteLog": {
+      "title": "Διαγραφή καταγραφής",
+      "description": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την καταγραφή; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
+    },
     "heatmap": {
-      "title": "Χάρτης Θερμότητας Συμπτωμάτων",
-      "noData": "Δεν υπάρχουν δεδομένα για εμφάνιση"
+      "title": "Ημερολόγιο Συμπτωμάτων",
+      "noData": "Δεν υπάρχουν δεδομένα για εμφάνιση",
+      "tooltip": {
+        "averagePain": "Μέσος Πόνος",
+        "logsRecorded": "Καταγραφές",
+        "symptomsReported": "Αναφέρθηκαν Συμπτώματα"
+      },
+      "legend": {
+        "lowPain": "Χαμηλός Πόνος",
+        "medium": "Μέτριος",
+        "severe": "Σοβαρός"
+      }
     }
   },
   "settings": {
@@ -180,21 +195,88 @@
     "manualLog": "Χειροκίνητη Καταγραφή",
     "bristol": {
       "title": "Τύπος Κοπράνων Bristol",
-      "type1": "Ξεχωριστοί σκληροί βώλοι",
-      "type2": "Σαν λουκάνικο με βώλους",
-      "type3": "Λουκάνικο με ρωγμές",
-      "type4": "Ομαλό και μαλακό",
-      "type5": "Μαλακά κομμάτια με σαφή άκρα",
-      "type6": "Αφράτα κομμάτια με ακανόνιστα άκρα",
-      "type7": "Υδαρές, χωρίς στερεά"
+      "type1": {
+        "label": "Τύπος 1",
+        "description": "Ξεχωριστοί σκληροί βώλοι"
+      },
+      "type2": {
+        "label": "Τύπος 2",
+        "description": "Σαν λουκάνικο με βώλους"
+      },
+      "type3": {
+        "label": "Τύπος 3",
+        "description": "Λουκάνικο με ρωγμές"
+      },
+      "type4": {
+        "label": "Τύπος 4",
+        "description": "Ομαλό και μαλακό"
+      },
+      "type5": {
+        "label": "Τύπος 5",
+        "description": "Μαλακά κομμάτια με σαφή άκρα"
+      },
+      "type6": {
+        "label": "Τύπος 6",
+        "description": "Αφράτα κομμάτια με ακανόνιστα άκρα"
+      },
+      "type7": {
+        "label": "Τύπος 7",
+        "description": "Υδαρές, χωρίς στερεά"
+      }
     },
     "painLevel": "Επίπεδο Πόνου",
-    "symptoms": "Συμπτώματα",
+    "symptomsLabel": "Συμπτώματα",
     "foods": "Τροφές",
     "notes": "Σημειώσεις",
     "notesPlaceholder": "Οποιεσδήποτε επιπλέον σημειώσεις...",
     "save": "Αποθήκευση",
-    "saving": "Αποθήκευση..."
+    "saving": "Αποθήκευση...",
+    "logTitles": {
+      "bowelMovement": "Κένωση",
+      "mealLogged": "Καταγεγραμμένο Γεύμα",
+      "symptomsLogged": "Καταγεγραμμένα Συμπτώματα",
+      "medication": "Φάρμακο",
+      "logEntry": "Καταχώρηση",
+      "bristolType": "Τύπος Bristol {type}"
+    },
+    "logDetails": {
+      "pain": "Πόνος",
+      "stress": "Στρες"
+    },
+    "symptoms": {
+      "bloating": "Φούσκωμα",
+      "cramping": "Σπασμοί",
+      "gas": "Αέρια",
+      "nausea": "Ναυτία",
+      "urgency": "Επείγοντα",
+      "incomplete_evacuation": "Ατελής",
+      "constipation": "Δυσκοιλιότητα",
+      "diarrhea": "Διάρροια",
+      "fatigue": "Κούραση",
+      "headache": "Πονοκέφαλος",
+      "back_pain": "Πόνος Πλάτης"
+    },
+    "triggerFoods": {
+      "dairy": "Γαλακτοκομικά",
+      "gluten": "Γλουτένη",
+      "caffeine": "Καφεΐνη",
+      "alcohol": "Αλκοόλ",
+      "spicy": "Πικάντικη Τροφή",
+      "fatty": "Λιπαρή Τροφή",
+      "beans": "Φασόλια",
+      "onions": "Κρεμμύδια",
+      "garlic": "Σκόρδο",
+      "artificial_sweeteners": "Γλυκαντικά",
+      "carbonated_drinks": "Αναψυκτικά",
+      "processed_foods": "Επεξεργασμένα"
+    },
+    "anxietyMarkers": {
+      "calm": "Ήρεμος",
+      "nervous": "Νευρικός",
+      "anxious": "Αγχωμένος",
+      "stressed": "Στρεσαρισμένος",
+      "panicky": "Πανικός"
+    }
   },
   "flare": {
     "title": "Λειτουργία Έξαρσης",

@@ -1,6 +1,7 @@
 "use client";
 
 import { type BristolType } from "@/shared/db";
+import { useTranslations } from "next-intl";
 import { cn } from "@/shared/lib/utils";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
@@ -17,6 +18,7 @@ export function BristolPicker({
   onChange,
   className,
 }: BristolPickerProps) {
+  const t = useTranslations();
   const [open, setOpen] = React.useState(false);
   const bristolTypes = [1, 2, 3, 4, 5, 6, 7] as BristolType[];
 
@@ -66,7 +68,7 @@ export function BristolPicker({
             >
               <BristolImage type={type} className="size-8" />
               <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400">
-                Type {type}
+                {t(`logging.bristol.type${type}.label`)}
               </span>
             </button>
           ))}

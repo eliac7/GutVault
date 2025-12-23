@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  addDays,
   addMonths,
   eachDayOfInterval,
   endOfMonth,
@@ -12,9 +13,11 @@ import {
   startOfWeek,
   subMonths,
 } from "date-fns";
+import { el, enUS } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { getPainLevelColor } from "@/shared/lib/constants";
 import { cn } from "@/shared/lib/utils";
@@ -29,6 +32,8 @@ import {
 import { useMonthlyStats, type DailyStat } from "../hooks/use-monthly-stats";
 
 export function SymptomHeatmap() {
+  const t = useTranslations();
+  const locale = useLocale();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [direction, setDirection] = useState(0);
   const stats = useMonthlyStats(currentMonth);
@@ -45,8 +50,13 @@ export function SymptomHeatmap() {
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
   const calendarDays = eachDayOfInterval({ start: startDate, end: endDate });
-  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+  const dfLocale = locale === "el" ? el : enUS;
+
+  const weekStart = startOfWeek(new Date(), { locale: dfLocale });
+  const weekDays = Array.from({ length: 7 }, (_, i) =>
+    format(addDays(weekStart, i), "EEEEE", { locale: dfLocale })
+  );
   const getDayColor = (stat: DailyStat | undefined) => {
     if (!stat || stat.logCount === 0)
       return "bg-slate-100 dark:bg-slate-800/50";
@@ -54,17 +64,6 @@ export function SymptomHeatmap() {
       return "bg-slate-200 dark:bg-slate-700";
 
     const colors = getPainLevelColor(stat.avgPain);
-    // Use the tailwind classes from the config, mapping base to specific shades if needed,
-    // or using the exact strings if they match.
-    // The heatmap used:
-    // <=3: bg-emerald-400 dark:bg-emerald-600
-    // <=6: bg-amber-400 dark:bg-amber-600
-    // >6: bg-red-400 dark:bg-red-600
-
-    // The constant uses 100/700 and 900/400.
-    // I should probably respect the Heatmap's specific needs or update the constant to include these 'chart' colors?
-    // Or just map the base color to the classes used here.
-
     switch (colors.base) {
       case "emerald":
         return "bg-emerald-400 dark:bg-emerald-600";
@@ -87,7 +86,7 @@ export function SymptomHeatmap() {
     <Card className="bg-white dark:bg-slate-900 border-slate-200/50 dark:border-slate-800/50 shadow-sm overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <CardTitle className="text-base font-semibold text-slate-700 dark:text-slate-300">
-          Symptom Calendar
+          {t("history.heatmap.title")}
         </CardTitle>
         <div className="flex items-center gap-1">
           <Button
@@ -98,7 +97,9 @@ export function SymptomHeatmap() {
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <div className="text-sm font-medium w-32 text-center tabular-nums">
-            {format(currentMonth, "MMMM yyyy")}
+            {format(currentMonth, locale === "el" ? "LLLL yyyy" : "MMMM yyyy", {
+              locale: dfLocale,
+            })}
           </div>
           <Button
             variant="ghost"
@@ -112,9 +113,9 @@ export function SymptomHeatmap() {
 
       <CardContent>
         <div className="grid grid-cols-7 mb-2">
-          {weekDays.map((day) => (
+          {weekDays.map((day, idx) => (
             <div
-              key={day}
+              key={`${day}-${idx}`}
               className="text-center text-[10px] uppercase tracking-wider text-slate-400 font-bold py-1"
             >
               {day}
@@ -181,11 +182,15 @@ export function SymptomHeatmap() {
                         className="text-xs bg-slate-900 text-white border-slate-800"
                       >
                         <p className="font-bold mb-1">
-                          {format(day, "EEEE, MMM d")}
+                          {format(
+                            day,
+                            locale === "el" ? "EEEE d MMM " : "EEEE, MMMM d",
+                            { locale: dfLocale }
+                          )}
                         </p>
                         <div className="space-y-1">
                           <p>
-                            Average Pain:{" "}
+                            {t("history.heatmap.tooltip.averagePain")}:{" "}
                             <span
                               className={cn(
                                 "font-bold",
@@ -197,9 +202,14 @@ export function SymptomHeatmap() {
                               {stat.avgPain ?? 0}/10
                             </span>
                           </p>
-                          <p>Logs recorded: {stat.logCount}</p>
+                          <p>
+                            {t("history.heatmap.tooltip.logsRecorded")}:{" "}
+                            {stat.logCount}
+                          </p>
                           {stat.hasSymptoms && (
-                            <p className="text-amber-400">Symptoms reported</p>
+                            <p className="text-amber-400">
+                              {t("history.heatmap.tooltip.symptomsReported")}
+                            </p>
                           )}
                         </div>
                       </TooltipContent>
@@ -214,15 +224,15 @@ export function SymptomHeatmap() {
         <div className="mt-6 flex items-center justify-center gap-6 text-xs text-slate-500 font-medium">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-emerald-400 dark:bg-emerald-600"></div>
-            Low Pain
+            {t("history.heatmap.legend.lowPain")}
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-amber-400 dark:bg-amber-600"></div>
-            Medium
+            {t("history.heatmap.legend.medium")}
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-red-400 dark:bg-red-600"></div>
-            Severe
+            {t("history.heatmap.legend.severe")}
           </div>
         </div>
       </CardContent>

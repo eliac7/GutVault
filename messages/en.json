@@ -66,16 +66,31 @@
   "history": {
     "title": "History",
     "filters": "Filters",
-    "searchPlaceholder": "Search logs...",
-    "bristolType": "Bristol Type",
+    "searchPlaceholder": "Search notes, symptoms...",
+    "bristolTypeLabel": "Bristol Type",
     "allTypes": "All Types",
     "dateRange": "Date Range",
+    "pickADate": "Pick a date",
     "clearFilters": "Clear Filters",
     "noResults": "No logs found",
-    "tryAdjusting": "Try adjusting your filters",
+    "tryAdjusting": "Try adjusting your filters to see more results.",
+    "deleteLog": {
+      "title": "Delete log",
+      "description": "Are you sure you want to delete this log? This action cannot be undone."
+    },
     "heatmap": {
-      "title": "Symptom Heatmap",
-      "noData": "No data to display"
+      "title": "Symptom Calendar",
+      "noData": "No data to display",
+      "tooltip": {
+        "averagePain": "Average Pain",
+        "logsRecorded": "Logs recorded",
+        "symptomsReported": "Symptoms reported"
+      },
+      "legend": {
+        "lowPain": "Low Pain",
+        "medium": "Medium",
+        "severe": "Severe"
+      }
     }
   },
   "settings": {
@@ -180,21 +195,88 @@
     "manualLog": "Manual Log",
     "bristol": {
       "title": "Bristol Stool Type",
-      "type1": "Separate hard lumps",
-      "type2": "Lumpy and sausage-like",
-      "type3": "Sausage with cracks",
-      "type4": "Smooth and soft",
-      "type5": "Soft blobs with clear edges",
-      "type6": "Fluffy pieces with ragged edges",
-      "type7": "Watery, no solid pieces"
+      "type1": {
+        "label": "Type 1",
+        "description": "Separate hard lumps"
+      },
+      "type2": {
+        "label": "Type 2",
+        "description": "Lumpy and sausage-like"
+      },
+      "type3": {
+        "label": "Type 3",
+        "description": "Sausage with cracks"
+      },
+      "type4": {
+        "label": "Type 4",
+        "description": "Smooth and soft"
+      },
+      "type5": {
+        "label": "Type 5",
+        "description": "Soft blobs with clear edges"
+      },
+      "type6": {
+        "label": "Type 6",
+        "description": "Fluffy pieces with ragged edges"
+      },
+      "type7": {
+        "label": "Type 7",
+        "description": "Watery, no solid pieces"
+      }
     },
     "painLevel": "Pain Level",
-    "symptoms": "Symptoms",
+    "symptomsLabel": "Symptoms",
     "foods": "Foods",
     "notes": "Notes",
     "notesPlaceholder": "Any additional notes...",
     "save": "Save Log",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "logTitles": {
+      "bowelMovement": "Bowel Movement",
+      "mealLogged": "Meal Logged",
+      "symptomsLogged": "Symptoms Logged",
+      "medication": "Medication",
+      "logEntry": "Log Entry",
+      "bristolType": "Bristol Type {type}"
+    },
+    "logDetails": {
+      "pain": "Pain",
+      "stress": "Stress"
+    },
+    "symptoms": {
+      "bloating": "Bloating",
+      "cramping": "Cramping",
+      "gas": "Gas",
+      "nausea": "Nausea",
+      "urgency": "Urgency",
+      "incomplete_evacuation": "Incomplete",
+      "constipation": "Constipation",
+      "diarrhea": "Diarrhea",
+      "fatigue": "Fatigue",
+      "headache": "Headache",
+      "back_pain": "Back Pain"
+    },
+    "triggerFoods": {
+      "dairy": "Dairy",
+      "gluten": "Gluten",
+      "caffeine": "Caffeine",
+      "alcohol": "Alcohol",
+      "spicy": "Spicy Food",
+      "fatty": "Fatty Food",
+      "beans": "Beans",
+      "onions": "Onions",
+      "garlic": "Garlic",
+      "artificial_sweeteners": "Sweeteners",
+      "carbonated_drinks": "Carbonated",
+      "processed_foods": "Processed"
+    },
+    "anxietyMarkers": {
+      "calm": "Calm",
+      "nervous": "Nervous",
+      "anxious": "Anxious",
+      "stressed": "Stressed",
+      "panicky": "Panicky"
+    }
   },
   "flare": {
     "title": "Flare Mode",

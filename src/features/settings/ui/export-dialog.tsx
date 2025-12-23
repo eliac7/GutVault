@@ -13,9 +13,11 @@ import {
 import { Switch } from "@/shared/ui/switch";
 import { Label } from "@/shared/ui/label";
 import { format } from "date-fns";
+import { el, enUS } from "date-fns/locale";
+import { useLocale } from "next-intl";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
-import { Calendar } from "@/shared/ui/calendar";
+import { Calendar, type SupportedLocale } from "@/shared/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -43,6 +45,9 @@ export function ExportDialog({
   isExporting,
   trigger,
 }: ExportDialogProps) {
+  const locale = useLocale() as SupportedLocale;
+  const dfLocale = locale === "el" ? el : enUS;
+
   const [open, setOpen] = useState(false);
   const [exportFormat, setExportFormat] = useState<"json" | "pdf">("pdf");
   const [rangeType, setRangeType] = useState<"all" | "custom">("all");
@@ -220,11 +225,18 @@ export function ExportDialog({
                           {date?.from ? (
                             date.to ? (
                               <>
-                                {format(date.from, "LLL dd, y")} -{" "}
-                                {format(date.to, "LLL dd, y")}
+                                {format(date.from, "LLL dd, y", {
+                                  locale: dfLocale,
+                                })}{" "}
+                                -{" "}
+                                {format(date.to, "LLL dd, y", {
+                                  locale: dfLocale,
+                                })}
                               </>
                             ) : (
-                              format(date.from, "LLL dd, y")
+                              format(date.from, "LLL dd, y", {
+                                locale: dfLocale,
+                              })
                             )
                           ) : (
                             <span>Pick a date</span>
@@ -239,6 +251,7 @@ export function ExportDialog({
                           selected={date}
                           onSelect={setDate}
                           numberOfMonths={2}
+                          lang={locale}
                         />
                       </PopoverContent>
                     </Popover>

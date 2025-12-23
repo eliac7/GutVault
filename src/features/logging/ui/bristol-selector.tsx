@@ -1,6 +1,7 @@
 "use client";
 
 import { type BristolType, BRISTOL_DESCRIPTIONS } from "@/shared/db";
+import { useTranslations } from "next-intl";
 import { BristolImage } from "@/shared/ui/bristol-image";
 
 interface BristolSelectorProps {
@@ -9,6 +10,7 @@ interface BristolSelectorProps {
 }
 
 export function BristolSelector({ value, onChange }: BristolSelectorProps) {
+  const t = useTranslations();
   const bristolTypes: BristolType[] = Object.keys(BRISTOL_DESCRIPTIONS).map(
     Number
   ) as BristolType[];
@@ -16,7 +18,7 @@ export function BristolSelector({ value, onChange }: BristolSelectorProps) {
   return (
     <div className="space-y-3">
       <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-        Bristol Stool Type
+        {t("logging.bristol.title")}
       </label>
       <div className="grid grid-cols-7 gap-2">
         {bristolTypes.map((type) => {
@@ -69,9 +71,9 @@ export function BristolSelector({ value, onChange }: BristolSelectorProps) {
         })}
       </div>
 
-      {value && BRISTOL_DESCRIPTIONS[value] && (
+      {value && (
         <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
-          {BRISTOL_DESCRIPTIONS[value].description}
+          {t(`logging.bristol.type${value}.description`)}
         </p>
       )}
     </div>

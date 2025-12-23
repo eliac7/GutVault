@@ -1,12 +1,14 @@
 "use client";
 
 import { format } from "date-fns";
+import { el, enUS } from "date-fns/locale";
 import { Calendar as CalendarIcon, Search, X } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { BristolImage } from "@/shared/ui/bristol-image";
-import { Calendar } from "@/shared/ui/calendar";
+import { Calendar, type SupportedLocale } from "@/shared/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import {
   Select,
@@ -30,6 +32,10 @@ export function HistoryFilters({
   onFilterChange,
   className,
 }: HistoryFiltersProps) {
+  const t = useTranslations();
+  const locale = useLocale() as SupportedLocale;
+  const dfLocale = locale === "el" ? el : enUS;
+
   const updateFilters = (updates: Partial<HistoryLogFilters>) => {
     onFilterChange({ ...filters, ...updates });
   };
@@ -50,7 +56,7 @@ export function HistoryFilters({
       <div className="relative">
         <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
         <Input
-          placeholder="Search notes, symptoms..."
+          placeholder={t("history.searchPlaceholder")}
           value={filters.search}
           onChange={(e) => updateFilters({ search: e.target.value })}
           className="pl-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 w-full"
@@ -68,10 +74,10 @@ export function HistoryFilters({
           }}
         >
           <SelectTrigger className="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-            <SelectValue placeholder="Bristol Type" />
+            <SelectValue placeholder={t("history.bristolTypeLabel")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="all">{t("history.allTypes")}</SelectItem>
             {(
               Object.keys(BRISTOL_DESCRIPTIONS) as unknown as BristolType[]
             ).map((type) => (
@@ -80,10 +86,10 @@ export function HistoryFilters({
                   <BristolImage type={type} className="w-8 h-8" />
                   <div className="flex flex-col text-left">
                     <span className="font-medium">
-                      {BRISTOL_DESCRIPTIONS[type].label}
+                      {t(`logging.bristol.type${type}.label`)}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {BRISTOL_DESCRIPTIONS[type].description}
+                      {t(`logging.bristol.type${type}.description`)}
                     </span>
                   </div>
                 </span>
@@ -106,14 +112,21 @@ export function HistoryFilters({
                 {filters.dateRange?.from ? (
                   filters.dateRange.to ? (
                     <>
-                      {format(filters.dateRange.from, "LLL dd")} -{" "}
-                      {format(filters.dateRange.to, "LLL dd")}
+                      {format(filters.dateRange.from, "LLL dd", {
+                        locale: dfLocale,
+                      })}{" "}
+                      -{" "}
+                      {format(filters.dateRange.to, "LLL dd", {
+                        locale: dfLocale,
+                      })}
                     </>
                   ) : (
-                    format(filters.dateRange.from, "LLL dd, yyyy")
+                    format(filters.dateRange.from, "LLL dd, yyyy", {
+                      locale: dfLocale,
+                    })
                   )
                 ) : (
-                  <span>Pick a date</span>
+                  <span>{t("history.pickADate")}</span>
                 )}
               </span>
             </Button>
@@ -126,6 +139,7 @@ export function HistoryFilters({
               selected={filters.dateRange}
               onSelect={(range) => updateFilters({ dateRange: range })}
               numberOfMonths={1}
+              lang={locale}
             />
           </PopoverContent>
         </Popover>
@@ -139,7 +153,7 @@ export function HistoryFilters({
           className="w-full text-slate-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
         >
           <X className="mr-2 h-4 w-4" />
-          Clear Filters
+          {t("history.clearFilters")}
         </Button>
       )}
     </div>

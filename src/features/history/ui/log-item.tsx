@@ -2,17 +2,16 @@
 
 import { motion } from "motion/react";
 import { Trash2, Pencil } from "lucide-react";
-import {
-  SYMPTOM_LABELS,
-  TRIGGER_FOOD_LABELS,
-  type LogEntry,
-} from "@/shared/db";
+import { useTranslations, useLocale } from "next-intl";
+import { type LogEntry } from "@/shared/db";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Button } from "@/shared/ui/button";
 import type { LogItemProps } from "../types";
 import { FODMAP_STATUS_COLORS } from "@/features/logging/lib/fodmap-data";
 import { useFoodStatus } from "@/features/logging/hooks/use-food-status";
 import { cn } from "@/shared/lib/utils";
+
+type Translator = ReturnType<typeof useTranslations>;
 
 const EDITABLE_LOG_TYPES = [
   "bowel_movement",
@@ -40,49 +39,49 @@ function getLogIcon(log: LogEntry): React.ReactNode {
   }
 }
 
-function getLogTitle(log: LogEntry): string {
+function getLogTitle(log: LogEntry, t: Translator): string {
   switch (log.type) {
     case "bowel_movement":
       return log.bristolType
-        ? `Bristol Type ${log.bristolType}`
-        : "Bowel Movement";
+        ? t("logging.logTitles.bristolType", { type: log.bristolType })
+        : t("logging.logTitles.bowelMovement");
     case "meal":
-      return "Meal Logged";
+      return t("logging.logTitles.mealLogged");
     case "symptom":
-      return "Symptoms Logged";
+      return t("logging.logTitles.symptomsLogged");
     case "medication":
-      return log.medication || "Medication";
+      return log.medication || t("logging.logTitles.medication");
     default:
-      return "Log Entry";
+      return t("logging.logTitles.logEntry");
   }
 }
 
-function getLogDetails(log: LogEntry): string {
+function getLogDetails(log: LogEntry, t: Translator): string {
   const details: string[] = [];
 
   if (log.painLevel) {
-    details.push(`Pain: ${log.painLevel}/10`);
+    details.push(`${t("logging.logDetails.pain")}: ${log.painLevel}/10`);
   }
 
   if (log.stressLevel) {
-    details.push(`Stress: ${log.stressLevel}/10`);
+    details.push(`${t("logging.logDetails.stress")}: ${log.stressLevel}/10`);
   }
 
   if (log.symptoms && log.symptoms.length > 0) {
-    details.push(log.symptoms.map((s) => SYMPTOM_LABELS[s]).join(", "));
+    details.push(
+      log.symptoms.map((s) => t(`logging.symptoms.${s}`)).join(", ")
+    );
   }
 
   if (log.anxietyMarkers && log.anxietyMarkers.length > 0) {
     details.push(
-      log.anxietyMarkers
-        .map((m) => m.charAt(0).toUpperCase() + m.slice(1).replace("_", " "))
-        .join(", ")
+      log.anxietyMarkers.map((m) => t(`logging.anxietyMarkers.${m}`)).join(", ")
     );
   }
 
   if (log.triggerFoods && log.triggerFoods.length > 0) {
     details.push(
-      log.triggerFoods.map((f) => TRIGGER_FOOD_LABELS[f]).join(", ")
+      log.triggerFoods.map((f) => t(`logging.triggerFoods.${f}`)).join(", ")
     );
   }
 
@@ -93,8 +92,8 @@ function getLogDetails(log: LogEntry): string {
   return details.join(" · ");
 }
 
-function formatTime(timestamp: string): string {
-  return new Date(timestamp).toLocaleTimeString("en-US", {
+function formatTime(timestamp: string, locale: string): string {
+  return new Date(timestamp).toLocaleTimeString(locale, {
     hour: "numeric",
     minute: "2-digit",
   });
@@ -107,8 +106,10 @@ function canEditLog(log: LogEntry): boolean {
 }
 
 export function LogItem({ log, onDelete, onEdit }: LogItemProps) {
+  const t = useTranslations();
+  const locale = useLocale();
   const isEditable = canEditLog(log);
-  const details = getLogDetails(log);
+  const details = getLogDetails(log, t);
 
   return (
     <motion.div
@@ -121,8 +122,8 @@ export function LogItem({ log, onDelete, onEdit }: LogItemProps) {
       <LogIcon log={log} />
       <div className="flex-1 min-w-0">
         <LogHeader
-          title={getLogTitle(log)}
-          time={formatTime(log.timestamp.toISOString())}
+          title={getLogTitle(log, t)}
+          time={formatTime(log.timestamp.toISOString(), locale)}
           isEditable={isEditable}
           onEdit={onEdit}
           onDelete={onDelete}
