@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useReminders } from "@/features/settings/hooks/use-reminders";
 import { LockProvider } from "./lock-provider";
 import { FlareProvider } from "@/features/flare";
+import { PwaInstallBanner } from "@/shared/ui/pwa-install-banner";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   useReminders();
@@ -29,6 +30,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
         <FlareProvider>{children}</FlareProvider>
       </LockProvider>
       <Toaster richColors position="top-center" />
+      <PwaInstallBanner />
     </ThemeProvider>
   );
 }
