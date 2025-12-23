@@ -12,9 +12,11 @@ import {
 } from "recharts";
 import { useLogsLastDays } from "@/shared/db";
 import { Card } from "@/shared/ui/card";
+import { useTranslations } from "next-intl";
 
 export function PainChart() {
   const logs = useLogsLastDays(7);
+  const t = useTranslations("dashboard.painChart");
 
   // Process logs into daily averages for the chart
   const getChartData = () => {
@@ -63,7 +65,7 @@ export function PainChart() {
     >
       <Card className="p-4 bg-white dark:bg-slate-900 rounded-3xl border-slate-200/50 dark:border-slate-800/50 shadow-sm">
         <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
-          Pain Levels — Last 7 Days
+          {t("title")} — {t("subtitle")}
         </h2>
 
         {hasData ? (
@@ -117,7 +119,7 @@ export function PainChart() {
                   }}
                   formatter={(value: number | undefined) => [
                     value !== undefined ? value : 0,
-                    "Pain Level",
+                    t("title"),
                   ]}
                 />
                 <Area
@@ -144,7 +146,7 @@ export function PainChart() {
         ) : (
           <div className="h-48 flex items-center justify-center">
             <p className="text-slate-400 dark:text-slate-500 text-sm">
-              No pain data logged yet. Start tracking to see trends!
+              {t("noPainData")}
             </p>
           </div>
         )}

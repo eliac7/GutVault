@@ -6,8 +6,10 @@ import { HistoryFilters } from "./history-filters";
 import { HistoryLogFilters } from "../types";
 import { SymptomHeatmap } from "./symptom-heatmap";
 import { motion } from "motion/react";
+import { useTranslations } from "next-intl";
 
 export function HistoryContent() {
+  const t = useTranslations("history");
   const [filters, setFilters] = useState<HistoryLogFilters>({
     search: "",
     bristolType: null,
@@ -19,14 +21,14 @@ export function HistoryContent() {
       <motion.aside
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="w-full lg:w-[320px] xl:w-[360px] shrink-0 space-y-6 lg:sticky lg:top-20"
+        className="w-full lg:w-[320px] xl:w-90 shrink-0 space-y-6 lg:sticky lg:top-20"
       >
         <SymptomHeatmap />
 
         <div className="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm">
           <div className="flex items-center justify-between mb-4 px-1">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Filters
+              {t("filters")}
             </span>
           </div>
 

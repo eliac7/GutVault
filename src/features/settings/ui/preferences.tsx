@@ -19,12 +19,14 @@ import {
   type SpeechLanguageCode,
 } from "@/features/logging/hooks/use-speech-recognition";
 import ReactCountryFlag from "react-country-flag";
+import { useTranslations } from "next-intl";
 
 const DEFAULT_VOICE_LANGUAGE: SpeechLanguageCode = "en-US";
 
 export function Preferences() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const t = useTranslations("settings.preferences");
 
   useEffect(() => {
     setTimeout(() => {
@@ -81,27 +83,27 @@ export function Preferences() {
       <Card className="p-6 bg-white dark:bg-slate-900/80 rounded-3xl border-slate-200/50 dark:border-teal-500/30 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
           <Palette className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
-          Preferences
+          {t("title")}
         </h2>
 
         <div className="space-y-4">
           {/* Theme */}
           <div>
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
-              Theme
+              {t("theme")}
             </label>
             <div className="grid grid-cols-3 gap-2">
-              {["light", "dark", "system"].map((t) => (
+              {(["light", "dark", "system"] as const).map((themeOption) => (
                 <button
-                  key={t}
-                  onClick={() => setTheme(t)}
+                  key={themeOption}
+                  onClick={() => setTheme(themeOption)}
                   className={`p-3 rounded-xl text-sm font-medium capitalize transition-all ${
-                    mounted && theme === t
+                    mounted && theme === themeOption
                       ? "bg-teal-500 dark:bg-teal-500 text-white dark:text-slate-900"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
-                  {t}
+                  {t(themeOption)}
                 </button>
               ))}
             </div>
@@ -143,7 +145,7 @@ export function Preferences() {
           <div>
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
               <Bell className="w-4 h-4 text-amber-500 dark:text-amber-400" />
-              Daily Reminders
+              {t("reminders")}
             </label>
             <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
               <div className="flex-1">
@@ -151,7 +153,7 @@ export function Preferences() {
                   Enable Reminders
                 </div>
                 <div className="text-sm text-slate-500 dark:text-slate-400">
-                  Get notified to log your symptoms
+                  {t("remindersDescription")}
                 </div>
               </div>
               <button

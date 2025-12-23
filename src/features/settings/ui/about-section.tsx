@@ -2,11 +2,14 @@
 
 import { motion } from "motion/react";
 import { Info } from "lucide-react";
-import Link from "next/link";
 import { Card } from "@/shared/ui/card";
 import packageJson from "../../../../package.json";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 export function AboutSection() {
+  const t = useTranslations("settings.about");
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -16,12 +19,12 @@ export function AboutSection() {
       <Card className="p-6 bg-white dark:bg-slate-900/80 rounded-3xl border-slate-200/50 dark:border-teal-500/30 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
           <Info className="w-5 h-5 text-slate-500 dark:text-slate-400" />
-          About
+          {t("title")}
         </h2>
 
         <div className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
           <div className="flex justify-between">
-            <span>Version</span>
+            <span>{t("version")}</span>
             <span className="font-medium text-slate-900 dark:text-slate-100">
               {packageJson.version}
             </span>
@@ -39,19 +42,18 @@ export function AboutSection() {
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span>Privacy Policy</span>
+            <span>{t("privacy")}</span>
             <Link
               href="/privacy"
               className="font-medium text-teal-600 dark:text-cyan-400 hover:underline"
               target="_blank"
             >
-              Read Policy
+              {t("privacyDescription")}
             </Link>
           </div>
           <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
             <p className="text-xs text-center">
-              Made with <span className="text-red-500">❤️</span> for people
-              managing IBS
+              {t("madeWith")}
               <br />
               <span className="text-slate-400">
                 Local-First •{" "}

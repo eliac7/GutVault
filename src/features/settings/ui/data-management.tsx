@@ -20,10 +20,12 @@ import {
   type DoctorReportOptions,
 } from "@/shared/lib/pdf-generator";
 import type { DateRange } from "react-day-picker";
+import { useTranslations } from "next-intl";
 
 type DeleteStep = "idle" | "first" | "final";
 
 export function DataManagement() {
+  const t = useTranslations("settings.dataManagement");
   const totalLogs = useLogCount();
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -155,7 +157,7 @@ export function DataManagement() {
       <Card className="p-6 bg-white dark:bg-slate-900/80 rounded-3xl border-slate-200/50 dark:border-teal-500/30 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
           <Database className="w-5 h-5 text-teal-500 dark:text-teal-400" />
-          Data Management
+          {t("title")}
         </h2>
 
         <div className="space-y-3">
@@ -200,9 +202,9 @@ export function DataManagement() {
               >
                 <Download className="w-5 h-5 mr-3 text-teal-500 dark:text-teal-400" />
                 <div className="text-left">
-                  <div className="font-medium">Export Data</div>
+                  <div className="font-medium">{t("export")}</div>
                   <div className="text-xs text-slate-500">
-                    Download as PDF or JSON
+                    {t("exportDescription")}
                   </div>
                 </div>
               </Button>
@@ -227,10 +229,10 @@ export function DataManagement() {
                 <Upload className="w-5 h-5 mr-3 text-teal-500 dark:text-teal-400" />
                 <div className="text-left">
                   <div className="font-medium text-slate-900 dark:text-slate-100">
-                    Import Data
+                    {t("import")}
                   </div>
                   <div className="text-xs text-slate-500">
-                    Restore from backup
+                    {t("importDescription")}
                   </div>
                 </div>
               </div>
@@ -245,9 +247,9 @@ export function DataManagement() {
           >
             <Trash2 className="w-5 h-5 mr-3" />
             <div className="text-left">
-              <div className="font-medium">Clear All Data</div>
+              <div className="font-medium">{t("clearData")}</div>
               <div className="text-xs text-red-500">
-                Permanently delete all logs
+                {t("clearDataDescription")}
               </div>
             </div>
           </Button>

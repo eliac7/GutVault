@@ -35,6 +35,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
 
 - **🛡️ Local-First Storage:** 100% of health data is stored locally on the device using IndexedDB (Dexie.js). Includes a **Storage Quota** view to track your data usage.
 - **🔐 App Lock Security:** Optional PIN or biometric authentication to protect sensitive health data. Requires verification before disabling.
+- **🌍 Multi-Language Support:** Full internationalization with **English** and **Greek** support. Switch languages seamlessly with the built-in language selector.
 - **🎙️ Multi-Language AI Voice Logging:** - Speak naturally in **16+ languages** (English, Greek, Spanish, French, etc.).
   - **Review Mode:** Verify AI-parsed data against your raw transcript before saving to ensure accuracy.
   - Automatically extracts: Foods, Symptoms, Bristol Stool Scale, Pain Levels, and Medications.
@@ -63,7 +64,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
     - **Trend Charts:** Visual Bristol Stool Scale and Symptom Frequency graphs.
     - **Smart Filtering:** Last 30/60/90 days view.
     - **Privacy:** Option to hide personal notes from the report.
-- **📶 Offline PWA:** Installable on iOS/Android, fully functional without internet (sync required only for AI voice parsing).
+- **📶 Offline PWA:** Installable on iOS/Android with locale-aware start URLs, fully functional without internet (sync required only for AI voice parsing).
 
 ---
 
@@ -79,6 +80,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
 | **Styling**    | **Tailwind CSS v4** | Next-gen utility CSS engine with shadcn/ui.  |
 | **Animations** | **Framer Motion**   | Smooth transitions and interactive elements. |
 | **Validation** | **Zod**             | Type-safe runtime schema validation.         |
+| **I18n**       | **next-intl**       | Internationalization and localization.       |
 | **Charts**     | **Recharts**        | client-side data visualization.              |
 
 ---

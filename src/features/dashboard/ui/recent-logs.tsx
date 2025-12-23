@@ -2,11 +2,12 @@
 
 import { motion } from "motion/react";
 import { ChevronRight } from "lucide-react";
-import Link from "next/link";
 import { useLogs, SYMPTOM_LABELS, type LogEntry } from "@/shared/db";
 import { BristolImage } from "@/shared/ui/bristol-image";
 import { Card } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 function LogEntryItem({ log }: { log: LogEntry }) {
   const time = new Date(log.timestamp).toLocaleTimeString("en-US", {
@@ -77,6 +78,7 @@ function LogEntryItem({ log }: { log: LogEntry }) {
 
 export function RecentLogs() {
   const logs = useLogs(3);
+  const t = useTranslations("dashboard.recentLogs");
 
   return (
     <motion.div
@@ -87,7 +89,7 @@ export function RecentLogs() {
       <Card className="p-4 bg-white dark:bg-slate-900 rounded-3xl border-slate-200/50 dark:border-slate-800/50 shadow-sm">
         <div className="flex-col sm:flex-row flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-            Recent Logs
+            {t("title")}
           </h2>
           <Link href="/history">
             <Button
@@ -95,7 +97,7 @@ export function RecentLogs() {
               size="sm"
               className="text-emerald-600 dark:text-emerald-400 rounded-xl"
             >
-              View All
+              {t("viewAll")}
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </Link>
@@ -110,7 +112,7 @@ export function RecentLogs() {
         ) : (
           <div className="py-8 text-center">
             <p className="text-slate-400 dark:text-slate-500 text-sm">
-              No logs yet. Tap the + button to start tracking!
+              {t("noLogs")}. {t("startTracking")}
             </p>
           </div>
         )}

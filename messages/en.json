@@ -1,0 +1,155 @@
+{
+  "common": {
+    "appName": "GutVault",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "close": "Close",
+    "confirm": "Confirm",
+    "search": "Search",
+    "noData": "No data yet",
+    "startLogging": "Start logging"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "history": "History",
+    "settings": "Settings"
+  },
+  "header": {
+    "flareMode": "I'm having a flare",
+    "exitFlareMode": "Exit flare mode"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Overview",
+    "correlationsTab": "Correlations",
+    "atAGlance": {
+      "title": "At a Glance",
+      "logsToday": "logs today",
+      "lastPain": "last pain",
+      "ago": "ago"
+    },
+    "painChart": {
+      "title": "Pain Levels",
+      "subtitle": "Last 7 days",
+      "noPainData": "No pain data recorded yet"
+    },
+    "recentLogs": {
+      "title": "Recent Logs",
+      "viewAll": "View All",
+      "noLogs": "No logs yet",
+      "startTracking": "Start tracking your symptoms"
+    },
+    "correlations": {
+      "title": "Correlation Analysis",
+      "description": "Discover patterns between your foods and symptoms",
+      "noData": "Not enough data yet",
+      "needMoreLogs": "Log more entries to see correlations",
+      "highCorrelation": "High correlation",
+      "moderateCorrelation": "Moderate correlation",
+      "lowCorrelation": "Low correlation"
+    }
+  },
+  "history": {
+    "title": "History",
+    "filters": "Filters",
+    "searchPlaceholder": "Search logs...",
+    "bristolType": "Bristol Type",
+    "allTypes": "All Types",
+    "dateRange": "Date Range",
+    "clearFilters": "Clear Filters",
+    "noResults": "No logs found",
+    "tryAdjusting": "Try adjusting your filters",
+    "heatmap": {
+      "title": "Symptom Heatmap",
+      "noData": "No data to display"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "dataManagement": {
+      "title": "Data Management",
+      "export": "Export Data",
+      "exportDescription": "Download your data as PDF or JSON",
+      "import": "Import Data",
+      "importDescription": "Restore from a backup file",
+      "clearData": "Clear All Data",
+      "clearDataDescription": "Permanently delete all your logs",
+      "clearDataWarning": "This action cannot be undone"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "theme": "Theme",
+      "themeDescription": "Choose your preferred appearance",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "reminders": "Reminders",
+      "remindersDescription": "Get notified to log your symptoms",
+      "language": "Language",
+      "languageDescription": "Choose your preferred language"
+    },
+    "security": {
+      "title": "Security",
+      "pinLock": "PIN Lock",
+      "pinLockDescription": "Require PIN to access the app",
+      "changePin": "Change PIN",
+      "removePin": "Remove PIN"
+    },
+    "about": {
+      "title": "About",
+      "version": "Version",
+      "privacy": "Privacy Policy",
+      "privacyDescription": "Read our privacy policy",
+      "madeWith": "Made with care for IBS warriors"
+    }
+  },
+  "logging": {
+    "addLog": "Add Log",
+    "quickLog": "Quick Log",
+    "voiceLog": "Voice Log",
+    "manualLog": "Manual Log",
+    "bristol": {
+      "title": "Bristol Stool Type",
+      "type1": "Separate hard lumps",
+      "type2": "Lumpy and sausage-like",
+      "type3": "Sausage with cracks",
+      "type4": "Smooth and soft",
+      "type5": "Soft blobs with clear edges",
+      "type6": "Fluffy pieces with ragged edges",
+      "type7": "Watery, no solid pieces"
+    },
+    "painLevel": "Pain Level",
+    "symptoms": "Symptoms",
+    "foods": "Foods",
+    "notes": "Notes",
+    "notesPlaceholder": "Any additional notes...",
+    "save": "Save Log",
+    "saving": "Saving..."
+  },
+  "flare": {
+    "title": "Flare Mode",
+    "subtitle": "We're here to help you through this",
+    "breathing": {
+      "title": "Breathing Exercise",
+      "inhale": "Inhale",
+      "hold": "Hold",
+      "exhale": "Exhale"
+    },
+    "quickLog": {
+      "title": "Quick Log",
+      "description": "Track this flare"
+    },
+    "reassurance": {
+      "title": "You've got this",
+      "messages": [
+        "This will pass",
+        "You're stronger than you think",
+        "Take it one moment at a time"
+      ]
+    }
+  }
+}

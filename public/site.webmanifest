@@ -2,7 +2,7 @@
   "name": "GutVault",
   "short_name": "GutVault",
   "description": "A privacy-first, offline-ready IBS tracker",
-  "start_url": "/dashboard",
+  "start_url": "/en/dashboard",
   "scope": "/",
   "icons": [
     {

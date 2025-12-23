@@ -4,14 +4,16 @@ import { motion } from "motion/react";
 import { Clock, Activity, TrendingUp } from "lucide-react";
 import { useLastBowelMovement, useLogsLastDays } from "@/shared/db";
 import { Card } from "@/shared/ui/card";
+import { useTranslations } from "next-intl";
 
 export function AtAGlance() {
+  const t = useTranslations("dashboard.atAGlance");
   const lastBM = useLastBowelMovement();
   const recentLogs = useLogsLastDays(1);
 
   // Calculate time since last bowel movement
   const getTimeSince = () => {
-    if (!lastBM?.timestamp) return "No data yet";
+    if (!lastBM?.timestamp) return { value: "-", label: t("title") };
 
     const now = new Date();
     const lastTime = new Date(lastBM.timestamp);
@@ -21,12 +23,12 @@ export function AtAGlance() {
 
     if (diffHours >= 24) {
       const days = Math.floor(diffHours / 24);
-      return `${days}d ${diffHours % 24}h ago`;
+      return { value: `${days}d`, label: `${diffHours % 24}h ${t("ago")}` };
     }
     if (diffHours > 0) {
-      return `${diffHours}h ${diffMins}m ago`;
+      return { value: `${diffHours}h`, label: `${diffMins}m ${t("ago")}` };
     }
-    return `${diffMins}m ago`;
+    return { value: `${diffMins}m`, label: t("ago") };
   };
 
   // Get today's log count
@@ -34,6 +36,8 @@ export function AtAGlance() {
 
   // Get last pain level
   const lastPainLevel = recentLogs?.find((log) => log.painLevel)?.painLevel;
+
+  const timeSince = getTimeSince();
 
   return (
     <motion.div
@@ -43,7 +47,7 @@ export function AtAGlance() {
     >
       <Card className="p-4 bg-white dark:bg-slate-900 rounded-3xl border-slate-200/50 dark:border-slate-800/50 shadow-sm">
         <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
-          At a Glance
+          {t("title")}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -53,12 +57,10 @@ export function AtAGlance() {
               <Clock className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
-              {getTimeSince().split(" ")[0]}
+              {timeSince.value}
             </span>
             <span className="text-xs text-slate-500 dark:text-slate-400">
-              {getTimeSince().includes("No data")
-                ? "Start logging"
-                : getTimeSince().split(" ").slice(1).join(" ")}
+              {timeSince.label}
             </span>
           </div>
 
@@ -71,7 +73,7 @@ export function AtAGlance() {
               {todayCount}
             </span>
             <span className="text-xs text-slate-500 dark:text-slate-400">
-              logs today
+              {t("logsToday")}
             </span>
           </div>
 
@@ -84,7 +86,7 @@ export function AtAGlance() {
               {lastPainLevel ?? "-"}
             </span>
             <span className="text-xs text-slate-500 dark:text-slate-400">
-              last pain
+              {t("lastPain")}
             </span>
           </div>
         </div>
