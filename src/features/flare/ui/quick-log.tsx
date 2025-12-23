@@ -7,20 +7,22 @@ import { Button } from "@/shared/ui/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-
-const QUICK_SYMPTOMS: { id: Symptom; label: string }[] = [
-  { id: "cramping", label: "Cramping" },
-  { id: "bloating", label: "Bloating" },
-  { id: "nausea", label: "Nausea" },
-  { id: "urgency", label: "Urgency" },
-];
+import { useTranslations } from "next-intl";
 
 export function QuickLog({ onComplete }: { onComplete?: () => void }) {
+  const t = useTranslations("flare.quickLog");
   const [painLevel, setPainLevel] = useState<PainLevel>(5);
   const [stressLevel, setStressLevel] = useState<StressLevel>(5);
   const [selectedSymptoms, setSelectedSymptoms] = useState<Symptom[]>([]);
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const QUICK_SYMPTOMS: { id: Symptom; label: string }[] = [
+    { id: "cramping", label: t("quickSymptoms.cramping") },
+    { id: "bloating", label: t("quickSymptoms.bloating") },
+    { id: "nausea", label: t("quickSymptoms.nausea") },
+    { id: "urgency", label: t("quickSymptoms.urgency") },
+  ];
 
   const toggleSymptom = (symptom: Symptom) => {
     setSelectedSymptoms((prev) =>
@@ -39,14 +41,14 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
         painLevel,
         stressLevel,
         symptoms: selectedSymptoms,
-        notes: notes || "Logged from Flare Mode",
+        notes: notes || t("loggedFromFlareMode"),
         aiGenerated: false,
       });
-      toast.success("Logged successfully");
+      toast.success(t("loggedSuccessfully"));
       if (onComplete) onComplete();
     } catch (error) {
       console.error(error);
-      toast.error("Failed to log");
+      toast.error(t("failedToLog"));
     } finally {
       setIsSubmitting(false);
     }
@@ -56,14 +58,14 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
     <div className="space-y-6">
       <div className="space-y-4">
         <LevelSlider
-          label="Pain Level"
+          label={t("painLevel")}
           value={painLevel}
           onChange={(v) => setPainLevel(v as PainLevel)}
           type="pain"
         />
 
         <LevelSlider
-          label="Stress Level"
+          label={t("stressLevel")}
           value={stressLevel}
           onChange={(v) => setStressLevel(v as StressLevel)}
           type="stress"
@@ -72,7 +74,7 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
 
       <div className="space-y-3">
         <label className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Symptoms
+          {t("symptoms")}
         </label>
         <div className="flex flex-wrap gap-2">
           {QUICK_SYMPTOMS.map((symptom) => (
@@ -93,11 +95,11 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
 
       <div className="space-y-3">
         <label className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Notes
+          {t("notes")}
         </label>
         <textarea
           className="flex min-h-20 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-indigo-800"
-          placeholder="How are you feeling?"
+          placeholder={t("notesPlaceholder")}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
         />
@@ -111,7 +113,7 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
         {isSubmitting ? (
           <Loader2 className="w-4 h-4 animate-spin mr-2" />
         ) : null}
-        Save Log
+        {t("saveLog")}
       </Button>
     </div>
   );

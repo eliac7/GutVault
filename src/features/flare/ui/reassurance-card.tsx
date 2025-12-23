@@ -5,27 +5,29 @@ import { Sparkles, Brain, Heart, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/shared/ui/button";
-
-const MESSAGES = [
-  {
-    icon: Sparkles,
-    title: "This will pass",
-    text: "You've handled this before, and you can handle it now. Your body knows how to heal. Take it one moment at a time.",
-  },
-  {
-    icon: Brain,
-    title: "Gut-Brain Connection",
-    text: "Your gut and brain are talking constantly. Calming your mind can directly signal safety to your gut, helping to reduce pain and urgency.",
-  },
-  {
-    icon: Heart,
-    title: "You are safe",
-    text: "These sensations are uncomfortable, but they are not dangerous. Acknowledge them without judgment and let them float by.",
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function ReassuranceCard() {
+  const t = useTranslations("flare.reassurance");
   const [index, setIndex] = useState(0);
+
+  const MESSAGES = [
+    {
+      icon: Sparkles,
+      title: t("messages.0.title"),
+      text: t("messages.0.text"),
+    },
+    {
+      icon: Brain,
+      title: t("messages.1.title"),
+      text: t("messages.1.text"),
+    },
+    {
+      icon: Heart,
+      title: t("messages.2.title"),
+      text: t("messages.2.text"),
+    },
+  ];
 
   const nextMessage = () => {
     setIndex((prev) => (prev + 1) % MESSAGES.length);

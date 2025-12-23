@@ -4,21 +4,23 @@ import * as React from "react";
 import { Card } from "@/shared/ui/card";
 import { Check } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
-
-const DEFAULT_ACTIONS = [
-  { id: "heat", label: "Use a heating pad on your abdomen" },
-  { id: "breathe", label: "Practice box breathing (4-4-4-4)" },
-  { id: "ground", label: "5-4-3-2-1 grounding technique" },
-  { id: "position", label: "Lie down in a comfortable position" },
-  { id: "sip", label: "Sip water slowly" },
-  { id: "massage", label: "Gentle self-massage on stomach" },
-  { id: "tea", label: "Drink warm herbal tea (peppermint/ginger)" },
-  { id: "music", label: "Listen to calming music or white noise" },
-  { id: "screens", label: "Disconnect from screens for 10 minutes" },
-];
+import { useTranslations } from "next-intl";
 
 export function CopingActions() {
+  const t = useTranslations("flare");
   const [done, setDone] = React.useState<Set<string>>(new Set());
+
+  const DEFAULT_ACTIONS = [
+    { id: "heat", label: t("copingActions.0") },
+    { id: "breathe", label: t("copingActions.1") },
+    { id: "ground", label: t("copingActions.2") },
+    { id: "position", label: t("copingActions.3") },
+    { id: "sip", label: t("copingActions.4") },
+    { id: "massage", label: t("copingActions.5") },
+    { id: "tea", label: t("copingActions.6") },
+    { id: "music", label: t("copingActions.7") },
+    { id: "screens", label: t("copingActions.8") },
+  ];
 
   function toggle(id: string) {
     setDone((prev) => {

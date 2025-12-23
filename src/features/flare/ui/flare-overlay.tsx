@@ -5,6 +5,7 @@ import { Card } from "@/shared/ui/card";
 import { ShieldCheck } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useFlareMode } from "../context/flare-context";
 import { BreathingExercise } from "./breathing-exercise";
 import { CopingActions } from "./coping-actions";
@@ -14,6 +15,7 @@ import { ReassuranceCard } from "./reassurance-card";
 export function FlareOverlay() {
   const { isFlareMode, setFlareMode } = useFlareMode();
   const [showLog, setShowLog] = useState(false);
+  const t = useTranslations("flare");
 
   return (
     <AnimatePresence>
@@ -30,7 +32,7 @@ export function FlareOverlay() {
                 <ShieldCheck className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                Flare Support
+                {t("flareSupport")}
               </h1>
             </div>
             <Button
@@ -38,7 +40,7 @@ export function FlareOverlay() {
               onClick={() => setFlareMode(false)}
               className="hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-600 dark:text-slate-400"
             >
-              Exit Mode
+              {t("exitMode")}
             </Button>
           </div>
 
@@ -66,7 +68,7 @@ export function FlareOverlay() {
                   className="w-full h-12 text-base font-medium border-dashed border-2"
                   onClick={() => setShowLog(true)}
                 >
-                  + Log Symptoms
+                  {t("logSymptoms")}
                 </Button>
               ) : (
                 <Card className="p-4 border-slate-200 dark:border-slate-800 shadow-sm">
@@ -80,7 +82,7 @@ export function FlareOverlay() {
                       onClick={() => setShowLog(false)}
                       className="h-8 text-xs"
                     >
-                      Cancel
+                      {t("cancel")}
                     </Button>
                   </div>
                   <QuickLog onComplete={() => setShowLog(false)} />
@@ -95,7 +97,7 @@ export function FlareOverlay() {
                 className="w-full py-6 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 border-slate-200 dark:border-slate-800"
                 onClick={() => setFlareMode(false)}
               >
-                Exit Flare Mode
+                {t("exitFlareMode")}
               </Button>
             </section>
           </div>

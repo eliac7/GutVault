@@ -2,25 +2,27 @@
 
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 export function BreathingExercise() {
   const [phase, setPhase] = useState<"inhale" | "hold" | "exhale">("inhale");
-  const [text, setText] = useState("Breathe In");
+  const t = useTranslations("flare.breathing");
+  const [text, setText] = useState(t("breatheIn"));
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
     const cycle = () => {
       setPhase("inhale");
-      setText("Breathe In");
+      setText(t("breatheIn"));
 
       timeout = setTimeout(() => {
         setPhase("hold");
-        setText("Hold");
+        setText(t("hold"));
 
         timeout = setTimeout(() => {
           setPhase("exhale");
-          setText("Breathe Out");
+          setText(t("breatheOut"));
 
           timeout = setTimeout(() => {
             cycle(); // Loop
@@ -32,7 +34,7 @@ export function BreathingExercise() {
     cycle();
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [t]);
 
   return (
     <div className="flex flex-col items-center justify-center py-8">
@@ -55,7 +57,7 @@ export function BreathingExercise() {
           transition={{ duration: 4, ease: "easeInOut" }}
         >
           <motion.span
-            className="text-xl font-medium text-emerald-800 dark:text-emerald-200"
+            className="text-xl font-medium text-emerald-800 dark:text-emerald-200 text-center"
             key={text}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -66,7 +68,7 @@ export function BreathingExercise() {
         </motion.div>
       </div>
       <p className="mt-4 text-sm text-slate-500 dark:text-slate-400 text-center max-w-xs">
-        Follow the circle. Slow, deep breaths help calm your nervous system.
+        {t("instruction")}
       </p>
     </div>
   );
