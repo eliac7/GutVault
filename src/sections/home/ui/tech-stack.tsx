@@ -27,9 +27,8 @@ export const TechStack = () => {
         </div>
 
         <p className="mt-8 text-slate-500 dark:text-slate-400 text-sm max-w-2xl mx-auto">
-          Stateless backend, no database, processes only and returns structured
-          JSON. <br />
-          Your browser does the heavy lifting.
+          Stateless backend processes only and returns structured JSON. <br />
+          Your browser stores everything locally with Dexie.js (IndexedDB).
         </p>
       </div>
     </section>
