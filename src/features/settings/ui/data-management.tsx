@@ -38,7 +38,8 @@ export function DataManagement() {
   const runExport = async (
     format: "json" | "pdf",
     range: DateRange | undefined,
-    doctorOptions?: DoctorReportOptions
+    doctorOptions?: DoctorReportOptions,
+    locale?: "en" | "el"
   ) => {
     setIsExporting(true);
     try {
@@ -74,7 +75,8 @@ export function DataManagement() {
         await generatePDF(
           logs,
           range ? { start: range.from, end: range.to } : undefined,
-          doctorOptions
+          doctorOptions,
+          locale ?? "en"
         );
       }
 

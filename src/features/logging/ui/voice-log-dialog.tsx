@@ -12,8 +12,10 @@ import {
   type PainLevel,
   type StressLevel,
   type TriggerFood,
+  TRIGGER_FOOD_LABELS,
 } from "@/shared/db";
 import { Button } from "@/shared/ui/button";
+import { useTranslations } from "next-intl";
 import {
   Sheet,
   SheetContent,
@@ -46,6 +48,11 @@ interface VoiceLogDialogProps {
 type Step = "recording" | "processing" | "review" | "error";
 
 export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
+  const t = useTranslations("logging");
+  const tSymptoms = useTranslations("logging.symptoms");
+  const tAnxiety = useTranslations("logging.anxietyMarkers");
+  const tTriggers = useTranslations("logging.triggerFoods");
+
   const [step, setStep] = useState<Step>("recording");
   const [parsedData, setParsedData] = useState<ParsedLogEntry | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -80,7 +87,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
 
   const showSpeechError = step === "recording" && !!speechError;
   const displayError = showSpeechError
-    ? `Speech recognition error: ${speechError}`
+    ? t("voiceDialog.speechError", { error: speechError })
     : errorMessage;
   const currentStep = showSpeechError ? "error" : step;
 
@@ -107,7 +114,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
     const textToProcess = finalTranscript.trim() || displayTranscript.trim();
 
     if (!textToProcess) {
-      setErrorMessage("No speech detected. Please try again.");
+      setErrorMessage(t("voiceDialog.noSpeechDetected"));
       setStep("error");
       return;
     }
@@ -150,7 +157,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
       handleClose();
     } catch (error) {
       console.error("Failed to save log:", error);
-      setErrorMessage("Failed to save log. Please try again.");
+      setErrorMessage(t("voiceDialog.failedToSave"));
       setStep("error");
     }
   };
@@ -172,7 +179,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
         <SheetHeader className="p-4 border-b border-slate-200 dark:border-slate-800 flex-row items-center justify-between space-y-0">
           <SheetTitle className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-purple-500" />
-            Voice Log
+            {t("voiceLog")}
           </SheetTitle>
         </SheetHeader>
 
@@ -182,11 +189,10 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
             <div className="text-center py-8">
               <MicOff className="w-12 h-12 text-slate-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                Speech Recognition Not Supported
+                {t("voiceDialog.notSupportedTitle")}
               </h3>
               <p className="text-slate-500 dark:text-slate-400">
-                Your browser doesn&apos;t support speech recognition. Please
-                try Chrome or Edge.
+                {t("voiceDialog.notSupportedDescription")}
               </p>
             </div>
           ) : (
@@ -295,12 +301,14 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                   </div>
 
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                    {isListening ? "Listening..." : "Ready to Record"}
+                  {isListening
+                    ? t("voiceDialog.listening")
+                    : t("voiceDialog.ready")}
                   </h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
                     {isListening
-                      ? "Speak naturally about what you ate, how you feel, or your symptoms."
-                      : "Select your language above, then tap Start to begin recording."}
+                    ? t("voiceDialog.recordingHelpListening")
+                    : t("voiceDialog.recordingHelpIdle")}
                   </p>
 
                   {/* Transcript Preview */}
@@ -320,12 +328,11 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
 
                   {/* Example prompts */}
                   <div className="text-xs text-slate-400 space-y-1">
-                    <p>Try saying:</p>
+                  <p>{t("voiceDialog.trySaying")}</p>
                     <p>
-                      &quot;Just had coffee and toast, feeling a bit
-                      bloated&quot;
+                    &quot;{t("voiceDialog.example1")}&quot;
                     </p>
-                    <p>&quot;Bathroom break, type 4, no pain&quot;</p>
+                  <p>&quot;{t("voiceDialog.example2")}&quot;</p>
                   </div>
                 </motion.div>
               )}
@@ -340,10 +347,10 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                 >
                   <Loader2 className="w-12 h-12 text-purple-500 mx-auto mb-4 animate-spin" />
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                    Processing with AI...
+                    {t("voiceDialog.processingTitle")}
                   </h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400">
-                    AI is extracting health data from your voice log.
+                    {t("voiceDialog.processingDescription")}
                   </p>
                 </motion.div>
               )}
@@ -359,7 +366,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                   <div className="bg-purple-50 dark:bg-purple-900/20 rounded-2xl p-4">
                     <p className="text-sm text-purple-700 dark:text-purple-300 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
-                      Review and edit your log before saving:
+                      {t("voiceDialog.reviewIntro")}
                     </p>
                   </div>
 
@@ -380,7 +387,9 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                         <p className="font-medium text-slate-900 dark:text-slate-100 capitalize">
                           {parsedData.type.replace("_", " ")}
                         </p>
-                        <p className="text-xs text-slate-500">Log Type</p>
+                        <p className="text-xs text-slate-500">
+                          {t("voiceDialog.logTypeLabel")}
+                        </p>
                       </div>
                     </div>
 
@@ -400,7 +409,9 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                         />
                         <div>
                           <p className="font-medium text-slate-900 dark:text-slate-100">
-                            Bristol Type {parsedData.bristolType}
+                            {t("logTitles.bristolType", {
+                              type: parsedData.bristolType,
+                            })}
                           </p>
                           <p className="text-xs text-slate-500">
                             {
@@ -417,7 +428,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                       parsedData.type === "symptom") && (
                       <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
                         <LevelSlider
-                          label="Pain Level"
+                          label={t("painLevel")}
                           value={(parsedData.painLevel as PainLevel) || 5}
                           onChange={(level) =>
                             setParsedData({
@@ -432,7 +443,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
 
                     <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
                       <LevelSlider
-                        label="Stress Level"
+                        label={t("logDetails.stress")}
                         value={(parsedData.stressLevel as StressLevel) || 5}
                         onChange={(level) =>
                           setParsedData({
@@ -445,13 +456,11 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     </div>
 
                     <ChipSelector
-                      label="Symptoms"
-                      options={Object.entries(SYMPTOM_LABELS).map(
-                        ([value, label]) => ({
-                          value: value as Symptom,
-                          label,
-                        })
-                      )}
+                      label={t("symptomsLabel")}
+                      options={Object.keys(SYMPTOM_LABELS).map((value) => ({
+                        value: value as Symptom,
+                        label: tSymptoms(value as Symptom),
+                      }))}
                       selected={(parsedData.symptoms as Symptom[]) || []}
                       onChange={(newSymptoms) =>
                         setParsedData({
@@ -462,11 +471,11 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     />
 
                     <ChipSelector
-                      label="Mental State / Anxiety"
-                      options={Object.entries(ANXIETY_MARKER_LABELS).map(
-                        ([value, label]) => ({
+                      label={t("manualDialog.anxietyLabel")}
+                      options={Object.keys(ANXIETY_MARKER_LABELS).map(
+                        (value) => ({
                           value: value as AnxietyMarker,
-                          label,
+                          label: tAnxiety(value as AnxietyMarker),
                         })
                       )}
                       selected={(parsedData.anxietyMarkers as AnxietyMarker[]) || []}
@@ -496,8 +505,10 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           </p>
                           <p className="text-xs text-slate-500">
                             {parsedData.medicationDose
-                              ? `Dose: ${parsedData.medicationDose}`
-                              : "Medication"}
+                              ? t("voiceDialog.doseWithValue", {
+                                  dose: parsedData.medicationDose,
+                                })
+                              : t("logTitles.medication")}
                           </p>
                         </div>
                       </div>
@@ -505,7 +516,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
 
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                        Notes
+                        {t("notes")}
                       </label>
                       <textarea
                         value={parsedData.notes || ""}
@@ -516,14 +527,16 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           })
                         }
                         className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-500/20 outline-none resize-none h-24 text-sm"
-                        placeholder="Add any additional notes..."
+                        placeholder={t("notesPlaceholder")}
                       />
                     </div>
                   </div>
 
                   {/* Original Transcript */}
                   <div className="text-xs text-slate-400 mt-4">
-                    <p className="mb-1">Original transcript:</p>
+                    <p className="mb-1">
+                      {t("voiceDialog.originalTranscript")}
+                    </p>
                     <p className="italic">&quot;{transcript}&quot;</p>
                   </div>
                 </motion.div>
@@ -541,7 +554,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     <X className="w-8 h-8 text-red-500" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                    Something went wrong
+                    {t("voiceDialog.errorTitle")}
                   </h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400">
                     {displayError}
@@ -564,7 +577,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     className="flex-1 h-14 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white disabled:opacity-50"
                   >
                     <Check className="w-5 h-5 mr-2" />
-                    Done Speaking
+                    {t("voiceDialog.doneSpeaking")}
                   </Button>
                 ) : (
                   <Button
@@ -572,7 +585,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     className="flex-1 h-14 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white"
                   >
                     <Mic className="w-5 h-5 mr-2" />
-                    Start Listening
+                    {t("voiceDialog.startListening")}
                   </Button>
                 )}
               </>
@@ -585,14 +598,14 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                   onClick={handleRetry}
                   className="flex-1 h-14 rounded-2xl"
                 >
-                  Try Again
+                  {t("voiceDialog.tryAgain")}
                 </Button>
                 <Button
                   onClick={handleSave}
                   className="flex-1 h-14 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white"
                 >
                   <Check className="w-5 h-5 mr-2" />
-                  Save Log
+                  {t("save")}
                 </Button>
               </>
             )}
@@ -602,7 +615,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                 onClick={handleRetry}
                 className="flex-1 h-14 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white"
               >
-                Try Again
+                {t("voiceDialog.tryAgain")}
               </Button>
             )}
           </div>

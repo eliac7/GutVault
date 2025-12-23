@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "motion/react";
 import { Plus, Mic, PenLine } from "lucide-react";
 import { Button } from "@/shared/ui/button";
@@ -8,6 +9,8 @@ import { ManualLogDialog } from "./manual-log-dialog";
 import { VoiceLogDialog } from "./voice-log-dialog";
 
 export function LogFAB() {
+  const t = useTranslations("logging");
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [showManualLog, setShowManualLog] = useState(false);
   const [showVoiceLog, setShowVoiceLog] = useState(false);
@@ -51,7 +54,7 @@ export function LogFAB() {
                   className="h-14 px-5 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white shadow-lg shadow-purple-500/25"
                 >
                   <Mic className="w-5 h-5 mr-2" />
-                  Voice Log
+                  {t("voiceLog")}
                 </Button>
               </motion.div>
 
@@ -65,7 +68,7 @@ export function LogFAB() {
                   className="h-14 px-5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/25"
                 >
                   <PenLine className="w-5 h-5 mr-2" />
-                  Manual Log
+                  {t("manualLog")}
                 </Button>
               </motion.div>
             </>

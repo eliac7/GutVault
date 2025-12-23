@@ -34,7 +34,8 @@ interface ExportDialogProps {
   onExport: (
     format: "json" | "pdf",
     range: DateRange | undefined,
-    doctorOptions?: DoctorReportOptions
+    doctorOptions?: DoctorReportOptions,
+    locale?: SupportedLocale
   ) => void;
   isExporting: boolean;
   trigger?: React.ReactNode;
@@ -71,9 +72,14 @@ export function ExportDialog({
         dateRange: doctorRange,
         anonymize,
         includeCharts,
-      });
+      }, locale);
     } else {
-      onExport(exportFormat, rangeType === "custom" ? date : undefined);
+      onExport(
+        exportFormat,
+        rangeType === "custom" ? date : undefined,
+        undefined,
+        locale
+      );
     }
     setOpen(false);
   };

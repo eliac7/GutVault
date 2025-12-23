@@ -21,6 +21,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/shared/ui/sheet";
+import { useTranslations } from "next-intl";
 import { Check, ChevronLeft } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
@@ -40,6 +41,11 @@ export function ManualLogDialog({
   onOpenChange,
   initialLog,
 }: ManualLogDialogProps) {
+  const t = useTranslations("logging");
+  const tSymptoms = useTranslations("logging.symptoms");
+  const tAnxiety = useTranslations("logging.anxietyMarkers");
+  const tTriggers = useTranslations("logging.triggerFoods");
+
   const [step, setStep] = useState<"type" | "details">("type");
   const [logType, setLogType] = useState<LogType>("bowel_movement");
   const [bristolType, setBristolType] = useState<BristolType | null>(null);
@@ -147,7 +153,9 @@ export function ManualLogDialog({
               </Button>
             )}
             <SheetTitle className="text-lg font-bold text-slate-900 dark:text-slate-100">
-              {initialLog ? "Edit Log" : "New Log"}
+              {initialLog
+                ? t("manualDialog.editTitle")
+                : t("manualDialog.newTitle")}
             </SheetTitle>
           </div>
         </SheetHeader>
@@ -163,18 +171,30 @@ export function ManualLogDialog({
                 className="space-y-4"
               >
                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4">
-                  What would you like to log?
+                  {t("manualDialog.typeQuestion")}
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     {
                       id: "bowel_movement",
-                      label: "Bowel Movement",
                       icon: "💩",
+                      label: t("logTitles.bowelMovement"),
                     },
-                    { id: "meal", label: "Meal", icon: "🍽️" },
-                    { id: "symptom", label: "Symptom", icon: "🤕" },
-                    { id: "medication", label: "Medication", icon: "💊" },
+                    {
+                      id: "meal",
+                      icon: "🍽️",
+                      label: t("logTitles.mealLogged"),
+                    },
+                    {
+                      id: "symptom",
+                      icon: "🤕",
+                      label: t("logTitles.symptomsLogged"),
+                    },
+                    {
+                      id: "medication",
+                      icon: "💊",
+                      label: t("logTitles.medication"),
+                    },
                   ].map((type) => (
                     <button
                       key={type.id}
@@ -217,7 +237,7 @@ export function ManualLogDialog({
                 {(logType === "bowel_movement" || logType === "symptom") && (
                   <div className="space-y-4">
                     <LevelSlider
-                      label="Pain Level"
+                      label={t("painLevel")}
                       value={painLevel}
                       onChange={(v) => setPainLevel(v as PainLevel)}
                       type="pain"
@@ -227,7 +247,7 @@ export function ManualLogDialog({
 
                 <div className="space-y-4">
                   <LevelSlider
-                    label="Stress Level"
+                    label={t("logDetails.stress")}
                     value={stressLevel}
                     onChange={(v) => setStressLevel(v as StressLevel)}
                     type="stress"
@@ -235,25 +255,21 @@ export function ManualLogDialog({
                 </div>
 
                 <ChipSelector
-                  label="Symptoms"
-                  options={Object.entries(SYMPTOM_LABELS).map(
-                    ([value, label]) => ({
-                      value: value as Symptom,
-                      label,
-                    })
-                  )}
+                  label={t("symptomsLabel")}
+                  options={Object.keys(SYMPTOM_LABELS).map((value) => ({
+                    value: value as Symptom,
+                    label: tSymptoms(value as Symptom),
+                  }))}
                   selected={symptoms}
                   onChange={setSymptoms}
                 />
 
                 <ChipSelector
-                  label="Mental State / Anxiety"
-                  options={Object.entries(ANXIETY_MARKER_LABELS).map(
-                    ([value, label]) => ({
-                      value: value as AnxietyMarker,
-                      label,
-                    })
-                  )}
+                  label={t("manualDialog.anxietyLabel")}
+                  options={Object.keys(ANXIETY_MARKER_LABELS).map((value) => ({
+                    value: value as AnxietyMarker,
+                    label: tAnxiety(value as AnxietyMarker),
+                  }))}
                   selected={anxietyMarkers}
                   onChange={setAnxietyMarkers}
                 />
@@ -265,13 +281,11 @@ export function ManualLogDialog({
                 )}
 
                 <ChipSelector
-                  label="Potential Triggers"
-                  options={Object.entries(TRIGGER_FOOD_LABELS).map(
-                    ([value, label]) => ({
-                      value: value as TriggerFood,
-                      label,
-                    })
-                  )}
+                  label={t("manualDialog.potentialTriggers")}
+                  options={Object.keys(TRIGGER_FOOD_LABELS).map((value) => ({
+                    value: value as TriggerFood,
+                    label: tTriggers(value as TriggerFood),
+                  }))}
                   selected={triggerFoods}
                   onChange={setTriggerFoods}
                 />
@@ -280,26 +294,28 @@ export function ManualLogDialog({
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                        Medication Name
+                        {t("manualDialog.medicationNameLabel")}
                       </label>
                       <input
                         type="text"
                         value={medication}
                         onChange={(e) => setMedication(e.target.value)}
                         className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
-                        placeholder="e.g., Imodium, Buscopan"
+                        placeholder={t(
+                          "manualDialog.medicationNamePlaceholder"
+                        )}
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                        Dosage
+                        {t("manualDialog.dosageLabel")}
                       </label>
                       <input
                         type="text"
                         value={medicationDose}
                         onChange={(e) => setMedicationDose(e.target.value)}
                         className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
-                        placeholder="e.g., 2mg, 1 tablet"
+                        placeholder={t("manualDialog.dosagePlaceholder")}
                       />
                     </div>
                   </div>
@@ -307,13 +323,13 @@ export function ManualLogDialog({
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                    Notes
+                    {t("notes")}
                   </label>
                   <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     className="w-full p-3 rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-500/20 outline-none resize-none h-24 text-sm transition-all"
-                    placeholder="Add any additional notes..."
+                    placeholder={t("notesPlaceholder")}
                   />
                 </div>
               </motion.div>
@@ -327,11 +343,11 @@ export function ManualLogDialog({
             className="w-full h-14 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-lg"
           >
             {step === "type" ? (
-              "Next Step"
+              t("manualDialog.nextStep")
             ) : (
               <>
                 <Check className="w-5 h-5 mr-2" />
-                {initialLog ? "Update Log" : "Save Log"}
+                {initialLog ? t("manualDialog.updateLog") : t("save")}
               </>
             )}
           </Button>

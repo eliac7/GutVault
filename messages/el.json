@@ -330,7 +330,81 @@
       "nervous": "Νευρικός/ή",
       "anxious": "Αγχωμένος/η",
       "stressed": "Στρεσαρισμένος/η",
-      "panicky": "Σε πανικό"
+      "overwhelmed": "Καταβεβλημένος/η",
+      "panic": "Πανικός",
+      "brain_fog": "Θολούρα μυαλού",
+      "restless": "Ανυπόμονος/η"
+    },
+    "pdf": {
+      "exportTitle": "Εξαγωγή GutVault",
+      "doctorTitle": "Ιατρική αναφορά (GutVault)",
+      "allTime": "Όλο το διάστημα",
+      "generatedOn": "Δημιουργήθηκε στις",
+      "lastDays": "Τελευταίες {days} ημέρες",
+      "tableHead": {
+        "date": "Ημερομηνία",
+        "type": "Τύπος",
+        "details": "Λεπτομέρειες",
+        "levels": "Επίπεδα",
+        "notes": "Σημειώσεις"
+      },
+      "levels": {
+        "pain": "Πόνος",
+        "stress": "Στρες"
+      },
+      "bowelDetails": "Bristol: {bristol}",
+      "mealNoDetails": "Χωρίς λεπτομέρειες τροφών",
+      "mealFoodsLabel": "Τροφές",
+      "mealTriggersLabel": "Ενδεχόμενες αιτίες",
+      "symptomNoDetails": "Χωρίς λεπτομέρειες",
+      "symptomLabel": "Συμπτώματα",
+      "anxietyLabel": "Άγχος",
+      "notesHidden": "-",
+      "bristolTrendTitle": "Τάση κλίμακας κοπράνων Bristol",
+      "typeLabel": "Τύπος {type}",
+      "topSymptomsTitle": "Συχνότητα βασικών συμπτωμάτων"
+    },
+    "manualDialog": {
+      "newTitle": "Νέα καταγραφή",
+      "editTitle": "Επεξεργασία καταγραφής",
+      "typeQuestion": "Τι θα ήθελες να καταγράψεις;",
+      "anxietyLabel": "Ψυχική κατάσταση / Άγχος",
+      "potentialTriggers": "Πιθανές αιτίες",
+      "medicationNameLabel": "Όνομα φαρμάκου",
+      "medicationNamePlaceholder": "π.χ. Imodium, Buscopan",
+      "dosageLabel": "Δοσολογία",
+      "dosagePlaceholder": "π.χ. 2mg, 1 δισκίο",
+      "nextStep": "Επόμενο βήμα",
+      "updateLog": "Ενημέρωση καταγραφής"
+    },
+    "levelSlider": {
+      "low": "Χαμηλό",
+      "moderate": "Μέτριο",
+      "high": "Υψηλό"
+    },
+    "voiceDialog": {
+      "notSupportedTitle": "Η αναγνώριση ομιλίας δεν υποστηρίζεται",
+      "notSupportedDescription": "Ο browser σου δεν υποστηρίζει αναγνώριση ομιλίας. Δοκίμασε Chrome ή Edge.",
+      "listening": "Ακρόαση…",
+      "ready": "Έτοιμο για εγγραφή",
+      "recordingHelpListening": "Μίλα φυσικά για το τι έφαγες, πώς νιώθεις ή τα συμπτώματά σου.",
+      "recordingHelpIdle": "Επίλεξε γλώσσα πιο πάνω και πάτησε Έναρξη ακόρασης για να ξεκινήσεις την εγγραφή.",
+      "trySaying": "Δοκίμασε να πεις:",
+      "example1": "Μόλις ήπια καφέ και έφαγα τοστ, νιώθω λίγο φούσκωμα",
+      "example2": "Διάλειμμα για τουαλέτα, τύπος 4, χωρίς πόνο",
+      "processingTitle": "Επεξεργασία με AI…",
+      "processingDescription": "Το AI εξάγει δεδομένα υγείας από τη φωνητική καταγραφή σου.",
+      "reviewIntro": "Έλεγξε και επεξεργάσου την καταγραφή πριν την αποθήκευση:",
+      "logTypeLabel": "Τύπος καταγραφής",
+      "doseWithValue": "Δόση: {dose}",
+      "originalTranscript": "Αρχικό κείμενο:",
+      "errorTitle": "Κάτι πήγε στραβά",
+      "speechError": "Σφάλμα αναγνώρισης ομιλίας: {error}",
+      "noSpeechDetected": "Δεν ανιχνεύτηκε ομιλία. Δοκίμασε ξανά.",
+      "failedToSave": "Αποτυχία αποθήκευσης καταγραφής. Δοκίμασε ξανά.",
+      "doneSpeaking": "Τελείωσα",
+      "startListening": "Έναρξη ακρόασης",
+      "tryAgain": "Προσπάθησε ξανά"
     }
   },
   "flare": {

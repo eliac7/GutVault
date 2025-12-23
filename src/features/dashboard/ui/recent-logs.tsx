@@ -15,6 +15,7 @@ function LogEntryItem({ log }: { log: LogEntry }) {
     minute: "2-digit",
   });
   const tLog = useTranslations("logging");
+  const tSymptoms = useTranslations("logging.symptoms");
 
   const getIcon = () => {
     switch (log.type) {
@@ -45,7 +46,7 @@ function LogEntryItem({ log }: { log: LogEntry }) {
         return log.foods?.join(", ") || tLog("logTitles.meal");
       case "symptom":
         return (
-          log.symptoms?.map((s) => SYMPTOM_LABELS[s]).join(", ") ||
+          log.symptoms?.map((s) => tSymptoms(s)).join(", ") ||
           tLog("logTitles.symptoms")
         );
       case "medication":

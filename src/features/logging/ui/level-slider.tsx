@@ -1,6 +1,7 @@
 "use client";
 
 import { getPainLevelColor } from "@/shared/lib/constants";
+import { useTranslations } from "next-intl";
 
 interface LevelSliderProps {
   label: string;
@@ -15,6 +16,8 @@ export function LevelSlider({
   onChange,
   type = "pain",
 }: LevelSliderProps) {
+  const t = useTranslations("logging");
+
   const colorConfig = getPainLevelColor(value);
   const color = {
     bg: `rgb(${colorConfig.rgb})`,
@@ -98,9 +101,9 @@ export function LevelSlider({
       </div>
 
       <div className="flex justify-between text-xs text-slate-400">
-        <span>Low</span>
-        <span>Moderate</span>
-        <span>High</span>
+        <span>{t("levelSlider.low")}</span>
+        <span>{t("levelSlider.moderate")}</span>
+        <span>{t("levelSlider.high")}</span>
       </div>
     </div>
   );

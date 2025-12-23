@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable, { type UserOptions } from "jspdf-autotable";
 import { format } from "date-fns";
+import { el, enUS } from "date-fns/locale";
 import type { LogEntry } from "@/shared/db/types";
 
 declare module "jspdf" {
@@ -17,39 +18,124 @@ export interface DoctorReportOptions {
   includeCharts: boolean;
 }
 
+type PdfLocale = "en" | "el";
+
+type PdfLabels = {
+  exportTitle: string;
+  doctorTitle: string;
+  allTime: string;
+  generatedOn: string;
+  lastDays: (days: number) => string;
+  tableHead: [string, string, string, string, string];
+  levelsLabel: (pain: string, stress: string) => string;
+  bowelDetails: (bristol: string | number | undefined) => string;
+  mealNoDetails: string;
+  mealFoodsLabel: string;
+  mealTriggersLabel: string;
+  symptomNoDetails: string;
+  symptomLabel: string;
+  anxietyLabel: string;
+  notesHidden: string;
+  bristolTrendTitle: string;
+  typeLabel: (type: number) => string;
+  topSymptomsTitle: string;
+};
+
 export async function generatePDF(
   logs: LogEntry[],
   dateRange?: { start?: Date; end?: Date },
-  doctorOptions?: DoctorReportOptions
+  doctorOptions?: DoctorReportOptions,
+  locale: PdfLocale = "en"
 ) {
+  const dfLocale = locale === "el" ? el : enUS;
+
+  const messages =
+    locale === "el"
+      ? (await import("../../../messages/el.json")).default
+      : (await import("../../../messages/en.json")).default;
+  const symptomMessages = (messages.logging?.symptoms ?? {}) as Record<
+    string,
+    string
+  >;
+  const anxietyMessages = (messages.logging?.anxietyMarkers ?? {}) as Record<
+    string,
+    string
+  >;
+
+  const pdfMessages = messages.logging?.pdf ?? {};
+
+  const labels: PdfLabels = {
+    exportTitle: pdfMessages.exportTitle,
+    doctorTitle: pdfMessages.doctorTitle,
+    allTime: pdfMessages.allTime,
+    generatedOn: pdfMessages.generatedOn,
+    lastDays: (days: number) =>
+      (pdfMessages.lastDays as string)?.replace("{days}", String(days)) ??
+      `Last ${days} Days`,
+    tableHead: [
+      pdfMessages.tableHead?.date ?? "Date",
+      pdfMessages.tableHead?.type ?? "Type",
+      pdfMessages.tableHead?.details ?? "Details",
+      pdfMessages.tableHead?.levels ?? "Levels",
+      pdfMessages.tableHead?.notes ?? "Notes",
+    ],
+    levelsLabel: (pain: string, stress: string) =>
+      `${pdfMessages.levels?.pain ?? "Pain"}: ${pain}\n${
+        pdfMessages.levels?.stress ?? "Stress"
+      }: ${stress}`,
+    bowelDetails: (bristol: string | number | undefined) =>
+      (pdfMessages.bowelDetails as string | undefined)?.replace(
+        "{bristol}",
+        bristol !== undefined ? String(bristol) : "-"
+      ) ?? `Bristol: ${bristol ?? "-"}`,
+    mealNoDetails: pdfMessages.mealNoDetails ?? "No food details",
+    mealFoodsLabel: pdfMessages.mealFoodsLabel ?? "Foods",
+    mealTriggersLabel: pdfMessages.mealTriggersLabel ?? "Triggers",
+    symptomNoDetails: pdfMessages.symptomNoDetails ?? "No details",
+    symptomLabel: pdfMessages.symptomLabel ?? "Symptoms",
+    anxietyLabel: pdfMessages.anxietyLabel ?? "Anxiety",
+    notesHidden: pdfMessages.notesHidden ?? "-",
+    bristolTrendTitle:
+      pdfMessages.bristolTrendTitle ?? "Bristol Stool Scale Trend",
+    typeLabel: (type: number) =>
+      (pdfMessages.typeLabel as string | undefined)?.replace(
+        "{type}",
+        String(type)
+      ) ?? `Type ${type}`,
+    topSymptomsTitle: pdfMessages.topSymptomsTitle ?? "Top Symptoms Frequency",
+  };
+
   const doc = new jsPDF();
 
   // Filter logs if doctor mode
   let filteredLogs = [...logs];
-  let reportTitle = "GutVault Export";
+  let reportTitle = labels.exportTitle;
   let reportSubtitle =
     dateRange?.start && dateRange?.end
-      ? `${format(dateRange.start, "MMM d, yyyy")} - ${format(
+      ? `${format(dateRange.start, "PPP", { locale: dfLocale })} - ${format(
           dateRange.end,
-          "MMM d, yyyy"
+          "PPP",
+          { locale: dfLocale }
         )}`
-      : `All Time (Generated on ${format(new Date(), "MMM d, yyyy")})`;
+      : `${labels.allTime} (${labels.generatedOn} ${format(new Date(), "PPP", {
+          locale: dfLocale,
+        })})`;
 
   if (doctorOptions) {
-    reportTitle = "Health Report (GutVault)";
+    reportTitle = labels.doctorTitle;
     if (doctorOptions.dateRange !== "all") {
       const days = parseInt(doctorOptions.dateRange);
       const cutoff = new Date();
       cutoff.setDate(cutoff.getDate() - days);
       filteredLogs = logs.filter((l) => new Date(l.timestamp) >= cutoff);
-      reportSubtitle = `Last ${days} Days (${format(
-        cutoff,
-        "MMM d"
-      )} - ${format(new Date(), "MMM d, yyyy")})`;
+      reportSubtitle = `${labels.lastDays(days)} (${format(cutoff, "MMM d", {
+        locale: dfLocale,
+      })} - ${format(new Date(), "MMM d, yyyy", { locale: dfLocale })})`;
     } else {
-      reportSubtitle = `All Time (Generated on ${format(
+      reportSubtitle = `${labels.allTime} (${labels.generatedOn} ${format(
         new Date(),
-        "MMM d, yyyy"
+        "MMM d, yyyy",
+        { locale: dfLocale }
       )})`;
     }
   }
@@ -100,51 +186,65 @@ export async function generatePDF(
 
     let details = "";
     if (log.type === "bowel_movement") {
-      details = `Bristol: ${log.bristolType ?? "-"}`;
+      details = labels.bowelDetails(log.bristolType);
     } else if (log.type === "meal") {
       const parts = [];
       if (log.foods && log.foods.length > 0) {
-        parts.push(`Foods: ${log.foods.join(", ")}`);
+        parts.push(
+          `${labels.mealFoodsLabel}: ${log.foods
+            .map((f) => f.toString())
+            .join(", ")}`
+        );
       }
       if (log.triggerFoods && log.triggerFoods.length > 0) {
-        parts.push(`Triggers: ${log.triggerFoods.join(", ")}`);
+        parts.push(
+          `${labels.mealTriggersLabel}: ${log.triggerFoods
+            .map((t) => t.toString())
+            .join(", ")}`
+        );
       }
-      details = parts.length > 0 ? parts.join("\n") : "No food details";
+      details = parts.length > 0 ? parts.join("\n") : labels.mealNoDetails;
     } else if (log.type === "symptom") {
       const parts = [];
       if (log.symptoms && log.symptoms.length > 0) {
-        parts.push(`Symptoms: ${log.symptoms.join(", ")}`);
+        const symptomLabels = log.symptoms
+          .map((s) => symptomMessages[s] ?? s)
+          .join(", ");
+        parts.push(`${labels.symptomLabel}: ${symptomLabels}`);
       }
       if (log.anxietyMarkers && log.anxietyMarkers.length > 0) {
-        const formattedMarkers = log.anxietyMarkers
-          .map((m) =>
-            m
-              .split("_")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(" ")
-          )
+        const anxietyLabels = log.anxietyMarkers
+          .map((m) => anxietyMessages[m] ?? m)
           .join(", ");
-        parts.push(`Anxiety: ${formattedMarkers}`);
+        parts.push(`${labels.anxietyLabel}: ${anxietyLabels}`);
       }
-      details = parts.length > 0 ? parts.join("\n") : "No details";
+      details = parts.length > 0 ? parts.join("\n") : labels.symptomNoDetails;
     }
 
     return [
       date,
-      log.type.replace("_", " ").toUpperCase(),
+      log.type === "bowel_movement"
+        ? "BOWEL MOVEMENT"
+        : log.type.toUpperCase().replace("_", " "),
       details,
-      `Pain: ${log.painLevel ?? "-"}\nStress: ${log.stressLevel ?? "-"}`,
-      doctorOptions?.anonymize ? "-" : log.notes || "-",
+      labels.levelsLabel(
+        String(log.painLevel ?? "-"),
+        String(log.stressLevel ?? "-")
+      ),
+      doctorOptions?.anonymize ? labels.notesHidden : log.notes || "-",
     ];
   });
 
   // Table Config
   const tableOptions: UserOptions = {
     startY: startY,
-    head: [["Date", "Type", "Details", "Levels", "Notes"]],
+    head: [labels.tableHead],
     body: tableData,
     theme: "striped",
-    headStyles: { fillColor: [16, 185, 129] }, // Emerald-500 equivalent
+    headStyles: {
+      fillColor: [16, 185, 129], // Emerald-500 equivalent
+      fontStyle: "normal",
+    },
     styles: {
       fontSize: 9,
       font: "Roboto",
@@ -160,9 +260,10 @@ export async function generatePDF(
 
   autoTable(doc, tableOptions);
 
+  const datePart = format(new Date(), "yyyy-MM-dd");
   const fileName = doctorOptions
-    ? `gutvault-doctor-report-${format(new Date(), "yyyy-MM-dd")}.pdf`
-    : `gutvault-export-${format(new Date(), "yyyy-MM-dd")}.pdf`;
+    ? `gutvault-doctor-report-${datePart}.pdf`
+    : `gutvault-export-${datePart}.pdf`;
   doc.save(fileName);
 }
 

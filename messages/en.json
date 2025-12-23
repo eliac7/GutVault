@@ -330,7 +330,81 @@
       "nervous": "Nervous",
       "anxious": "Anxious",
       "stressed": "Stressed",
-      "panicky": "Panicky"
+      "overwhelmed": "Overwhelmed",
+      "panic": "Panic",
+      "brain_fog": "Brain fog",
+      "restless": "Restless"
+    },
+    "pdf": {
+      "exportTitle": "GutVault Export",
+      "doctorTitle": "Health Report (GutVault)",
+      "allTime": "All Time",
+      "generatedOn": "Generated on",
+      "lastDays": "Last {days} Days",
+      "tableHead": {
+        "date": "Date",
+        "type": "Type",
+        "details": "Details",
+        "levels": "Levels",
+        "notes": "Notes"
+      },
+      "levels": {
+        "pain": "Pain",
+        "stress": "Stress"
+      },
+      "bowelDetails": "Bristol: {bristol}",
+      "mealNoDetails": "No food details",
+      "mealFoodsLabel": "Foods",
+      "mealTriggersLabel": "Triggers",
+      "symptomNoDetails": "No details",
+      "symptomLabel": "Symptoms",
+      "anxietyLabel": "Anxiety",
+      "notesHidden": "-",
+      "bristolTrendTitle": "Bristol Stool Scale Trend",
+      "typeLabel": "Type {type}",
+      "topSymptomsTitle": "Top Symptoms Frequency"
+    },
+    "manualDialog": {
+      "newTitle": "New Log",
+      "editTitle": "Edit Log",
+      "typeQuestion": "What would you like to log?",
+      "anxietyLabel": "Mental State / Anxiety",
+      "potentialTriggers": "Potential Triggers",
+      "medicationNameLabel": "Medication Name",
+      "medicationNamePlaceholder": "e.g., Imodium, Buscopan",
+      "dosageLabel": "Dosage",
+      "dosagePlaceholder": "e.g., 2mg, 1 tablet",
+      "nextStep": "Next Step",
+      "updateLog": "Update Log"
+    },
+    "levelSlider": {
+      "low": "Low",
+      "moderate": "Moderate",
+      "high": "High"
+    },
+    "voiceDialog": {
+      "notSupportedTitle": "Speech Recognition Not Supported",
+      "notSupportedDescription": "Your browser doesn't support speech recognition. Please try Chrome or Edge.",
+      "listening": "Listening...",
+      "ready": "Ready to Record",
+      "recordingHelpListening": "Speak naturally about what you ate, how you feel, or your symptoms.",
+      "recordingHelpIdle": "Select your language above, then tap Start to begin recording.",
+      "trySaying": "Try saying:",
+      "example1": "Just had coffee and toast, feeling a bit bloated",
+      "example2": "Bathroom break, type 4, no pain",
+      "processingTitle": "Processing with AI...",
+      "processingDescription": "AI is extracting health data from your voice log.",
+      "reviewIntro": "Review and edit your log before saving:",
+      "logTypeLabel": "Log Type",
+      "doseWithValue": "Dose: {dose}",
+      "originalTranscript": "Original transcript:",
+      "errorTitle": "Something went wrong",
+      "speechError": "Speech recognition error: {error}",
+      "noSpeechDetected": "No speech detected. Please try again.",
+      "failedToSave": "Failed to save log. Please try again.",
+      "doneSpeaking": "Done Speaking",
+      "startListening": "Start Listening",
+      "tryAgain": "Try Again"
     }
   },
   "flare": {
