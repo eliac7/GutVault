@@ -57,8 +57,8 @@ export function Preferences() {
       const permission = await Notification.requestPermission();
       if (permission === "granted") {
         await db.settings.put({ id: "remindersEnabled", value: true });
-        new Notification("Reminders enabled!", {
-          body: "You'll be reminded to log daily.",
+        new Notification(t("remindersEnabledTitle"), {
+          body: t("remindersEnabledBody"),
           icon: "/favicon-96x96.png",
         });
         // Set default time if not set
@@ -176,7 +176,7 @@ export function Preferences() {
               <div className="mt-3 flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
                 <Clock className="w-4 h-4 text-slate-400" />
                 <span className="text-sm text-slate-600 dark:text-slate-400">
-                  Remind me at:
+                  {t("remindMeAt")}
                 </span>
                 <input
                   type="time"

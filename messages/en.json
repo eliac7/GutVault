@@ -107,7 +107,19 @@
       "importDescription": "Restore from a backup file",
       "clearData": "Clear All Data",
       "clearDataDescription": "Permanently delete all your logs",
-      "clearDataWarning": "This action cannot be undone"
+      "clearDataWarning": "This action cannot be undone",
+      "deleteAllData": "Delete All Data",
+      "deleteAllDataDescription": "Are you sure you want to delete all {totalLogs} logs? This action cannot be undone.",
+      "continue": "Continue",
+      "finalWarning": "Final Warning",
+      "finalWarningDescription": "This will permanently delete all your data. This action cannot be undone.",
+      "deleteEverything": "Delete Everything",
+      "exportSuccess": "Data exported successfully!",
+      "exportError": "Failed to export data. Please try again.",
+      "importSuccess": "Successfully imported {count} logs!",
+      "importError": "Failed to import data. Please check the file and try again.",
+      "deleteSuccess": "All data has been deleted.",
+      "deleteError": "Failed to delete data. Please try again."
     },
     "preferences": {
       "title": "Preferences",
@@ -120,7 +132,10 @@
       "remindersDescription": "Get notified to log your symptoms",
       "language": "Language",
       "languageDescription": "Choose your preferred language",
-      "enableReminders": "Enable Reminders"
+      "enableReminders": "Enable Reminders",
+      "remindersEnabledTitle": "Reminders enabled!",
+      "remindersEnabledBody": "You'll be reminded to log daily.",
+      "remindMeAt": "Remind me at:"
     },
     "security": {
       "title": "Security",
@@ -184,7 +199,7 @@
       "aiModelValue": "OpenRouter AI models",
       "privacy": "Privacy Policy",
       "privacyDescription": "Read our privacy policy",
-      "madeWith": "Made with care for IBS warriors",
+      "madeWith": "Made with ❤️ for IBS warriors",
       "features": "Local-First • Privacy-Focused • Open Source"
     }
   },

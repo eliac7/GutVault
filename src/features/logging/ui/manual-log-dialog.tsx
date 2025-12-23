@@ -260,9 +260,6 @@ export function ManualLogDialog({
 
                 {logType === "meal" && (
                   <div className="space-y-4">
-                    <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                      Foods Eaten
-                    </label>
                     <FodmapPicker selectedFoods={foods} onChange={setFoods} />
                   </div>
                 )}

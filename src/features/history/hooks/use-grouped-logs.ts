@@ -1,27 +1,33 @@
-import { useState, useMemo } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { format, isToday, isYesterday, formatISO } from "date-fns";
-import { el } from "date-fns/locale";
 import { useLogs, type LogEntry } from "@/shared/db";
+import {
+  format,
+  formatISO,
+  formatRelative,
+  isToday,
+  isYesterday,
+} from "date-fns";
+import { el } from "date-fns/locale";
+import { useLocale } from "next-intl";
+import { useMemo, useState } from "react";
 import type {
   GroupedLogs,
-  UseGroupedLogsResult,
   HistoryLogFilters,
+  UseGroupedLogsResult,
 } from "../types";
 
 const ITEMS_PER_PAGE = 7;
 
-function getDateLabel(
-  date: Date,
-  locale: string,
-  t: (key: string) => string
-): string {
+function getDateLabel(date: Date, locale: string): string {
   if (isToday(date)) {
-    return t("history.today");
+    return formatRelative(date, new Date(), {
+      locale: locale === "el" ? el : undefined,
+    }).split(" ")[0];
   }
 
   if (isYesterday(date)) {
-    return t("history.yesterday");
+    return formatRelative(date, new Date(), {
+      locale: locale === "el" ? el : undefined,
+    }).split(" ")[0];
   }
 
   return format(date, "EEEE, MMM d", {
@@ -29,11 +35,7 @@ function getDateLabel(
   });
 }
 
-function groupLogsByDate(
-  logs: LogEntry[],
-  locale: string,
-  t: (key: string) => string
-): GroupedLogs[] {
+function groupLogsByDate(logs: LogEntry[], locale: string): GroupedLogs[] {
   const groups: Record<string, LogEntry[]> = {};
 
   logs.forEach((log) => {
@@ -48,7 +50,7 @@ function groupLogsByDate(
 
   return Object.entries(groups).map(([dateString, logs]) => ({
     date: dateString,
-    dateLabel: getDateLabel(new Date(dateString + "T00:00:00.000Z"), locale, t),
+    dateLabel: getDateLabel(new Date(dateString + "T00:00:00.000Z"), locale),
     logs,
   }));
 }
@@ -116,7 +118,6 @@ export function useGroupedLogs(
   const logs = useLogs();
   const [currentPage, setCurrentPage] = useState(1);
   const locale = useLocale();
-  const t = useTranslations();
 
   const { paginatedGroups, totalPages, isEmpty, totalFilteredLogs } =
     useMemo(() => {
@@ -146,7 +147,7 @@ export function useGroupedLogs(
         };
       }
 
-      const allGroups = groupLogsByDate(processedLogs, locale, t);
+      const allGroups = groupLogsByDate(processedLogs, locale);
       const totalPages = Math.ceil(allGroups.length / ITEMS_PER_PAGE);
       const safePage = Math.min(
         Math.max(1, currentPage),
@@ -156,7 +157,7 @@ export function useGroupedLogs(
       const paginatedGroups = paginateGroups(allGroups, safePage);
 
       return { paginatedGroups, totalPages, isEmpty: false, totalFilteredLogs };
-    }, [logs, currentPage, filters, locale, t]);
+    }, [logs, currentPage, filters, locale]);
 
   return {
     paginatedGroups,

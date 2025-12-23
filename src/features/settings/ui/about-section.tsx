@@ -51,12 +51,9 @@ export function AboutSection() {
               {t("privacyDescription")}
             </Link>
           </div>
-          <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
-            <p className="text-xs text-center">
-              {t("madeWith")}
-              <br />
-              <span className="text-slate-400">{t("features")}</span>
-            </p>
+          <div className="gap-y-2 flex flex-col items-center justify-center pt-3 border-t border-slate-200 dark:border-slate-700">
+            <p className="text-xs text-center">{t("madeWith")}</p>
+            <span className="text-slate-400">{t("features")}</span>
           </div>
         </div>
       </Card>

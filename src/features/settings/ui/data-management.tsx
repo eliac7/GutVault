@@ -78,10 +78,10 @@ export function DataManagement() {
         );
       }
 
-      toast.success("Data exported successfully!");
+      toast.success(t("exportSuccess"));
     } catch (error) {
       console.error("Export failed:", error);
-      toast.error("Failed to export data. Please try again.");
+      toast.error(t("exportError"));
     } finally {
       setIsExporting(false);
     }
@@ -108,12 +108,10 @@ export function DataManagement() {
       }));
 
       await importLogs(logs);
-      toast.success(`Successfully imported ${logs.length} logs!`);
+      toast.success(t("importSuccess", { count: logs.length }));
     } catch (error) {
       console.error("Import failed:", error);
-      toast.error(
-        "Failed to import data. Please check the file and try again."
-      );
+      toast.error(t("importError"));
     } finally {
       setIsImporting(false);
       event.target.value = "";
@@ -127,10 +125,10 @@ export function DataManagement() {
   const handleFinalConfirm = async () => {
     try {
       await clearAllLogs();
-      toast.success("All data has been deleted.");
+      toast.success(t("deleteSuccess"));
     } catch (error) {
       console.error("Failed to clear data:", error);
-      toast.error("Failed to delete data. Please try again.");
+      toast.error(t("deleteError"));
     } finally {
       setDeleteStep("idle");
     }
@@ -164,7 +162,7 @@ export function DataManagement() {
           <div className="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-slate-600 dark:text-slate-400">
-                Total Logs
+                {t("totalLogs")}
               </span>
               <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
                 {totalLogs}
@@ -260,9 +258,9 @@ export function DataManagement() {
         open={deleteStep === "first"}
         onOpenChange={(open) => !open && setDeleteStep("idle")}
         onConfirm={handleFirstConfirm}
-        title="Delete all data?"
-        description={`Are you sure you want to delete ALL ${totalLogs} logs? This action CANNOT be undone! Make sure you've exported your data first.`}
-        confirmText="Continue"
+        title={t("deleteAllData")}
+        description={t("deleteAllDataDescription", { totalLogs })}
+        confirmText={t("continue")}
         variant="destructive"
       />
 
@@ -270,9 +268,9 @@ export function DataManagement() {
         open={deleteStep === "final"}
         onOpenChange={(open) => !open && setDeleteStep("idle")}
         onConfirm={handleFinalConfirm}
-        title="Final warning"
-        description="This will permanently delete all your health data. Are you ABSOLUTELY sure?"
-        confirmText="Delete Everything"
+        title={t("finalWarning")}
+        description={t("finalWarningDescription")}
+        confirmText={t("deleteEverything")}
         variant="destructive"
       />
     </motion.div>
