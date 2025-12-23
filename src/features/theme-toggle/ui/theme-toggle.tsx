@@ -2,11 +2,13 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 export const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const t = useTranslations("common");
 
   // Avoid hydration mismatch
   useEffect(() => {
@@ -33,7 +35,7 @@ export const ThemeToggle = () => {
       className="relative inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      aria-label="Toggle theme"
+      aria-label={t("toggleTheme")}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.div

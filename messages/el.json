@@ -11,7 +11,8 @@
     "confirm": "Επιβεβαίωση",
     "search": "Αναζήτηση",
     "noData": "Δεν υπάρχουν δεδομένα ακόμα",
-    "startLogging": "Ξεκίνα καταγραφή"
+    "startLogging": "Ξεκίνα καταγραφή",
+    "toggleTheme": "Αλλαγή θέματος"
   },
   "navigation": {
     "dashboard": "Αρχική",
@@ -119,7 +120,31 @@
       "importSuccess": "Εισήχθησαν επιτυχώς {count} καταγραφές.",
       "importError": "Η εισαγωγή απέτυχε. Έλεγξε το αρχείο και δοκίμασε ξανά.",
       "deleteSuccess": "Όλα τα δεδομένα διαγράφηκαν.",
-      "deleteError": "Αποτυχία διαγραφής δεδομένων. Δοκίμασε ξανά."
+      "deleteError": "Αποτυχία διαγραφής δεδομένων. Δοκίμασε ξανά.",
+      "exportDialog": {
+        "standard": "Κανονική εξαγωγή",
+        "doctor": "Προετοιμασία για γιατρό",
+        "format": "Μορφή",
+        "pdfTitle": "Έγγραφο PDF",
+        "pdfDescription": "Αναγνώσιμο αναφορά",
+        "jsonTitle": "Δεδομένα JSON",
+        "jsonDescription": "Ακατέργαστο αντίγραφο",
+        "dateRange": "Εύρος ημερομηνιών",
+        "allTime": "Όλο το διάστημα",
+        "customRange": "Προσαρμοσμένο εύρος",
+        "pickDate": "Επίλεξε ημερομηνία",
+        "doctorTitle": "Αναφορά για γιατρό",
+        "doctorDescription": "Δημιουργεί σύντομη αναφορά PDF για ιατρική επίσκεψη, με τάσεις συμπτωμάτων και διαγράμματα Bristol.",
+        "timePeriod": "Χρονική περίοδος",
+        "lastDays": "Τελευταίες {days} ημέρες",
+        "hideNotes": "Απόκρυψη προσωπικών σημειώσεων",
+        "hideNotesDescription": "Εξαιρεί τις σημειώσεις από τον πίνακα",
+        "includeCharts": "Συμπερίληψη γραφημάτων",
+        "includeChartsDescription": "Οπτικές τάσεις για συμπτώματα και τύπο κοπράνων",
+        "exporting": "Γίνεται εξαγωγή…",
+        "generateReport": "Δημιουργία αναφοράς",
+        "downloadExport": "Λήψη εξαγωγής"
+      }
     },
     "preferences": {
       "title": "Προτιμήσεις",
@@ -127,7 +152,7 @@
       "themeDescription": "Διάλεξε πώς θέλεις να φαίνεται η εφαρμογή",
       "light": "Φωτεινό",
       "dark": "Σκούρο",
-      "system": "Όπως το σύστημα",
+      "system": "Σύστημα",
       "reminders": "Υπενθυμίσεις",
       "remindersDescription": "Λάβε ειδοποίηση για να καταγράφεις τα συμπτώματά σου",
       "language": "Γλώσσα",
@@ -135,7 +160,8 @@
       "enableReminders": "Ενεργοποίηση υπενθυμίσεων",
       "remindersEnabledTitle": "Οι υπενθυμίσεις ενεργοποιήθηκαν",
       "remindersEnabledBody": "Θα σου υπενθυμίζουμε να κάνεις καθημερινά καταγραφή.",
-      "remindMeAt": "Υπενθύμιση στις:"
+      "remindMeAt": "Υπενθύμιση στις:",
+      "selectLanguagePlaceholder": "Επιλογή γλώσσας"
     },
     "security": {
       "title": "Ασφάλεια",
@@ -188,7 +214,19 @@
       "defaultAuthMethodSet": "Ο προεπιλεγμένος τρόπος επαλήθευσης ορίστηκε σε {method}",
       "pinMustBeFourDigits": "Το PIN πρέπει να είναι 4 ψηφία",
       "pinsDoNotMatch": "Τα PIN δεν ταιριάζουν",
-      "enterYourFourDigitPin": "Εισάγετε το 4ψήφιο PIN σας"
+      "enterYourFourDigitPin": "Εισάγετε το 4ψήφιο PIN σας",
+      "setPin": "Ορισμός PIN",
+      "lockScreen": {
+        "title": "Το GutVault είναι κλειδωμένο",
+        "biometricOrPin": "Χρησιμοποίησε βιομετρικά ή βάλε PIN",
+        "enterPin": "Βάλε το PIN σου για ξεκλείδωμα",
+        "incorrectPin": "Λάθος PIN",
+        "biometricFailed": "Αποτυχία βιομετρικής επαλήθευσης",
+        "useBiometric": "Χρήση βιομετρικών",
+        "noAuthConfigured": "Το κλείδωμα είναι ενεργό αλλά δεν έχει ρυθμιστεί τρόπος επαλήθευσης.",
+        "clearDataReconfigure": "Καθάρισε τα δεδομένα της εφαρμογής και ξαναρύθμισε."
+      },
+      "cancel": "Ακύρωση"
     },
     "about": {
       "title": "Σχετικά",
@@ -252,7 +290,9 @@
       "symptomsLogged": "Καταγραφή συμπτωμάτων",
       "medication": "Φάρμακο",
       "logEntry": "Καταχώρηση",
-      "bristolType": "Τύπος Bristol {type}"
+      "bristolType": "Τύπος Bristol {type}",
+      "meal": "Γεύμα",
+      "symptoms": "Συμπτώματα"
     },
     "logDetails": {
       "pain": "Πόνος",

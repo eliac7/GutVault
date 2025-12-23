@@ -11,7 +11,8 @@
     "confirm": "Confirm",
     "search": "Search",
     "noData": "No data yet",
-    "startLogging": "Start logging"
+    "startLogging": "Start logging",
+    "toggleTheme": "Toggle theme"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -119,7 +120,31 @@
       "importSuccess": "Successfully imported {count} logs!",
       "importError": "Failed to import data. Please check the file and try again.",
       "deleteSuccess": "All data has been deleted.",
-      "deleteError": "Failed to delete data. Please try again."
+      "deleteError": "Failed to delete data. Please try again.",
+      "exportDialog": {
+        "standard": "Standard Export",
+        "doctor": "Prepare for Doctor",
+        "format": "Format",
+        "pdfTitle": "PDF Document",
+        "pdfDescription": "Readable report",
+        "jsonTitle": "JSON Data",
+        "jsonDescription": "Raw backup",
+        "dateRange": "Date Range",
+        "allTime": "All Time",
+        "customRange": "Custom Range",
+        "pickDate": "Pick a date",
+        "doctorTitle": "Doctor Report",
+        "doctorDescription": "Generates a concise PDF summary optimized for medical consultations. Includes symptom trends and Bristol scale charts.",
+        "timePeriod": "Time Period",
+        "lastDays": "Last {days} Days",
+        "hideNotes": "Hide Personal Notes",
+        "hideNotesDescription": "Exclude your notes from the report table",
+        "includeCharts": "Include Charts",
+        "includeChartsDescription": "Visual trends for symptoms & stool type",
+        "exporting": "Exporting...",
+        "generateReport": "Generate Report",
+        "downloadExport": "Download Export"
+      }
     },
     "preferences": {
       "title": "Preferences",
@@ -135,7 +160,8 @@
       "enableReminders": "Enable Reminders",
       "remindersEnabledTitle": "Reminders enabled!",
       "remindersEnabledBody": "You'll be reminded to log daily.",
-      "remindMeAt": "Remind me at:"
+      "remindMeAt": "Remind me at:",
+      "selectLanguagePlaceholder": "Select language"
     },
     "security": {
       "title": "Security",
@@ -188,7 +214,19 @@
       "defaultAuthMethodSet": "Default authentication method set to {method}",
       "pinMustBeFourDigits": "PIN must be 4 digits",
       "pinsDoNotMatch": "PINs do not match",
-      "enterYourFourDigitPin": "Enter your 4-digit PIN"
+      "enterYourFourDigitPin": "Enter your 4-digit PIN",
+      "setPin": "Set PIN",
+      "lockScreen": {
+        "title": "GutVault Locked",
+        "biometricOrPin": "Use biometric or enter PIN",
+        "enterPin": "Enter your PIN to unlock",
+        "incorrectPin": "Incorrect PIN",
+        "biometricFailed": "Biometric authentication failed",
+        "useBiometric": "Use Biometric",
+        "noAuthConfigured": "App lock is enabled but no authentication method is configured.",
+        "clearDataReconfigure": "Please clear app data and reconfigure."
+      },
+      "cancel": "Cancel"
     },
     "about": {
       "title": "About",
@@ -252,7 +290,9 @@
       "symptomsLogged": "Symptoms Logged",
       "medication": "Medication",
       "logEntry": "Log Entry",
-      "bristolType": "Bristol Type {type}"
+      "bristolType": "Bristol Type {type}",
+      "meal": "Meal",
+      "symptoms": "Symptoms"
     },
     "logDetails": {
       "pain": "Pain",

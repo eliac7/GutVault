@@ -484,7 +484,7 @@ export function SecuritySection() {
                             onClick={handleRequestRemovePin}
                             className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
                           >
-                            Remove
+                            {t("remove")}
                           </Button>
                         </div>
                       ) : (
@@ -494,7 +494,7 @@ export function SecuritySection() {
                           onClick={() => setShowPinSetup(true)}
                           className="rounded-xl"
                         >
-                          Set PIN
+                          {t("setPin")}
                         </Button>
                       )}
                     </div>
@@ -620,7 +620,7 @@ export function SecuritySection() {
                 onClick={handleCancelPinSetup}
                 className="flex-1 rounded-xl"
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button
                 onClick={handlePinSubmit}
@@ -693,7 +693,7 @@ export function SecuritySection() {
                 onClick={handleCancelDisable}
                 className="flex-1 rounded-xl"
               >
-                Cancel
+                {t("cancel")}
               </Button>
               {hasPin && (
                 <Button
@@ -759,7 +759,7 @@ export function SecuritySection() {
                 onClick={handleCancelRemove}
                 className="flex-1 rounded-xl"
               >
-                Cancel
+                {t("cancel")}
               </Button>
               {hasPin && (
                 <Button

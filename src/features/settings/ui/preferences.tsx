@@ -123,7 +123,7 @@ export function Preferences() {
               }
             >
               <SelectTrigger className="w-full p-3 h-auto rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100">
-                <SelectValue placeholder="Select language" />
+                <SelectValue placeholder={t("selectLanguagePlaceholder")} />
               </SelectTrigger>
               <SelectContent>
                 {speechLanguages.map((lang) => (

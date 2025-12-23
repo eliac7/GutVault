@@ -14,7 +14,7 @@ import { Switch } from "@/shared/ui/switch";
 import { Label } from "@/shared/ui/label";
 import { format } from "date-fns";
 import { el, enUS } from "date-fns/locale";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Calendar, type SupportedLocale } from "@/shared/ui/calendar";
@@ -45,6 +45,9 @@ export function ExportDialog({
   isExporting,
   trigger,
 }: ExportDialogProps) {
+  const tData = useTranslations("settings.dataManagement");
+  const t = useTranslations("settings.dataManagement.exportDialog");
+  const tCommon = useTranslations("common");
   const locale = useLocale() as SupportedLocale;
   const dfLocale = locale === "el" ? el : enUS;
 
@@ -81,13 +84,13 @@ export function ExportDialog({
         {trigger || (
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
-            Export Data
+            {tData("export")}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Export Data</DialogTitle>
+          <DialogTitle>{tData("export")}</DialogTitle>
         </DialogHeader>
 
         {/* Mode Selection Tabs */}
@@ -102,7 +105,7 @@ export function ExportDialog({
             )}
           >
             <Download className="w-4 h-4" />
-            Standard Export
+            {t("standard")}
           </button>
           <button
             onClick={() => setIsDoctorMode(true)}
@@ -114,7 +117,7 @@ export function ExportDialog({
             )}
           >
             <Stethoscope className="w-4 h-4" />
-            Prepare for Doctor
+            {t("doctor")}
           </button>
         </div>
 
@@ -123,7 +126,7 @@ export function ExportDialog({
             <>
               <div className="space-y-3">
                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Format
+                  {t("format")}
                 </label>
                 <div className="grid grid-cols-2 gap-4">
                   <div
@@ -148,8 +151,10 @@ export function ExportDialog({
                         <Check className="h-4 w-4 text-emerald-600" />
                       )}
                     </div>
-                    <p className="font-semibold text-sm">PDF Document</p>
-                    <p className="text-xs text-slate-500">Readable report</p>
+                    <p className="font-semibold text-sm">{t("pdfTitle")}</p>
+                    <p className="text-xs text-slate-500">
+                      {t("pdfDescription")}
+                    </p>
                   </div>
 
                   <div
@@ -174,15 +179,17 @@ export function ExportDialog({
                         <Check className="h-4 w-4 text-emerald-600" />
                       )}
                     </div>
-                    <p className="font-semibold text-sm">JSON Data</p>
-                    <p className="text-xs text-slate-500">Raw backup</p>
+                    <p className="font-semibold text-sm">{t("jsonTitle")}</p>
+                    <p className="text-xs text-slate-500">
+                      {t("jsonDescription")}
+                    </p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Date Range
+                  {t("dateRange")}
                 </label>
                 <div className="flex gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
                   <Button
@@ -194,7 +201,7 @@ export function ExportDialog({
                         "bg-white dark:bg-slate-700 shadow-sm"
                     )}
                   >
-                    All Time
+                    {t("allTime")}
                   </Button>
                   <Button
                     variant="ghost"
@@ -205,7 +212,7 @@ export function ExportDialog({
                         "bg-white dark:bg-slate-700 shadow-sm"
                     )}
                   >
-                    Custom Range
+                    {t("customRange")}
                   </Button>
                 </div>
 
@@ -239,7 +246,7 @@ export function ExportDialog({
                               })
                             )
                           ) : (
-                            <span>Pick a date</span>
+                            <span>{t("pickDate")}</span>
                           )}
                         </Button>
                       </PopoverTrigger>
@@ -269,19 +276,17 @@ export function ExportDialog({
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-indigo-900 dark:text-indigo-100">
-                      Doctor Report
+                      {t("doctorTitle")}
                     </h4>
                     <p className="text-xs text-indigo-700 dark:text-indigo-300 mt-1">
-                      Generates a concise PDF summary optimized for medical
-                      consultations. Includes symptom trends and Bristol scale
-                      charts.
+                      {t("doctorDescription")}
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <label className="text-sm font-medium">Time Period</label>
+                <label className="text-sm font-medium">{t("timePeriod")}</label>
                 <div className="grid grid-cols-3 gap-2">
                   {(["30", "60", "90"] as const).map((days) => (
                     <button
@@ -294,7 +299,7 @@ export function ExportDialog({
                           : "border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700"
                       )}
                     >
-                      Last {days} Days
+                    {t("lastDays", { days })}
                     </button>
                   ))}
                 </div>
@@ -303,19 +308,19 @@ export function ExportDialog({
               <div className="space-y-4 pt-2">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label className="text-base">Hide Personal Notes</Label>
-                    <p className="text-xs text-slate-500">
-                      Exclude your notes from the report table
-                    </p>
+                  <Label className="text-base">{t("hideNotes")}</Label>
+                  <p className="text-xs text-slate-500">
+                    {t("hideNotesDescription")}
+                  </p>
                   </div>
                   <Switch checked={anonymize} onCheckedChange={setAnonymize} />
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label className="text-base">Include Charts</Label>
-                    <p className="text-xs text-slate-500">
-                      Visual trends for symptoms & stool type
-                    </p>
+                  <Label className="text-base">{t("includeCharts")}</Label>
+                  <p className="text-xs text-slate-500">
+                    {t("includeChartsDescription")}
+                  </p>
                   </div>
                   <Switch
                     checked={includeCharts}
@@ -328,7 +333,7 @@ export function ExportDialog({
         </div>
         <div className="flex justify-end gap-3">
           <Button variant="ghost" onClick={() => setOpen(false)}>
-            Cancel
+            {tCommon("cancel")}
           </Button>
           <Button
             onClick={handleExport}
@@ -336,10 +341,10 @@ export function ExportDialog({
             className="bg-emerald-500 hover:bg-emerald-600 text-white"
           >
             {isExporting
-              ? "Exporting..."
+              ? t("exporting")
               : isDoctorMode
-              ? "Generate Report"
-              : "Download Export"}
+              ? t("generateReport")
+              : t("downloadExport")}
           </Button>
         </div>
       </DialogContent>

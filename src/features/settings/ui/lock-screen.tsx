@@ -6,6 +6,7 @@ import { Fingerprint, Delete, Lock, AlertCircle } from "lucide-react";
 import { useLock } from "@/shared/providers/lock-provider";
 import { Button } from "@/shared/ui/button";
 import { Spinner } from "@/shared/ui/spinner";
+import { useTranslations } from "next-intl";
 
 const KEYPAD_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "⌫"];
 
@@ -19,6 +20,7 @@ export function LockScreen() {
     authenticateWithPin,
     authenticateWithBiometric,
   } = useLock();
+  const t = useTranslations("settings.security.lockScreen");
 
   const [pin, setPin] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +48,7 @@ export function LockScreen() {
         setIsAuthenticating(false);
 
         if (!success) {
-          setError("Incorrect PIN");
+          setError(t("incorrectPin"));
           setShake(true);
           setTimeout(() => {
             setPin("");
@@ -55,7 +57,7 @@ export function LockScreen() {
         }
       }
     },
-    [pin, authenticateWithPin]
+    [pin, authenticateWithPin, t]
   );
 
   const handleBiometric = useCallback(async () => {
@@ -65,10 +67,10 @@ export function LockScreen() {
     const success = await authenticateWithBiometric();
 
     if (!success) {
-      setError("Biometric authentication failed");
+      setError(t("biometricFailed"));
     }
     setIsAuthenticating(false);
-  }, [authenticateWithBiometric]);
+  }, [authenticateWithBiometric, t]);
 
   const canUseBiometric = biometricAvailable && hasBiometric;
   const canUsePin = hasPin;
@@ -81,10 +83,10 @@ export function LockScreen() {
         <div className="text-center space-y-4">
           <Lock className="w-16 h-16 text-slate-400 dark:text-slate-400 mx-auto" />
           <p className="text-slate-600 dark:text-slate-300">
-            App lock is enabled but no authentication method is configured.
+            {t("noAuthConfigured")}
           </p>
           <p className="text-slate-400 dark:text-slate-500 text-sm">
-            Please clear app data and reconfigure.
+            {t("clearDataReconfigure")}
           </p>
         </div>
       </div>
@@ -110,12 +112,12 @@ export function LockScreen() {
             <Lock className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
-            GutVault Locked
+            {t("title")}
           </h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
             {authMethod === "biometric" && canUseBiometric
-              ? "Use biometric or enter PIN"
-              : "Enter your PIN to unlock"}
+              ? t("biometricOrPin")
+              : t("enterPin")}
           </p>
         </motion.div>
 
@@ -205,7 +207,7 @@ export function LockScreen() {
               className="gap-2 bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-2xl px-6"
             >
               <Fingerprint className="w-5 h-5" />
-              Use Biometric
+              {t("useBiometric")}
             </Button>
           </motion.div>
         )}

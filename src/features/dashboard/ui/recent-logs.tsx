@@ -14,6 +14,7 @@ function LogEntryItem({ log }: { log: LogEntry }) {
     hour: "numeric",
     minute: "2-digit",
   });
+  const tLog = useTranslations("logging");
 
   const getIcon = () => {
     switch (log.type) {
@@ -38,18 +39,19 @@ function LogEntryItem({ log }: { log: LogEntry }) {
     switch (log.type) {
       case "bowel_movement":
         return log.bristolType
-          ? `Bristol Type ${log.bristolType}`
-          : "Bowel Movement";
+          ? tLog("logTitles.bristolType", { type: log.bristolType })
+          : tLog("logTitles.bowelMovement");
       case "meal":
-        return log.foods?.join(", ") || "Meal";
+        return log.foods?.join(", ") || tLog("logTitles.meal");
       case "symptom":
         return (
-          log.symptoms?.map((s) => SYMPTOM_LABELS[s]).join(", ") || "Symptoms"
+          log.symptoms?.map((s) => SYMPTOM_LABELS[s]).join(", ") ||
+          tLog("logTitles.symptoms")
         );
       case "medication":
-        return log.medication || "Medication";
+        return log.medication || tLog("logTitles.medication");
       default:
-        return "Log Entry";
+        return tLog("logTitles.logEntry");
     }
   };
 
@@ -68,8 +70,10 @@ function LogEntryItem({ log }: { log: LogEntry }) {
         </p>
         <p className="text-xs text-slate-500 dark:text-slate-400">
           {time}
-          {log.painLevel && ` · Pain: ${log.painLevel}/10`}
-          {log.stressLevel && ` · Stress: ${log.stressLevel}/10`}
+          {log.painLevel &&
+            ` · ${tLog("logDetails.pain")}: ${log.painLevel}/10`}
+          {log.stressLevel &&
+            ` · ${tLog("logDetails.stress")}: ${log.stressLevel}/10`}
         </p>
       </div>
     </motion.div>
