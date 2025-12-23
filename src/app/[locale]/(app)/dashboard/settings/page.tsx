@@ -19,7 +19,7 @@ export async function generateMetadata({
 export default async function SettingsPage() {
   return (
     <>
-      <AppHeader titleKey="settings.title" showBack />
+      <AppHeader titleKey="navigation.settings" showBack />
       <div className="px-4 py-6 max-w-2xl mx-auto">
         <SettingsContent />
       </div>

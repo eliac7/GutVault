@@ -50,7 +50,7 @@ function getLogTitle(log: LogEntry, t: Translator): string {
     case "symptom":
       return t("logging.logTitles.symptomsLogged");
     case "medication":
-      return log.medication || t("logging.logTitles.medication");
+      return log.medication || t("common.labels.medication");
     default:
       return t("logging.logTitles.logEntry");
   }

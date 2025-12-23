@@ -2,20 +2,18 @@
 
 import {
   addLog,
-  db,
-  BRISTOL_DESCRIPTIONS,
-  SYMPTOM_LABELS,
   ANXIETY_MARKER_LABELS,
-  type Symptom,
+  BRISTOL_DESCRIPTIONS,
+  db,
+  SYMPTOM_LABELS,
   type AnxietyMarker,
   type BristolType,
   type PainLevel,
   type StressLevel,
+  type Symptom,
   type TriggerFood,
-  TRIGGER_FOOD_LABELS,
 } from "@/shared/db";
 import { Button } from "@/shared/ui/button";
-import { useTranslations } from "next-intl";
 import {
   Sheet,
   SheetContent,
@@ -25,17 +23,18 @@ import {
 import { useLiveQuery } from "dexie-react-hooks";
 import { Check, Loader2, Mic, MicOff, Sparkles, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { parseVoiceLog, type ParsedLogEntry } from "../actions/parse-voice-log";
 import {
-  useTranslatedSpeechLanguages,
   useSpeechRecognition,
+  useTranslatedSpeechLanguages,
   type SpeechLanguageCode,
 } from "../hooks/use-speech-recognition";
 import { BristolPicker } from "./bristol-picker";
-import { FodmapPicker } from "./fodmap-picker";
 import { ChipSelector } from "./chip-selector";
+import { FodmapPicker } from "./fodmap-picker";
 import { LevelSlider } from "./level-slider";
 
 const DEFAULT_VOICE_LANGUAGE: SpeechLanguageCode = "en-US";
@@ -51,7 +50,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
   const t = useTranslations("logging");
   const tSymptoms = useTranslations("logging.symptoms");
   const tAnxiety = useTranslations("logging.anxietyMarkers");
-  const tTriggers = useTranslations("logging.triggerFoods");
+  const tCommon = useTranslations("common");
 
   const [step, setStep] = useState<Step>("recording");
   const [parsedData, setParsedData] = useState<ParsedLogEntry | null>(null);
@@ -168,10 +167,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
   };
 
   return (
-    <Sheet
-      open={open}
-      onOpenChange={(newOpen) => !newOpen && handleClose()}
-    >
+    <Sheet open={open} onOpenChange={(newOpen) => !newOpen && handleClose()}>
       <SheetContent
         side="bottom"
         className="rounded-t-3xl max-h-[90vh] overflow-hidden flex flex-col p-0 gap-0"
@@ -240,9 +236,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           {speechLanguages.map((lang) => (
                             <button
                               key={lang.code}
-                              onClick={() =>
-                                handleLanguageChange(lang.code)
-                              }
+                              onClick={() => handleLanguageChange(lang.code)}
                               className={`w-full px-4 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${
                                 language === lang.code
                                   ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
@@ -301,14 +295,14 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                   </div>
 
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  {isListening
-                    ? t("voiceDialog.listening")
-                    : t("voiceDialog.ready")}
+                    {isListening
+                      ? t("voiceDialog.listening")
+                      : t("voiceDialog.ready")}
                   </h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
                     {isListening
-                    ? t("voiceDialog.recordingHelpListening")
-                    : t("voiceDialog.recordingHelpIdle")}
+                      ? t("voiceDialog.recordingHelpListening")
+                      : t("voiceDialog.recordingHelpIdle")}
                   </p>
 
                   {/* Transcript Preview */}
@@ -328,11 +322,9 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
 
                   {/* Example prompts */}
                   <div className="text-xs text-slate-400 space-y-1">
-                  <p>{t("voiceDialog.trySaying")}</p>
-                    <p>
-                    &quot;{t("voiceDialog.example1")}&quot;
-                    </p>
-                  <p>&quot;{t("voiceDialog.example2")}&quot;</p>
+                    <p>{t("voiceDialog.trySaying")}</p>
+                    <p>&quot;{t("voiceDialog.example1")}&quot;</p>
+                    <p>&quot;{t("voiceDialog.example2")}&quot;</p>
                   </div>
                 </motion.div>
               )}
@@ -396,9 +388,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     {parsedData.type === "bowel_movement" && (
                       <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
                         <BristolPicker
-                          value={
-                            (parsedData.bristolType as BristolType) || 4
-                          }
+                          value={(parsedData.bristolType as BristolType) || 4}
                           onChange={(newType) =>
                             setParsedData({
                               ...parsedData,
@@ -410,7 +400,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                         <div>
                           <p className="font-medium text-slate-900 dark:text-slate-100">
                             {t("logTitles.bristolType", {
-                              type: parsedData.bristolType,
+                              type: parsedData.bristolType as BristolType,
                             })}
                           </p>
                           <p className="text-xs text-slate-500">
@@ -428,7 +418,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                       parsedData.type === "symptom") && (
                       <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl">
                         <LevelSlider
-                          label={t("painLevel")}
+                          label={tCommon("labels.painLevel")}
                           value={(parsedData.painLevel as PainLevel) || 5}
                           onChange={(level) =>
                             setParsedData({
@@ -456,7 +446,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     </div>
 
                     <ChipSelector
-                      label={t("symptomsLabel")}
+                      label={tCommon("labels.symptoms")}
                       options={Object.keys(SYMPTOM_LABELS).map((value) => ({
                         value: value as Symptom,
                         label: tSymptoms(value as Symptom),
@@ -478,7 +468,9 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           label: tAnxiety(value as AnxietyMarker),
                         })
                       )}
-                      selected={(parsedData.anxietyMarkers as AnxietyMarker[]) || []}
+                      selected={
+                        (parsedData.anxietyMarkers as AnxietyMarker[]) || []
+                      }
                       onChange={(newMarkers) =>
                         setParsedData({
                           ...parsedData,
@@ -516,7 +508,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
 
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                        {t("notes")}
+                        {tCommon("labels.notes")}
                       </label>
                       <textarea
                         value={parsedData.notes || ""}

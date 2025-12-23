@@ -12,7 +12,7 @@ export default async function HistoryPage() {
 
   return (
     <>
-      <AppHeader titleKey="history.title" showBack />
+      <AppHeader titleKey="navigation.history" showBack />
 
       <div className="px-4 py-6 max-w-7xl mx-auto w-full">
         <HistoryContent />

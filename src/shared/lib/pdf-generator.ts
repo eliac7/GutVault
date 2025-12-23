@@ -41,6 +41,36 @@ type PdfLabels = {
   topSymptomsTitle: string;
 };
 
+type PdfMessageSchema = {
+  exportTitle?: string;
+  doctorTitle?: string;
+  allTime?: string;
+  generatedOn?: string;
+  lastDays?: string;
+  tableHead?: {
+    date?: string;
+    type?: string;
+    details?: string;
+    levels?: string;
+    notes?: string;
+  };
+  levels?: {
+    pain?: string;
+    stress?: string;
+  };
+  bowelDetails?: string;
+  mealNoDetails?: string;
+  mealFoodsLabel?: string;
+  mealTriggersLabel?: string;
+  symptomNoDetails?: string;
+  symptomLabel?: string;
+  anxietyLabel?: string;
+  notesHidden?: string;
+  bristolTrendTitle?: string;
+  typeLabel?: string;
+  topSymptomsTitle?: string;
+};
+
 export async function generatePDF(
   logs: LogEntry[],
   dateRange?: { start?: Date; end?: Date },
@@ -62,13 +92,17 @@ export async function generatePDF(
     string
   >;
 
-  const pdfMessages = messages.logging?.pdf ?? {};
+  const pdfMessages = (messages.logging?.pdf ?? {}) as PdfMessageSchema;
+  const commonLabels = (messages.common?.labels ?? {}) as Record<
+    string,
+    string | undefined
+  >;
 
   const labels: PdfLabels = {
-    exportTitle: pdfMessages.exportTitle,
-    doctorTitle: pdfMessages.doctorTitle,
-    allTime: pdfMessages.allTime,
-    generatedOn: pdfMessages.generatedOn,
+    exportTitle: pdfMessages.exportTitle ?? "GutVault Export",
+    doctorTitle: pdfMessages.doctorTitle ?? "Health Report (GutVault)",
+    allTime: pdfMessages.allTime ?? "All Time",
+    generatedOn: pdfMessages.generatedOn ?? "Generated on",
     lastDays: (days: number) =>
       (pdfMessages.lastDays as string)?.replace("{days}", String(days)) ??
       `Last ${days} Days`,
@@ -77,7 +111,10 @@ export async function generatePDF(
       pdfMessages.tableHead?.type ?? "Type",
       pdfMessages.tableHead?.details ?? "Details",
       pdfMessages.tableHead?.levels ?? "Levels",
-      pdfMessages.tableHead?.notes ?? "Notes",
+      // Notes column label now lives under common.labels.notes
+      (pdfMessages.tableHead as { notes?: string } | undefined)?.notes ??
+        commonLabels.notes ??
+        "Notes",
     ],
     levelsLabel: (pain: string, stress: string) =>
       `${pdfMessages.levels?.pain ?? "Pain"}: ${pain}\n${
@@ -89,11 +126,14 @@ export async function generatePDF(
         bristol !== undefined ? String(bristol) : "-"
       ) ?? `Bristol: ${bristol ?? "-"}`,
     mealNoDetails: pdfMessages.mealNoDetails ?? "No food details",
-    mealFoodsLabel: pdfMessages.mealFoodsLabel ?? "Foods",
+    // Foods label is now in common.labels.foods (pdf-specific key optional)
+    mealFoodsLabel: pdfMessages.mealFoodsLabel ?? commonLabels.foods ?? "Foods",
     mealTriggersLabel: pdfMessages.mealTriggersLabel ?? "Triggers",
     symptomNoDetails: pdfMessages.symptomNoDetails ?? "No details",
-    symptomLabel: pdfMessages.symptomLabel ?? "Symptoms",
-    anxietyLabel: pdfMessages.anxietyLabel ?? "Anxiety",
+    // Symptom/anxiety labels now live under common.labels.* (pdf-specific keys optional)
+    symptomLabel:
+      pdfMessages.symptomLabel ?? commonLabels.symptoms ?? "Symptoms",
+    anxietyLabel: pdfMessages.anxietyLabel ?? commonLabels.anxiety ?? "Anxiety",
     notesHidden: pdfMessages.notesHidden ?? "-",
     bristolTrendTitle:
       pdfMessages.bristolTrendTitle ?? "Bristol Stool Scale Trend",

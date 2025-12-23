@@ -2,6 +2,7 @@
 
 import { useLogs } from "@/shared/db";
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
+import { Alert, AlertTitle, AlertDescription } from "@/shared/ui/alert";
 import { AlertCircle, TrendingUp, Brain } from "lucide-react";
 import {
   BarChart,
@@ -177,24 +178,20 @@ export function CorrelationAnalysis() {
 
       {/* Food Insight Card */}
       {topTrigger && topTrigger.score > 50 && (
-        <Card className="bg-amber-50 dark:bg-amber-900/20 border-amber-200/50 dark:border-amber-800/50 shadow-sm">
-          <CardContent className="pt-6 flex items-start gap-4">
-            <div className="bg-amber-100 dark:bg-amber-800/40 p-2 rounded-full mt-0.5">
-              <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-amber-900 dark:text-amber-200 text-base">
-                {t("foodTriggerTitle")}
-              </h3>
-              <p className="text-amber-700 dark:text-amber-300/80 mt-1 text-sm leading-relaxed">
-                {t("foodTriggerDescription", {
-                  food: topTrigger.name,
-                  percentage: Math.round(topTrigger.score),
-                })}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <Alert className="border-amber-200/70 dark:border-amber-800/70 bg-amber-50 dark:bg-amber-900/20">
+          <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          <div>
+            <AlertTitle className="text-amber-900 dark:text-amber-200 text-base">
+              {t("foodTriggerTitle")}
+            </AlertTitle>
+            <AlertDescription className="text-amber-700 dark:text-amber-300/80 mt-1 leading-relaxed">
+              {t("foodTriggerDescription", {
+                food: topTrigger.name,
+                percentage: Math.round(topTrigger.score),
+              })}
+            </AlertDescription>
+          </div>
+        </Alert>
       )}
 
       {/* Food Chart Card */}

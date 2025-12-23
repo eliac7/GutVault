@@ -27,6 +27,7 @@ import { useTranslations } from "next-intl";
 
 export function SecuritySection() {
   const t = useTranslations("settings.security");
+  const tCommon = useTranslations("common");
   const {
     lockEnabled,
     authMethod,
@@ -620,7 +621,7 @@ export function SecuritySection() {
                 onClick={handleCancelPinSetup}
                 className="flex-1 rounded-xl"
               >
-                {t("cancel")}
+                {tCommon("cancel")}
               </Button>
               <Button
                 onClick={handlePinSubmit}
@@ -638,7 +639,7 @@ export function SecuritySection() {
                 ) : (
                   <>
                     <Check className="w-4 h-4 mr-1" />
-                    {t("confirm")}
+                    {tCommon("confirm")}
                   </>
                 )}
               </Button>
@@ -693,7 +694,7 @@ export function SecuritySection() {
                 onClick={handleCancelDisable}
                 className="flex-1 rounded-xl"
               >
-                {t("cancel")}
+                {tCommon("cancel")}
               </Button>
               {hasPin && (
                 <Button
@@ -759,7 +760,7 @@ export function SecuritySection() {
                 onClick={handleCancelRemove}
                 className="flex-1 rounded-xl"
               >
-                {t("cancel")}
+                {tCommon("cancel")}
               </Button>
               {hasPin && (
                 <Button

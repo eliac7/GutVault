@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 
 export function QuickLog({ onComplete }: { onComplete?: () => void }) {
   const t = useTranslations("flare.quickLog");
+  const tCommon = useTranslations("common");
   const [painLevel, setPainLevel] = useState<PainLevel>(5);
   const [stressLevel, setStressLevel] = useState<StressLevel>(5);
   const [selectedSymptoms, setSelectedSymptoms] = useState<Symptom[]>([]);
@@ -58,14 +59,14 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
     <div className="space-y-6">
       <div className="space-y-4">
         <LevelSlider
-          label={t("painLevel")}
+          label={tCommon("labels.painLevel")}
           value={painLevel}
           onChange={(v) => setPainLevel(v as PainLevel)}
           type="pain"
         />
 
         <LevelSlider
-          label={t("stressLevel")}
+          label={tCommon("labels.stressLevel")}
           value={stressLevel}
           onChange={(v) => setStressLevel(v as StressLevel)}
           type="stress"
@@ -74,7 +75,7 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
 
       <div className="space-y-3">
         <label className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          {t("symptoms")}
+          {tCommon("labels.symptoms")}
         </label>
         <div className="flex flex-wrap gap-2">
           {QUICK_SYMPTOMS.map((symptom) => (
@@ -95,7 +96,7 @@ export function QuickLog({ onComplete }: { onComplete?: () => void }) {
 
       <div className="space-y-3">
         <label className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          {t("notes")}
+          {tCommon("labels.notes")}
         </label>
         <textarea
           className="flex min-h-20 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:placeholder:text-slate-400 dark:focus-visible:ring-indigo-800"

@@ -16,6 +16,7 @@ export function FlareOverlay() {
   const { isFlareMode, setFlareMode } = useFlareMode();
   const [showLog, setShowLog] = useState(false);
   const t = useTranslations("flare");
+  const tCommon = useTranslations("common");
 
   return (
     <AnimatePresence>
@@ -82,7 +83,7 @@ export function FlareOverlay() {
                       onClick={() => setShowLog(false)}
                       className="h-8 text-xs"
                     >
-                      {t("cancel")}
+                      {tCommon("cancel")}
                     </Button>
                   </div>
                   <QuickLog onComplete={() => setShowLog(false)} />

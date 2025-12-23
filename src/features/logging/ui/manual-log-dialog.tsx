@@ -45,6 +45,7 @@ export function ManualLogDialog({
   const tSymptoms = useTranslations("logging.symptoms");
   const tAnxiety = useTranslations("logging.anxietyMarkers");
   const tTriggers = useTranslations("logging.triggerFoods");
+  const tCommon = useTranslations("common");
 
   const [step, setStep] = useState<"type" | "details">("type");
   const [logType, setLogType] = useState<LogType>("bowel_movement");
@@ -193,7 +194,7 @@ export function ManualLogDialog({
                     {
                       id: "medication",
                       icon: "💊",
-                      label: t("logTitles.medication"),
+                      label: tCommon("labels.medication"),
                     },
                   ].map((type) => (
                     <button
@@ -237,7 +238,7 @@ export function ManualLogDialog({
                 {(logType === "bowel_movement" || logType === "symptom") && (
                   <div className="space-y-4">
                     <LevelSlider
-                      label={t("painLevel")}
+                      label={tCommon("labels.painLevel")}
                       value={painLevel}
                       onChange={(v) => setPainLevel(v as PainLevel)}
                       type="pain"
@@ -255,7 +256,7 @@ export function ManualLogDialog({
                 </div>
 
                 <ChipSelector
-                  label={t("symptomsLabel")}
+                  label={tCommon("labels.symptoms")}
                   options={Object.keys(SYMPTOM_LABELS).map((value) => ({
                     value: value as Symptom,
                     label: tSymptoms(value as Symptom),
@@ -323,7 +324,7 @@ export function ManualLogDialog({
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                    {t("notes")}
+                    {tCommon("labels.notes")}
                   </label>
                   <textarea
                     value={notes}

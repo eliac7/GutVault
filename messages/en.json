@@ -12,7 +12,19 @@
     "search": "Search",
     "noData": "No data yet",
     "startLogging": "Start logging",
-    "toggleTheme": "Toggle theme"
+    "toggleTheme": "Toggle theme",
+    "labels": {
+      "symptoms": "Symptoms",
+      "painLevel": "Pain Level",
+      "stressLevel": "Stress Level",
+      "foods": "Foods",
+      "notes": "Notes",
+      "medication": "Medication",
+      "anxiety": "Anxiety",
+      "dosage": "Dosage"
+    },
+    "builtBy": "Built by:",
+    "name": "Ilias Nikolaos Thalassochoritis"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -24,7 +36,6 @@
     "exitFlareMode": "Exit flare mode"
   },
   "dashboard": {
-    "title": "Dashboard",
     "overview": "Overview",
     "correlationsTab": "Correlations",
     "atAGlance": {
@@ -65,7 +76,6 @@
     }
   },
   "history": {
-    "title": "History",
     "filters": "Filters",
     "searchPlaceholder": "Search notes, symptoms...",
     "bristolTypeLabel": "Bristol Type",
@@ -95,7 +105,6 @@
     }
   },
   "settings": {
-    "title": "Settings",
     "dataManagement": {
       "totalLogs": "Total Logs",
       "used": "Used",
@@ -185,7 +194,6 @@
       "enterFourDigitPin": "Enter a 4-digit PIN",
       "enterPinAgain": "Enter the PIN again to confirm",
       "next": "Next",
-      "confirm": "Confirm",
       "disableAppLock": "Disable App Lock",
       "verifyToDisableLock": "Verify your identity to disable lock",
       "useBiometric": "Use Biometric",
@@ -220,13 +228,11 @@
         "title": "GutVault Locked",
         "biometricOrPin": "Use biometric or enter PIN",
         "enterPin": "Enter your PIN to unlock",
-        "incorrectPin": "Incorrect PIN",
         "biometricFailed": "Biometric authentication failed",
         "useBiometric": "Use Biometric",
         "noAuthConfigured": "App lock is enabled but no authentication method is configured.",
         "clearDataReconfigure": "Please clear app data and reconfigure."
-      },
-      "cancel": "Cancel"
+      }
     },
     "about": {
       "title": "About",
@@ -277,10 +283,6 @@
         "description": "Watery, no solid pieces"
       }
     },
-    "painLevel": "Pain Level",
-    "symptomsLabel": "Symptoms",
-    "foods": "Foods",
-    "notes": "Notes",
     "notesPlaceholder": "Any additional notes...",
     "save": "Save Log",
     "saving": "Saving...",
@@ -288,7 +290,6 @@
       "bowelMovement": "Bowel Movement",
       "mealLogged": "Meal Logged",
       "symptomsLogged": "Symptoms Logged",
-      "medication": "Medication",
       "logEntry": "Log Entry",
       "bristolType": "Bristol Type {type}",
       "meal": "Meal",
@@ -345,8 +346,7 @@
         "date": "Date",
         "type": "Type",
         "details": "Details",
-        "levels": "Levels",
-        "notes": "Notes"
+        "levels": "Levels"
       },
       "levels": {
         "pain": "Pain",
@@ -354,11 +354,8 @@
       },
       "bowelDetails": "Bristol: {bristol}",
       "mealNoDetails": "No food details",
-      "mealFoodsLabel": "Foods",
       "mealTriggersLabel": "Triggers",
       "symptomNoDetails": "No details",
-      "symptomLabel": "Symptoms",
-      "anxietyLabel": "Anxiety",
       "notesHidden": "-",
       "bristolTrendTitle": "Bristol Stool Scale Trend",
       "typeLabel": "Type {type}",
@@ -372,7 +369,6 @@
       "potentialTriggers": "Potential Triggers",
       "medicationNameLabel": "Medication Name",
       "medicationNamePlaceholder": "e.g., Imodium, Buscopan",
-      "dosageLabel": "Dosage",
       "dosagePlaceholder": "e.g., 2mg, 1 tablet",
       "nextStep": "Next Step",
       "updateLog": "Update Log"
@@ -413,7 +409,6 @@
     "flareSupport": "Flare Support",
     "exitMode": "Exit Mode",
     "logSymptoms": "+ Log Symptoms",
-    "cancel": "Cancel",
     "exitFlareMode": "Exit Flare Mode",
     "breathing": {
       "title": "Breathing Exercise",
@@ -439,10 +434,6 @@
       "loggedFromFlareMode": "Logged from Flare Mode",
       "loggedSuccessfully": "Logged successfully",
       "failedToLog": "Failed to log",
-      "painLevel": "Pain Level",
-      "stressLevel": "Stress Level",
-      "symptoms": "Symptoms",
-      "notes": "Notes",
       "notesPlaceholder": "How are you feeling?",
       "saveLog": "Save Log",
       "quickSymptoms": {

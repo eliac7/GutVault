@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
-import { ChevronRight } from "lucide-react";
-import { useLogs, SYMPTOM_LABELS, type LogEntry } from "@/shared/db";
-import { BristolImage } from "@/shared/ui/bristol-image";
-import { Card } from "@/shared/ui/card";
-import { Button } from "@/shared/ui/button";
 import { Link } from "@/i18n/navigation";
+import { useLogs, type LogEntry } from "@/shared/db";
+import { BristolImage } from "@/shared/ui/bristol-image";
+import { Button } from "@/shared/ui/button";
+import { Card } from "@/shared/ui/card";
+import { ChevronRight } from "lucide-react";
+import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 
 function LogEntryItem({ log }: { log: LogEntry }) {
@@ -16,6 +16,7 @@ function LogEntryItem({ log }: { log: LogEntry }) {
   });
   const tLog = useTranslations("logging");
   const tSymptoms = useTranslations("logging.symptoms");
+  const tCommon = useTranslations("common");
 
   const getIcon = () => {
     switch (log.type) {
@@ -50,7 +51,7 @@ function LogEntryItem({ log }: { log: LogEntry }) {
           tLog("logTitles.symptoms")
         );
       case "medication":
-        return log.medication || tLog("logTitles.medication");
+        return log.medication || tCommon("labels.medication");
       default:
         return tLog("logTitles.logEntry");
     }

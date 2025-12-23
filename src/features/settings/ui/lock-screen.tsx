@@ -21,6 +21,7 @@ export function LockScreen() {
     authenticateWithBiometric,
   } = useLock();
   const t = useTranslations("settings.security.lockScreen");
+  const tSecurity = useTranslations("settings.security");
 
   const [pin, setPin] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +49,7 @@ export function LockScreen() {
         setIsAuthenticating(false);
 
         if (!success) {
-          setError(t("incorrectPin"));
+          setError(tSecurity("incorrectPin"));
           setShake(true);
           setTimeout(() => {
             setPin("");
@@ -57,7 +58,7 @@ export function LockScreen() {
         }
       }
     },
-    [pin, authenticateWithPin, t]
+    [pin, authenticateWithPin, tSecurity]
   );
 
   const handleBiometric = useCallback(async () => {

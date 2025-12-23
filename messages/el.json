@@ -12,7 +12,19 @@
     "search": "Αναζήτηση",
     "noData": "Δεν υπάρχουν δεδομένα ακόμα",
     "startLogging": "Ξεκίνα καταγραφή",
-    "toggleTheme": "Αλλαγή θέματος"
+    "toggleTheme": "Αλλαγή θέματος",
+    "labels": {
+      "symptoms": "Συμπτώματα",
+      "painLevel": "Επίπεδο πόνου",
+      "stressLevel": "Επίπεδο στρες",
+      "foods": "Τροφές",
+      "notes": "Σημειώσεις",
+      "medication": "Φάρμακο",
+      "anxiety": "Άγχος",
+      "dosage": "Δοσολογία"
+    },
+    "builtBy": "Δημιουργήθηκε από:",
+    "name": "Ηλίας Νικόλαος Θαλασσοχωρίτης"
   },
   "navigation": {
     "dashboard": "Αρχική",
@@ -24,7 +36,6 @@
     "exitFlareMode": "Έξοδος από την έξαρση"
   },
   "dashboard": {
-    "title": "Αρχική",
     "overview": "Επισκόπηση",
     "correlationsTab": "Συσχετίσεις",
     "atAGlance": {
@@ -65,7 +76,6 @@
     }
   },
   "history": {
-    "title": "Ιστορικό",
     "filters": "Φίλτρα",
     "searchPlaceholder": "Αναζήτηση σε σημειώσεις ή συμπτώματα…",
     "bristolTypeLabel": "Τύπος Bristol",
@@ -95,7 +105,6 @@
     }
   },
   "settings": {
-    "title": "Ρυθμίσεις",
     "dataManagement": {
       "totalLogs": "Σύνολο καταγραφών",
       "used": "Χρησιμοποιούνται",
@@ -185,7 +194,6 @@
       "enterFourDigitPin": "Εισάγετε 4ψήφιο PIN",
       "enterPinAgain": "Εισάγετε ξανά το PIN για επιβεβαίωση",
       "next": "Επόμενο",
-      "confirm": "Επιβεβαίωση",
       "disableAppLock": "Απενεργοποίηση κλειδώματος",
       "verifyToDisableLock": "Επαλήθευσε την ταυτότητά σου για απενεργοποίηση",
       "useBiometric": "Χρήση βιομετρικών",
@@ -220,13 +228,11 @@
         "title": "Το GutVault είναι κλειδωμένο",
         "biometricOrPin": "Χρησιμοποίησε βιομετρικά ή βάλε PIN",
         "enterPin": "Βάλε το PIN σου για ξεκλείδωμα",
-        "incorrectPin": "Λάθος PIN",
         "biometricFailed": "Αποτυχία βιομετρικής επαλήθευσης",
         "useBiometric": "Χρήση βιομετρικών",
         "noAuthConfigured": "Το κλείδωμα είναι ενεργό αλλά δεν έχει ρυθμιστεί τρόπος επαλήθευσης.",
         "clearDataReconfigure": "Καθάρισε τα δεδομένα της εφαρμογής και ξαναρύθμισε."
-      },
-      "cancel": "Ακύρωση"
+      }
     },
     "about": {
       "title": "Σχετικά",
@@ -277,10 +283,6 @@
         "description": "Υδαρές, χωρίς στερεά"
       }
     },
-    "painLevel": "Επίπεδο πόνου",
-    "symptomsLabel": "Συμπτώματα",
-    "foods": "Τροφές",
-    "notes": "Σημειώσεις",
     "notesPlaceholder": "Οτιδήποτε επιπλέον θέλεις να σημειώσεις…",
     "save": "Αποθήκευση",
     "saving": "Αποθήκευση…",
@@ -288,7 +290,6 @@
       "bowelMovement": "Κένωση",
       "mealLogged": "Καταγραφή γεύματος",
       "symptomsLogged": "Καταγραφή συμπτωμάτων",
-      "medication": "Φάρμακο",
       "logEntry": "Καταχώρηση",
       "bristolType": "Τύπος Bristol {type}",
       "meal": "Γεύμα",
@@ -345,8 +346,7 @@
         "date": "Ημερομηνία",
         "type": "Τύπος",
         "details": "Λεπτομέρειες",
-        "levels": "Επίπεδα",
-        "notes": "Σημειώσεις"
+        "levels": "Επίπεδα"
       },
       "levels": {
         "pain": "Πόνος",
@@ -354,11 +354,8 @@
       },
       "bowelDetails": "Bristol: {bristol}",
       "mealNoDetails": "Χωρίς λεπτομέρειες τροφών",
-      "mealFoodsLabel": "Τροφές",
       "mealTriggersLabel": "Ενδεχόμενες αιτίες",
       "symptomNoDetails": "Χωρίς λεπτομέρειες",
-      "symptomLabel": "Συμπτώματα",
-      "anxietyLabel": "Άγχος",
       "notesHidden": "-",
       "bristolTrendTitle": "Τάση κλίμακας κοπράνων Bristol",
       "typeLabel": "Τύπος {type}",
@@ -372,7 +369,6 @@
       "potentialTriggers": "Πιθανές αιτίες",
       "medicationNameLabel": "Όνομα φαρμάκου",
       "medicationNamePlaceholder": "π.χ. Imodium, Buscopan",
-      "dosageLabel": "Δοσολογία",
       "dosagePlaceholder": "π.χ. 2mg, 1 δισκίο",
       "nextStep": "Επόμενο βήμα",
       "updateLog": "Ενημέρωση καταγραφής"
@@ -413,7 +409,6 @@
     "flareSupport": "Υποστήριξη έξαρσης",
     "exitMode": "Έξοδος",
     "logSymptoms": "+ Καταγραφή συμπτωμάτων",
-    "cancel": "Ακύρωση",
     "exitFlareMode": "Έξοδος από την έξαρση",
     "breathing": {
       "title": "Άσκηση αναπνοής",
@@ -439,10 +434,6 @@
       "loggedFromFlareMode": "Καταγράφηκε από τη λειτουργία έξαρσης",
       "loggedSuccessfully": "Η καταγραφή έγινε με επιτυχία",
       "failedToLog": "Αποτυχία καταγραφής",
-      "painLevel": "Επίπεδο πόνου",
-      "stressLevel": "Επίπεδο στρες",
-      "symptoms": "Συμπτώματα",
-      "notes": "Σημειώσεις",
       "notesPlaceholder": "Πώς νιώθεις αυτή τη στιγμή;",
       "saveLog": "Αποθήκευση",
       "quickSymptoms": {
