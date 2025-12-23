@@ -23,8 +23,10 @@ import {
   clearBiometricRegistration,
 } from "@/shared/lib/auth";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export function SecuritySection() {
+  const t = useTranslations("settings.security");
   const {
     lockEnabled,
     authMethod,
@@ -96,10 +98,10 @@ export function SecuritySection() {
         setPinError(null);
       } else {
         await setLockEnabled(true);
-        toast.success("App lock enabled");
+        toast.success(t("appLockEnabled"));
       }
     }
-  }, [lockEnabled, hasPin, hasBiometric, setLockEnabled]);
+  }, [lockEnabled, hasPin, hasBiometric, setLockEnabled, t]);
 
   // PIN setup handlers
   const handlePinKeyPress = useCallback(
@@ -116,13 +118,13 @@ export function SecuritySection() {
   const handlePinSubmit = useCallback(async () => {
     if (pinStep === "enter") {
       if (pin.length !== 4) {
-        setPinError("PIN must be 4 digits");
+        setPinError(t("pinMustBeFourDigits"));
         return;
       }
       setPinStep("confirm");
     } else {
       if (confirmPin !== pin) {
-        setPinError("PINs do not match");
+        setPinError(t("pinsDoNotMatch"));
         setConfirmPin("");
         return;
       }
@@ -139,10 +141,10 @@ export function SecuritySection() {
         setPin("");
         setConfirmPin("");
         setPinStep("enter");
-        toast.success("PIN set successfully");
+        toast.success(t("pinSetSuccessfully"));
       } catch (error) {
         console.error("PIN setup error:", error);
-        toast.error("Failed to set PIN");
+        toast.error(t("failedToSetPin"));
       }
       setIsSettingUp(false);
     }
@@ -154,6 +156,7 @@ export function SecuritySection() {
     setPinHash,
     setAuthMethod,
     setLockEnabled,
+    t,
   ]);
 
   const handleCancelPinSetup = useCallback(() => {
@@ -174,7 +177,7 @@ export function SecuritySection() {
 
   const handleDisableWithPin = useCallback(async () => {
     if (disablePin.length !== 4) {
-      setDisableError("Enter your 4-digit PIN");
+      setDisableError(t("enterYourFourDigitPin"));
       return;
     }
 
@@ -187,12 +190,12 @@ export function SecuritySection() {
       await setLockEnabled(false);
       setShowDisableVerification(false);
       setDisablePin("");
-      toast.success("App lock disabled and credentials cleared");
+      toast.success(t("appLockDisabled"));
     } else {
-      setDisableError("Incorrect PIN");
+      setDisableError(t("incorrectPin"));
       setDisablePin("");
     }
-  }, [disablePin, authenticateWithPin, clearAllCredentials, setLockEnabled]);
+  }, [disablePin, authenticateWithPin, clearAllCredentials, setLockEnabled, t]);
 
   const handleDisableWithBiometric = useCallback(async () => {
     setIsVerifying(true);
@@ -205,11 +208,11 @@ export function SecuritySection() {
       await clearAllCredentials();
       await setLockEnabled(false);
       setShowDisableVerification(false);
-      toast.success("App lock disabled and credentials cleared");
+      toast.success(t("appLockDisabled"));
     } else {
-      setDisableError("Biometric verification failed");
+      setDisableError(t("biometricVerificationFailed"));
     }
-  }, [authenticateWithBiometric, clearAllCredentials, setLockEnabled]);
+  }, [authenticateWithBiometric, clearAllCredentials, setLockEnabled, t]);
 
   const handleCancelDisable = useCallback(() => {
     setShowDisableVerification(false);
@@ -228,16 +231,16 @@ export function SecuritySection() {
         if (!lockEnabled) {
           await setLockEnabled(true);
         }
-        toast.success("Biometric authentication enabled");
+        toast.success(t("biometricEnabled"));
       } else {
-        toast.error("Failed to set up biometric authentication");
+        toast.error(t("biometricSetupFailed"));
       }
     } catch (error) {
       console.error("Biometric setup error:", error);
-      toast.error("Biometric setup failed");
+      toast.error(t("biometricSetupError"));
     }
     setIsSettingUp(false);
-  }, [lockEnabled, setLockEnabled, setAuthMethod, setBiometricRegistered]);
+  }, [lockEnabled, setLockEnabled, setAuthMethod, setBiometricRegistered, t]);
 
   // Request verification before removing biometric
   const handleRequestRemoveBiometric = useCallback(() => {
@@ -265,7 +268,7 @@ export function SecuritySection() {
 
   const handleRemoveWithPin = useCallback(async () => {
     if (removePin.length !== 4) {
-      setRemoveError("Enter your 4-digit PIN");
+      setRemoveError(t("enterYourFourDigitPin"));
       return;
     }
 
@@ -284,7 +287,7 @@ export function SecuritySection() {
             await setLockEnabled(false);
           }
         }
-        toast.success("Biometric authentication removed");
+        toast.success(t("biometricRemoved"));
       } else if (removeTarget === "pin") {
         await clearPin();
         if (authMethod === "pin") {
@@ -294,13 +297,13 @@ export function SecuritySection() {
             await setLockEnabled(false);
           }
         }
-        toast.success("PIN removed");
+        toast.success(t("pinRemoved"));
       }
       setShowRemoveVerification(false);
       setRemovePin("");
       setRemoveTarget(null);
     } else {
-      setRemoveError("Incorrect PIN");
+      setRemoveError(t("incorrectPin"));
       setRemovePin("");
     }
   }, [
@@ -314,6 +317,7 @@ export function SecuritySection() {
     setAuthMethod,
     setLockEnabled,
     setBiometricRegistered,
+    t,
   ]);
 
   const handleRemoveWithBiometric = useCallback(async () => {
@@ -334,7 +338,7 @@ export function SecuritySection() {
             await setLockEnabled(false);
           }
         }
-        toast.success("Biometric authentication removed");
+        toast.success(t("biometricRemoved"));
       } else if (removeTarget === "pin") {
         await clearPin();
         if (authMethod === "pin") {
@@ -344,13 +348,13 @@ export function SecuritySection() {
             await setLockEnabled(false);
           }
         }
-        toast.success("PIN removed");
+        toast.success(t("pinRemoved"));
       }
       setShowRemoveVerification(false);
       setRemovePin("");
       setRemoveTarget(null);
     } else {
-      setRemoveError("Biometric verification failed");
+      setRemoveError(t("biometricVerificationFailed"));
     }
   }, [
     removeTarget,
@@ -362,6 +366,7 @@ export function SecuritySection() {
     setAuthMethod,
     setLockEnabled,
     setBiometricRegistered,
+    t,
   ]);
 
   const handleCancelRemove = useCallback(() => {
@@ -375,12 +380,12 @@ export function SecuritySection() {
     async (method: AuthMethod) => {
       await setAuthMethod(method);
       toast.success(
-        `Default authentication method set to ${
-          method === "biometric" ? "Biometric" : "PIN"
-        }`
+        t("defaultAuthMethodSet", {
+          method: method === "biometric" ? t("biometric") : t("pin"),
+        })
       );
     },
-    [setAuthMethod]
+    [setAuthMethod, t]
   );
 
   return (
@@ -392,7 +397,7 @@ export function SecuritySection() {
       <Card className="p-6 bg-white dark:bg-slate-900/80 rounded-3xl border-slate-200/50 dark:border-teal-500/30 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
           <Shield className="w-5 h-5 text-amber-500 dark:text-amber-400" />
-          Privacy & Security
+          {t("title")}
         </h2>
 
         <div className="space-y-4">
@@ -405,10 +410,10 @@ export function SecuritySection() {
                 </div>
                 <div>
                   <div className="font-medium text-slate-900 dark:text-slate-100">
-                    App Lock
+                    {t("pinLock")}
                   </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">
-                    Require authentication to access
+                    {t("pinLockDescription")}
                   </div>
                 </div>
               </div>
@@ -447,17 +452,17 @@ export function SecuritySection() {
                       </div>
                       <div>
                         <div className="font-medium text-slate-900 dark:text-slate-100">
-                          PIN Code
+                          {t("pinCode")}
                         </div>
                         <div className="text-sm text-slate-500 dark:text-slate-400">
-                          {hasPin ? "PIN is set" : "Not configured"}
+                          {hasPin ? t("pinIsSet") : t("pinNotConfigured")}
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       {hasPin && authMethod === "pin" && (
                         <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full">
-                          Active
+                          {t("active")}
                         </span>
                       )}
                       {hasPin ? (
@@ -471,7 +476,7 @@ export function SecuritySection() {
                             }}
                             className="text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30"
                           >
-                            Change
+                            {t("change")}
                           </Button>
                           <Button
                             variant="ghost"
@@ -506,17 +511,19 @@ export function SecuritySection() {
                         </div>
                         <div>
                           <div className="font-medium text-slate-900 dark:text-slate-100">
-                            Biometric
+                            {t("biometric")}
                           </div>
                           <div className="text-sm text-slate-500 dark:text-slate-400">
-                            {hasBiometric ? "Configured" : "Not set up"}
+                            {hasBiometric
+                              ? t("biometricConfigured")
+                              : t("biometricNotSetUp")}
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         {hasBiometric && authMethod === "biometric" && (
                           <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full">
-                            Active
+                            {t("biometricActive")}
                           </span>
                         )}
                         {hasBiometric ? (
@@ -526,7 +533,7 @@ export function SecuritySection() {
                             onClick={handleRequestRemoveBiometric}
                             className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
                           >
-                            Remove
+                            {t("remove")}
                           </Button>
                         ) : (
                           <Button
@@ -536,7 +543,7 @@ export function SecuritySection() {
                             disabled={isSettingUp}
                             className="rounded-xl"
                           >
-                            Set Up
+                            {t("setUp")}
                           </Button>
                         )}
                       </div>
@@ -548,7 +555,7 @@ export function SecuritySection() {
                 {hasPin && hasBiometric && (
                   <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
                     <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
-                      Default Authentication Method
+                      {t("defaultAuthMethod")}
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <button
@@ -560,7 +567,7 @@ export function SecuritySection() {
                         }`}
                       >
                         <KeyRound className="w-4 h-4" />
-                        PIN
+                        {t("pin")}
                       </button>
                       <button
                         onClick={() => handleSelectAuthMethod("biometric")}
@@ -571,7 +578,7 @@ export function SecuritySection() {
                         }`}
                       >
                         <Fingerprint className="w-4 h-4" />
-                        Biometric
+                        {t("biometric")}
                       </button>
                     </div>
                   </div>
@@ -587,11 +594,9 @@ export function SecuritySection() {
             icon={KeyRound}
             iconBg="bg-blue-100 dark:bg-blue-900/30"
             iconColor="text-blue-600 dark:text-blue-400"
-            title={pinStep === "enter" ? "Set Your PIN" : "Confirm PIN"}
+            title={pinStep === "enter" ? t("setYourPin") : t("confirmPin")}
             subtitle={
-              pinStep === "enter"
-                ? "Enter a 4-digit PIN"
-                : "Enter the PIN again to confirm"
+              pinStep === "enter" ? t("enterFourDigitPin") : t("enterPinAgain")
             }
           >
             <PinDots
@@ -629,11 +634,11 @@ export function SecuritySection() {
                 {isSettingUp ? (
                   <Spinner size="md" />
                 ) : pinStep === "enter" ? (
-                  "Next"
+                  t("next")
                 ) : (
                   <>
                     <Check className="w-4 h-4 mr-1" />
-                    Confirm
+                    {t("confirm")}
                   </>
                 )}
               </Button>
@@ -647,8 +652,8 @@ export function SecuritySection() {
             icon={Lock}
             iconBg="bg-red-100 dark:bg-red-900/30"
             iconColor="text-red-600 dark:text-red-400"
-            title="Disable App Lock"
-            subtitle="Verify your identity to disable lock"
+            title={t("disableAppLock")}
+            subtitle={t("verifyToDisableLock")}
           >
             {hasPin && (
               <>
@@ -678,7 +683,7 @@ export function SecuritySection() {
                   className="w-full gap-2 rounded-xl"
                 >
                   <Fingerprint className="w-5 h-5" />
-                  Use Biometric
+                  {t("useBiometric")}
                 </Button>
               </div>
             )}
@@ -696,7 +701,7 @@ export function SecuritySection() {
                   disabled={isVerifying || disablePin.length !== 4}
                   className="flex-1 rounded-xl bg-red-500 hover:bg-red-600 text-white"
                 >
-                  {isVerifying ? <Spinner size="md" /> : "Disable Lock"}
+                  {isVerifying ? <Spinner size="md" /> : t("disableLock")}
                 </Button>
               )}
             </div>
@@ -709,8 +714,12 @@ export function SecuritySection() {
             icon={removeTarget === "pin" ? KeyRound : Fingerprint}
             iconBg="bg-orange-100 dark:bg-orange-900/30"
             iconColor="text-orange-600 dark:text-orange-400"
-            title={removeTarget === "pin" ? "Remove PIN" : "Remove Biometric"}
-            subtitle="Verify your identity to remove this credential"
+            title={
+              removeTarget === "pin"
+                ? t("removePinTitle")
+                : t("removeBiometricTitle")
+            }
+            subtitle={t("verifyToRemoveCredential")}
           >
             {hasPin && (
               <>
@@ -740,7 +749,7 @@ export function SecuritySection() {
                   className="w-full gap-2 rounded-xl"
                 >
                   <Fingerprint className="w-5 h-5" />
-                  Use Biometric
+                  {t("useBiometric")}
                 </Button>
               </div>
             )}
@@ -758,7 +767,7 @@ export function SecuritySection() {
                   disabled={isRemoving || removePin.length !== 4}
                   className="flex-1 rounded-xl bg-orange-500 hover:bg-orange-600 text-white"
                 >
-                  {isRemoving ? <Spinner size="md" /> : "Remove"}
+                  {isRemoving ? <Spinner size="md" /> : t("removeCredential")}
                 </Button>
               )}
             </div>
@@ -767,23 +776,20 @@ export function SecuritySection() {
           {/* Info sections */}
           <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-500/30">
             <p className="text-sm text-emerald-800 dark:text-emerald-400">
-              <strong>🔒 100% Local Storage</strong>
+              <strong>{t("localStorageTitle")}</strong>
               <br />
               <span className="text-emerald-700 dark:text-emerald-400/80">
-                All your health data is stored locally on your device using
-                IndexedDB. We never send your logs to any server.
+                {t("localStorageDescription")}
               </span>
             </p>
           </div>
 
           <div className="p-4 bg-teal-50 dark:bg-teal-950/30 rounded-2xl border border-teal-200 dark:border-teal-500/30">
             <p className="text-sm text-teal-800 dark:text-teal-400">
-              <strong>🤖 AI Processing</strong>
+              <strong>{t("aiProcessingTitle")}</strong>
               <br />
               <span className="text-teal-700 dark:text-teal-400/80">
-                Voice transcripts are sent to OpenRouter AI models only for
-                parsing, then immediately discarded. Your raw audio never leaves
-                your device.
+                {t("aiProcessingDescription")}
               </span>
             </p>
           </div>
@@ -792,11 +798,10 @@ export function SecuritySection() {
             <p className="text-sm text-amber-800 dark:text-amber-400 flex gap-2">
               <AlertTriangle className="w-5 h-5 shrink-0" />
               <span>
-                <strong>Backup Your Data</strong>
+                <strong>{t("backupDataTitle")}</strong>
                 <br />
                 <span className="text-amber-700 dark:text-amber-400/80">
-                  Since everything is local, clearing browser data will delete
-                  your logs. Export regularly!
+                  {t("backupDataDescription")}
                 </span>
               </span>
             </p>

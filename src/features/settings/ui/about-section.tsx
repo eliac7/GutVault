@@ -30,15 +30,15 @@ export function AboutSection() {
             </span>
           </div>
           <div className="flex justify-between">
-            <span>Database</span>
+            <span>{t("database")}</span>
             <span className="font-medium text-teal-600 dark:text-cyan-400">
-              Dexie.js + IndexedDB
+              {t("databaseValue")}
             </span>
           </div>
           <div className="flex justify-between">
-            <span>AI Model</span>
+            <span>{t("aiModel")}</span>
             <span className="font-medium text-teal-600 dark:text-cyan-400">
-              OpenRouter AI models
+              {t("aiModelValue")}
             </span>
           </div>
           <div className="flex justify-between items-center">
@@ -55,13 +55,7 @@ export function AboutSection() {
             <p className="text-xs text-center">
               {t("madeWith")}
               <br />
-              <span className="text-slate-400">
-                Local-First •{" "}
-                <span className="text-teal-600 dark:text-cyan-400">
-                  Privacy-Focused
-                </span>{" "}
-                • Open Source
-              </span>
+              <span className="text-slate-400">{t("features")}</span>
             </p>
           </div>
         </div>

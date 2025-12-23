@@ -14,7 +14,7 @@
     "startLogging": "Ξεκινήστε την καταγραφή"
   },
   "navigation": {
-    "dashboard": "Πίνακας",
+    "dashboard": "Πίνακας Ελέγχου",
     "history": "Ιστορικό",
     "settings": "Ρυθμίσεις"
   },
@@ -23,7 +23,7 @@
     "exitFlareMode": "Έξοδος από λειτουργία έξαρσης"
   },
   "dashboard": {
-    "title": "Πίνακας",
+    "title": "Πίνακας Ελέγχου",
     "overview": "Επισκόπηση",
     "correlationsTab": "Συσχετίσεις",
     "atAGlance": {
@@ -71,6 +71,10 @@
   "settings": {
     "title": "Ρυθμίσεις",
     "dataManagement": {
+      "totalLogs": "Συνολικές Καταγραφές",
+      "used": "Χρησημοποιημένα",
+      "quota": "Χώρος",
+      "checkStorage": "Έλεγχος Χώρου",
       "title": "Διαχείριση Δεδομένων",
       "export": "Εξαγωγή Δεδομένων",
       "exportDescription": "Κατεβάστε τα δεδομένα σας ως PDF ή JSON",
@@ -90,21 +94,73 @@
       "reminders": "Υπενθυμίσεις",
       "remindersDescription": "Λάβετε ειδοποίηση για καταγραφή συμπτωμάτων",
       "language": "Γλώσσα",
-      "languageDescription": "Επιλέξτε την προτιμώμενη γλώσσα"
+      "languageDescription": "Επιλέξτε την προτιμώμενη γλώσσα",
+      "enableReminders": "Ενεργοποίηση Υπενθυμίσεων"
     },
     "security": {
       "title": "Ασφάλεια",
       "pinLock": "Κλείδωμα με PIN",
       "pinLockDescription": "Απαίτηση PIN για πρόσβαση στην εφαρμογή",
-      "changePin": "Αλλαγή PIN",
-      "removePin": "Αφαίρεση PIN"
+      "pinCode": "Κωδικός PIN",
+      "pinIsSet": "Ρυθμισμένος",
+      "pinNotConfigured": "Δεν έχει ρυθμιστεί",
+      "active": "Ενεργός",
+      "change": "Αλλαγή",
+      "biometric": "Βιομετρική",
+      "biometricConfigured": "Ρυθμισμένη",
+      "biometricNotSetUp": "Δεν έχει ρυθμιστεί",
+      "biometricActive": "Ενεργή",
+      "remove": "Αφαίρεση",
+      "setUp": "Ρύθμιση",
+      "defaultAuthMethod": "Προεπιλεγμένη Μέθοδος Επαλήθευσης",
+      "pin": "PIN",
+      "setYourPin": "Ορίστε τον PIN σας",
+      "confirmPin": "Επιβεβαίωση PIN",
+      "enterFourDigitPin": "Εισάγετε έναν 4ψήφιο PIN",
+      "enterPinAgain": "Εισάγετε ξανά τον PIN για επιβεβαίωση",
+      "next": "Επόμενο",
+      "confirm": "Επιβεβαίωση",
+      "disableAppLock": "Απενεργοποίηση Κλειδώματος Εφαρμογής",
+      "verifyToDisableLock": "Επαληθεύστε την ταυτότητά σας για απενεργοποίηση κλειδώματος",
+      "useBiometric": "Χρήση Βιομετρικής",
+      "disableLock": "Απενεργοποίηση Κλειδώματος",
+      "removePinTitle": "Αφαίρεση PIN",
+      "removeBiometricTitle": "Αφαίρεση Βιομετρικής",
+      "verifyToRemoveCredential": "Επαληθεύστε την ταυτότητά σας για αφαίρεση αυτού του διαπιστευτηρίου",
+      "removeCredential": "Αφαίρεση",
+      "localStorageTitle": "🔒 100% Τοπική Αποθήκευση",
+      "localStorageDescription": "Όλα τα δεδομένα υγείας σας αποθηκεύονται τοπικά στη συσκευή σας χρησιμοποιώντας IndexedDB. Δεν στέλνουμε ποτέ τα αρχεία σας σε διακομιστή.",
+      "aiProcessingTitle": "🤖 Επεξεργασία AI",
+      "aiProcessingDescription": "Οι μεταγραφές φωνής στέλνονται σε μοντέλα AI του OpenRouter μόνο για ανάλυση, στη συνέχεια διαγράφονται αμέσως. Ο ακατέργαστος ήχος σας δεν φεύγει ποτέ από τη συσκευή σας.",
+      "backupDataTitle": "Δημιουργία Αντιγράφου Ασφαλείας των Δεδομένων σας",
+      "backupDataDescription": "Δεδομένου ότι όλα είναι τοπικά, η εκκαθάριση δεδομένων προγράμματος περιήγησης θα διαγράψει τα αρχεία σας. Εξάγετε τακτικά!",
+      "appLockEnabled": "Το κλείδωμα εφαρμογής ενεργοποιήθηκε",
+      "pinSetSuccessfully": "Ο PIN ορίστηκε επιτυχώς",
+      "failedToSetPin": "Αποτυχία ορισμού PIN",
+      "appLockDisabled": "Το κλείδωμα εφαρμογής απενεργοποιήθηκε και τα διαπιστευτήρια διαγράφηκαν",
+      "incorrectPin": "Λάθος PIN",
+      "biometricVerificationFailed": "Η βιομετρική επαλήθευση απέτυχε",
+      "biometricEnabled": "Η βιομετρική επαλήθευση ενεργοποιήθηκε",
+      "biometricSetupFailed": "Αποτυχία ρύθμισης βιομετρικής επαλήθευσης",
+      "biometricSetupError": "Σφάλμα ρύθμισης βιομετρικής",
+      "biometricRemoved": "Η βιομετρική επαλήθευση αφαιρέθηκε",
+      "pinRemoved": "Ο PIN αφαιρέθηκε",
+      "defaultAuthMethodSet": "Η προεπιλεγμένη μέθοδος επαλήθευσης ορίστηκε σε {method}",
+      "pinMustBeFourDigits": "Ο PIN πρέπει να είναι 4 ψηφία",
+      "pinsDoNotMatch": "Οι PIN δεν ταιριάζουν",
+      "enterYourFourDigitPin": "Εισάγετε τον 4ψήφιο PIN σας"
     },
     "about": {
       "title": "Σχετικά",
       "version": "Έκδοση",
+      "database": "Βάση Δεδομένων",
+      "databaseValue": "Dexie.js + IndexedDB",
+      "aiModel": "Μοντέλο AI",
+      "aiModelValue": "Μοντέλα OpenRouter AI",
       "privacy": "Πολιτική Απορρήτου",
       "privacyDescription": "Διαβάστε την πολιτική απορρήτου μας",
-      "madeWith": "Φτιαγμένο με φροντίδα για όσους παλεύουν με το IBS"
+      "madeWith": "Φτιαγμένο με φροντίδα για όσους παλεύουν με το IBS",
+      "features": "Local-First • Εστιασμένο στην Ιδιωτικότητα • Ανοιχτού Κώδικα"
     }
   },
   "logging": {
@@ -151,6 +207,25 @@
         "Πάρτε το στιγμή με στιγμή"
       ]
     }
+  },
+  "speech": {
+    "languages": {
+      "enUS": "Αγγλικά (ΗΠΑ)",
+      "elGR": "Ελληνικά",
+      "enGB": "Αγγλικά (ΗΒ)",
+      "esES": "Ισπανικά",
+      "frFR": "Γαλλικά",
+      "deDE": "Γερμανικά",
+      "itIT": "Ιταλικά",
+      "ptBR": "Πορτογαλικά (Βραζιλία)",
+      "nlNL": "Ολλανδικά",
+      "plPL": "Πολωνικά",
+      "ruRU": "Ρωσικά",
+      "jaJP": "Ιαπωνικά",
+      "koKR": "Κορεατικά",
+      "zhCN": "Κινεζικά (Απλοποιημένα)",
+      "arSA": "Αραβικά",
+      "hiIN": "Χίντι"
+    }
   }
 }
-

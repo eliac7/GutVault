@@ -172,7 +172,7 @@ export function DataManagement() {
             </div>
             {storageInfo.used !== undefined && (
               <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                <span>Storage Used</span>
+                <span>{t("used")}</span>
                 <span>
                   {formatBytes(storageInfo.used)} /{" "}
                   {formatBytes(storageInfo.quota)}
@@ -186,7 +186,7 @@ export function DataManagement() {
                 onClick={checkStorage}
                 className="text-xs text-primary"
               >
-                Check Storage
+                {t("checkStorage")}
               </Button>
             )}
           </div>

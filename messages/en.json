@@ -71,6 +71,10 @@
   "settings": {
     "title": "Settings",
     "dataManagement": {
+      "totalLogs": "Total Logs",
+      "used": "Used",
+      "quota": "Quota",
+      "checkStorage": "Check Storage",
       "title": "Data Management",
       "export": "Export Data",
       "exportDescription": "Download your data as PDF or JSON",
@@ -90,21 +94,73 @@
       "reminders": "Reminders",
       "remindersDescription": "Get notified to log your symptoms",
       "language": "Language",
-      "languageDescription": "Choose your preferred language"
+      "languageDescription": "Choose your preferred language",
+      "enableReminders": "Enable Reminders"
     },
     "security": {
       "title": "Security",
       "pinLock": "PIN Lock",
       "pinLockDescription": "Require PIN to access the app",
-      "changePin": "Change PIN",
-      "removePin": "Remove PIN"
+      "pinCode": "PIN Code",
+      "pinIsSet": "Set",
+      "pinNotConfigured": "Not configured",
+      "active": "Active",
+      "change": "Change",
+      "biometric": "Biometric",
+      "biometricConfigured": "Configured",
+      "biometricNotSetUp": "Not set up",
+      "biometricActive": "Active",
+      "remove": "Remove",
+      "setUp": "Set Up",
+      "defaultAuthMethod": "Default Authentication Method",
+      "pin": "PIN",
+      "setYourPin": "Set Your PIN",
+      "confirmPin": "Confirm PIN",
+      "enterFourDigitPin": "Enter a 4-digit PIN",
+      "enterPinAgain": "Enter the PIN again to confirm",
+      "next": "Next",
+      "confirm": "Confirm",
+      "disableAppLock": "Disable App Lock",
+      "verifyToDisableLock": "Verify your identity to disable lock",
+      "useBiometric": "Use Biometric",
+      "disableLock": "Disable Lock",
+      "removePinTitle": "Remove PIN",
+      "removeBiometricTitle": "Remove Biometric",
+      "verifyToRemoveCredential": "Verify your identity to remove this credential",
+      "removeCredential": "Remove",
+      "localStorageTitle": "🔒 100% Local Storage",
+      "localStorageDescription": "All your health data is stored locally on your device using IndexedDB. We never send your logs to any server.",
+      "aiProcessingTitle": "🤖 AI Processing",
+      "aiProcessingDescription": "Voice transcripts are sent to OpenRouter AI models only for parsing, then immediately discarded. Your raw audio never leaves your device.",
+      "backupDataTitle": "Backup Your Data",
+      "backupDataDescription": "Since everything is local, clearing browser data will delete your logs. Export regularly!",
+      "appLockEnabled": "App lock enabled",
+      "pinSetSuccessfully": "PIN set successfully",
+      "failedToSetPin": "Failed to set PIN",
+      "appLockDisabled": "App lock disabled and credentials cleared",
+      "incorrectPin": "Incorrect PIN",
+      "biometricVerificationFailed": "Biometric verification failed",
+      "biometricEnabled": "Biometric authentication enabled",
+      "biometricSetupFailed": "Failed to set up biometric authentication",
+      "biometricSetupError": "Biometric setup failed",
+      "biometricRemoved": "Biometric authentication removed",
+      "pinRemoved": "PIN removed",
+      "defaultAuthMethodSet": "Default authentication method set to {method}",
+      "pinMustBeFourDigits": "PIN must be 4 digits",
+      "pinsDoNotMatch": "PINs do not match",
+      "enterYourFourDigitPin": "Enter your 4-digit PIN"
     },
     "about": {
       "title": "About",
       "version": "Version",
+      "database": "Database",
+      "databaseValue": "Dexie.js + IndexedDB",
+      "aiModel": "AI Model",
+      "aiModelValue": "OpenRouter AI models",
       "privacy": "Privacy Policy",
       "privacyDescription": "Read our privacy policy",
-      "madeWith": "Made with care for IBS warriors"
+      "madeWith": "Made with care for IBS warriors",
+      "features": "Local-First • Privacy-Focused • Open Source"
     }
   },
   "logging": {
@@ -150,6 +206,26 @@
         "You're stronger than you think",
         "Take it one moment at a time"
       ]
+    }
+  },
+  "speech": {
+    "languages": {
+      "enUS": "English (US)",
+      "elGR": "Ελληνικά",
+      "enGB": "English (UK)",
+      "esES": "Español",
+      "frFR": "Français",
+      "deDE": "Deutsch",
+      "itIT": "Italiano",
+      "ptBR": "Português (BR)",
+      "nlNL": "Nederlands",
+      "plPL": "Polski",
+      "ruRU": "Русский",
+      "jaJP": "日本語",
+      "koKR": "한국어",
+      "zhCN": "中文 (简体)",
+      "arSA": "العربية",
+      "hiIN": "हिन्दी"
     }
   }
 }

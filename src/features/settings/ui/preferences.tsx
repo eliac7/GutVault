@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/shared/ui/select";
 import {
-  SPEECH_LANGUAGES,
+  useTranslatedSpeechLanguages,
   type SpeechLanguageCode,
 } from "@/features/logging/hooks/use-speech-recognition";
 import ReactCountryFlag from "react-country-flag";
@@ -27,6 +27,7 @@ export function Preferences() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const t = useTranslations("settings.preferences");
+  const speechLanguages = useTranslatedSpeechLanguages();
 
   useEffect(() => {
     setTimeout(() => {
@@ -113,7 +114,7 @@ export function Preferences() {
           <div>
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
               <Globe className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
-              Default Voice Language
+              {t("language")}
             </label>
             <Select
               value={voiceLanguage}
@@ -125,7 +126,7 @@ export function Preferences() {
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>
-                {SPEECH_LANGUAGES.map((lang) => (
+                {speechLanguages.map((lang) => (
                   <SelectItem key={lang.code} value={lang.code}>
                     <div className="flex items-center gap-2">
                       <ReactCountryFlag
@@ -150,7 +151,7 @@ export function Preferences() {
             <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
               <div className="flex-1">
                 <div className="font-medium text-slate-900 dark:text-slate-100">
-                  Enable Reminders
+                  {t("enableReminders")}
                 </div>
                 <div className="text-sm text-slate-500 dark:text-slate-400">
                   {t("remindersDescription")}

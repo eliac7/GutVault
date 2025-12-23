@@ -27,7 +27,7 @@ import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { parseVoiceLog, type ParsedLogEntry } from "../actions/parse-voice-log";
 import {
-  SPEECH_LANGUAGES,
+  useTranslatedSpeechLanguages,
   useSpeechRecognition,
   type SpeechLanguageCode,
 } from "../hooks/use-speech-recognition";
@@ -56,6 +56,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
     db.settings.get("voiceLanguage").then((s) => s?.value as SpeechLanguageCode)
   );
   const language = savedLanguage ?? DEFAULT_VOICE_LANGUAGE;
+  const speechLanguages = useTranslatedSpeechLanguages();
 
   const handleLanguageChange = async (code: SpeechLanguageCode) => {
     await db.settings.put({ id: "voiceLanguage", value: code });
@@ -207,7 +208,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     >
                       <ReactCountryFlag
                         countryCode={
-                          SPEECH_LANGUAGES.find((l) => l.code === language)
+                          speechLanguages.find((l) => l.code === language)
                             ?.flag || "US"
                         }
                         className="size-6"
@@ -215,7 +216,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                       />
                       <span>
                         {
-                          SPEECH_LANGUAGES.find((l) => l.code === language)
+                          speechLanguages.find((l) => l.code === language)
                             ?.label
                         }
                       </span>
@@ -230,7 +231,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                           exit={{ opacity: 0, y: -10 }}
                           className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 max-h-64 overflow-y-auto bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-10"
                         >
-                          {SPEECH_LANGUAGES.map((lang) => (
+                          {speechLanguages.map((lang) => (
                             <button
                               key={lang.code}
                               onClick={() =>

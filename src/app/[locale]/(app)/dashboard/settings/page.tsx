@@ -1,15 +1,22 @@
 import { SettingsContent } from "@/features/settings/ui/settings-content";
 import { AppHeader } from "@/widgets/app-header/ui/app-header";
 import { Metadata } from "next";
+import { Locale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "Settings",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "navigation" });
 
+  return {
+    title: t("settings"),
+  };
+}
 export default async function SettingsPage() {
-  const t = await getTranslations("settings");
-
   return (
     <>
       <AppHeader titleKey="settings.title" showBack />
@@ -19,4 +26,3 @@ export default async function SettingsPage() {
     </>
   );
 }
-

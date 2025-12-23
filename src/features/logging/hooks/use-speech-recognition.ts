@@ -1,27 +1,37 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 export const SPEECH_LANGUAGES = [
-  { code: "en-US", label: "English (US)", flag: "US" },
-  { code: "el-GR", label: "Ελληνικά", flag: "GR" },
-  { code: "en-GB", label: "English (UK)", flag: "GB" },
-  { code: "es-ES", label: "Español", flag: "ES" },
-  { code: "fr-FR", label: "Français", flag: "FR" },
-  { code: "de-DE", label: "Deutsch", flag: "DE" },
-  { code: "it-IT", label: "Italiano", flag: "IT" },
-  { code: "pt-BR", label: "Português (BR)", flag: "BR" },
-  { code: "nl-NL", label: "Nederlands", flag: "NL" },
-  { code: "pl-PL", label: "Polski", flag: "PL" },
-  { code: "ru-RU", label: "Русский", flag: "RU" },
-  { code: "ja-JP", label: "日本語", flag: "JP" },
-  { code: "ko-KR", label: "한국어", flag: "KR" },
-  { code: "zh-CN", label: "中文 (简体)", flag: "CN" },
-  { code: "ar-SA", label: "العربية", flag: "SA" },
-  { code: "hi-IN", label: "हिन्दी", flag: "IN" },
+  { code: "en-US", labelKey: "speech.languages.enUS", flag: "US" },
+  { code: "el-GR", labelKey: "speech.languages.elGR", flag: "GR" },
+  { code: "en-GB", labelKey: "speech.languages.enGB", flag: "GB" },
+  { code: "es-ES", labelKey: "speech.languages.esES", flag: "ES" },
+  { code: "fr-FR", labelKey: "speech.languages.frFR", flag: "FR" },
+  { code: "de-DE", labelKey: "speech.languages.deDE", flag: "DE" },
+  { code: "it-IT", labelKey: "speech.languages.itIT", flag: "IT" },
+  { code: "pt-BR", labelKey: "speech.languages.ptBR", flag: "BR" },
+  { code: "nl-NL", labelKey: "speech.languages.nlNL", flag: "NL" },
+  { code: "pl-PL", labelKey: "speech.languages.plPL", flag: "PL" },
+  { code: "ru-RU", labelKey: "speech.languages.ruRU", flag: "RU" },
+  { code: "ja-JP", labelKey: "speech.languages.jaJP", flag: "JP" },
+  { code: "ko-KR", labelKey: "speech.languages.koKR", flag: "KR" },
+  { code: "zh-CN", labelKey: "speech.languages.zhCN", flag: "CN" },
+  { code: "ar-SA", labelKey: "speech.languages.arSA", flag: "SA" },
+  { code: "hi-IN", labelKey: "speech.languages.hiIN", flag: "IN" },
 ] as const;
 
 export type SpeechLanguageCode = (typeof SPEECH_LANGUAGES)[number]["code"];
+
+export function useTranslatedSpeechLanguages() {
+  const t = useTranslations();
+
+  return SPEECH_LANGUAGES.map((lang) => ({
+    ...lang,
+    label: t(lang.labelKey),
+  }));
+}
 
 interface UseSpeechRecognitionOptions {
   language?: SpeechLanguageCode;

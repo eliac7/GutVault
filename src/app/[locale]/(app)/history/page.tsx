@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HistoryPage() {
-  const t = await getTranslations("history");
+  await getTranslations("history");
 
   return (
     <>
