@@ -1,6 +1,7 @@
 "use client";
 
 import { Activity, BarChart3 } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -15,6 +16,13 @@ import {
 } from "recharts";
 
 export const Analytics = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
+  }, []);
+
   const symptomData = [
     { day: "1", severity: 20 },
     { day: "2", severity: 35 },
@@ -38,6 +46,31 @@ export const Analytics = () => {
     { name: "Garlic", value: 30, color: "#eab308" },
     { name: "Rice", value: 10, color: "#10b981" },
   ];
+
+  if (!isMounted) {
+    return (
+      <section className="py-24 bg-white dark:bg-slate-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+              Computed on-device.
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 mt-2">
+              Charts generated instantly in your browser using Recharts.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6 sm:p-8 border border-slate-100 dark:border-slate-800 relative h-96 flex items-center justify-center">
+              <span className="text-slate-400">Loading charts...</span>
+            </div>
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl p-6 sm:p-8 border border-slate-100 dark:border-slate-800 h-96 flex items-center justify-center">
+              <span className="text-slate-400">Loading charts...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-24 bg-white dark:bg-slate-950">
