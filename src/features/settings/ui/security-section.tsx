@@ -1,29 +1,32 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import {
-  Shield,
-  AlertTriangle,
-  Lock,
-  Fingerprint,
-  KeyRound,
-  Check,
-} from "lucide-react";
-import { Card } from "@/shared/ui/card";
+  clearBiometricRegistration,
+  hashPin,
+  registerBiometric,
+} from "@/shared/lib/auth";
+import { useLock, type AuthMethod } from "@/shared/providers/lock-provider";
 import { Button } from "@/shared/ui/button";
+import { Card } from "@/shared/ui/card";
 import { PinDots } from "@/shared/ui/pin-dots";
 import { PinKeypad } from "@/shared/ui/pin-keypad";
 import { PinModal } from "@/shared/ui/pin-modal";
 import { Spinner } from "@/shared/ui/spinner";
-import { useLock, type AuthMethod } from "@/shared/providers/lock-provider";
 import {
-  hashPin,
-  registerBiometric,
-  clearBiometricRegistration,
-} from "@/shared/lib/auth";
-import { toast } from "sonner";
+  AlertCircle,
+  Check,
+  Database,
+  Fingerprint,
+  KeyRound,
+  Lock,
+  Server,
+  Shield,
+} from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
+import { useCallback, useState } from "react";
+import { toast } from "sonner";
+import { PrivacyCard } from "./security-privacy-card";
 
 export function SecuritySection() {
   const t = useTranslations("settings.security");
@@ -775,37 +778,32 @@ export function SecuritySection() {
           </PinModal>
 
           {/* Info sections */}
-          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-500/30">
-            <p className="text-sm text-emerald-800 dark:text-emerald-400">
-              <strong>{t("localStorageTitle")}</strong>
-              <br />
-              <span className="text-emerald-700 dark:text-emerald-400/80">
-                {t("localStorageDescription")}
-              </span>
-            </p>
-          </div>
+          <div className="space-y-3 pt-2">
+            <div className="grid gap-3">
+              <PrivacyCard
+                icon={<Database className="h-4 w-4" />}
+                title={t("localStorageTitle")}
+                description={t("localStorageDescription")}
+              />
+              <PrivacyCard
+                icon={<Server className="h-4 w-4" />}
+                title={t("aiProcessingTitle")}
+                description={t("aiProcessingDescription")}
+              />
+            </div>
 
-          <div className="p-4 bg-teal-50 dark:bg-teal-950/30 rounded-2xl border border-teal-200 dark:border-teal-500/30">
-            <p className="text-sm text-teal-800 dark:text-teal-400">
-              <strong>{t("aiProcessingTitle")}</strong>
-              <br />
-              <span className="text-teal-700 dark:text-teal-400/80">
-                {t("aiProcessingDescription")}
-              </span>
-            </p>
-          </div>
-
-          <div className="p-4 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-500/30">
-            <p className="text-sm text-amber-800 dark:text-amber-400 flex gap-2">
-              <AlertTriangle className="w-5 h-5 shrink-0" />
-              <span>
-                <strong>{t("backupDataTitle")}</strong>
-                <br />
-                <span className="text-amber-700 dark:text-amber-400/80">
+            {/* Warning */}
+            <div className="flex gap-3 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20">
+              <AlertCircle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-amber-400">
+                  {t("backupDataTitle")}
+                </p>
+                <p className="text-xs text-amber-400/70 mt-1 leading-relaxed">
                   {t("backupDataDescription")}
-                </span>
-              </span>
-            </p>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </Card>
