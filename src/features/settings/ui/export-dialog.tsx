@@ -68,11 +68,16 @@ export function ExportDialog({
 
   const handleExport = () => {
     if (isDoctorMode) {
-      onExport("pdf", undefined, {
-        dateRange: doctorRange,
-        anonymize,
-        includeCharts,
-      }, locale);
+      onExport(
+        "pdf",
+        undefined,
+        {
+          dateRange: doctorRange,
+          anonymize,
+          includeCharts,
+        },
+        locale
+      );
     } else {
       onExport(
         exportFormat,
@@ -104,7 +109,7 @@ export function ExportDialog({
           <button
             onClick={() => setIsDoctorMode(false)}
             className={cn(
-              "flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all",
+              "flex-1 flex items-center justify-center gap-2 p-2 text-sm font-medium rounded-md transition-all",
               !isDoctorMode
                 ? "bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-slate-100"
                 : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
@@ -116,7 +121,7 @@ export function ExportDialog({
           <button
             onClick={() => setIsDoctorMode(true)}
             className={cn(
-              "flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all",
+              "flex-1 flex items-center justify-center gap-1 p-2 text-sm font-medium rounded-md transition-all",
               isDoctorMode
                 ? "bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-indigo-400"
                 : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
@@ -305,7 +310,7 @@ export function ExportDialog({
                           : "border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700"
                       )}
                     >
-                    {t("lastDays", { days })}
+                      {t("lastDays", { days })}
                     </button>
                   ))}
                 </div>
@@ -314,19 +319,19 @@ export function ExportDialog({
               <div className="space-y-4 pt-2">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                  <Label className="text-base">{t("hideNotes")}</Label>
-                  <p className="text-xs text-slate-500">
-                    {t("hideNotesDescription")}
-                  </p>
+                    <Label className="text-base">{t("hideNotes")}</Label>
+                    <p className="text-xs text-slate-500">
+                      {t("hideNotesDescription")}
+                    </p>
                   </div>
                   <Switch checked={anonymize} onCheckedChange={setAnonymize} />
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                  <Label className="text-base">{t("includeCharts")}</Label>
-                  <p className="text-xs text-slate-500">
-                    {t("includeChartsDescription")}
-                  </p>
+                    <Label className="text-base">{t("includeCharts")}</Label>
+                    <p className="text-xs text-slate-500">
+                      {t("includeChartsDescription")}
+                    </p>
                   </div>
                   <Switch
                     checked={includeCharts}

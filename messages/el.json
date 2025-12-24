@@ -137,7 +137,7 @@
         "pdfTitle": "Έγγραφο PDF",
         "pdfDescription": "Αναγνώσιμο αναφορά",
         "jsonTitle": "Δεδομένα JSON",
-        "jsonDescription": "Ακατέργαστο αντίγραφο",
+        "jsonDescription": "Μορφή εξαγωγής/εισαγωγής για backup και επαναφορά",
         "dateRange": "Εύρος ημερομηνιών",
         "allTime": "Όλο το διάστημα",
         "customRange": "Προσαρμοσμένο εύρος",
