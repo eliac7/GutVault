@@ -369,6 +369,7 @@
       "potentialTriggers": "Potential Triggers",
       "medicationNameLabel": "Medication Name",
       "medicationNamePlaceholder": "e.g., Imodium, Buscopan",
+      "dosageLabel": "Dosage",
       "dosagePlaceholder": "e.g., 2mg, 1 tablet",
       "nextStep": "Next Step",
       "updateLog": "Update Log"

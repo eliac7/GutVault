@@ -369,6 +369,7 @@
       "potentialTriggers": "Πιθανές αιτίες",
       "medicationNameLabel": "Όνομα φαρμάκου",
       "medicationNamePlaceholder": "π.χ. Imodium, Buscopan",
+      "dosageLabel": "Δοσολογία",
       "dosagePlaceholder": "π.χ. 2mg, 1 δισκίο",
       "nextStep": "Επόμενο βήμα",
       "updateLog": "Ενημέρωση καταγραφής"
