@@ -449,12 +449,12 @@ export function SecuritySection() {
               >
                 {/* PIN Setup */}
                 <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
                         <KeyRound className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="font-medium text-slate-900 dark:text-slate-100">
                           {t("pinCode")}
                         </div>
@@ -463,9 +463,9 @@ export function SecuritySection() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       {hasPin && authMethod === "pin" && (
-                        <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full">
+                        <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full whitespace-nowrap">
                           {t("active")}
                         </span>
                       )}
@@ -478,7 +478,7 @@ export function SecuritySection() {
                               setShowPinSetup(true);
                               setPinStep("enter");
                             }}
-                            className="text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                            className="text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-xs sm:text-sm"
                           >
                             {t("change")}
                           </Button>
@@ -486,7 +486,7 @@ export function SecuritySection() {
                             variant="ghost"
                             size="sm"
                             onClick={handleRequestRemovePin}
-                            className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
+                            className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 text-xs sm:text-sm"
                           >
                             {t("remove")}
                           </Button>
@@ -508,12 +508,12 @@ export function SecuritySection() {
                 {/* Biometric Setup */}
                 {biometricAvailable && (
                   <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center shrink-0">
                           <Fingerprint className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <div className="font-medium text-slate-900 dark:text-slate-100">
                             {t("biometric")}
                           </div>
@@ -524,9 +524,9 @@ export function SecuritySection() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         {hasBiometric && authMethod === "biometric" && (
-                          <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full">
+                          <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-2 py-1 rounded-full whitespace-nowrap">
                             {t("biometricActive")}
                           </span>
                         )}
@@ -535,7 +535,7 @@ export function SecuritySection() {
                             variant="ghost"
                             size="sm"
                             onClick={handleRequestRemoveBiometric}
-                            className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
+                            className="text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 text-xs sm:text-sm"
                           >
                             {t("remove")}
                           </Button>

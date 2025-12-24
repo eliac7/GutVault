@@ -1,11 +1,10 @@
 "use client";
 
 import { ArrowLeft, Settings, AlertCircle, Globe } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/features/theme-toggle";
 import { Button } from "@/shared/ui/button";
 import { useFlareMode } from "@/features/flare";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { localeNames, type Locale } from "@/i18n/config";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
@@ -30,7 +29,7 @@ export function AppHeader({
   const displayTitle = titleKey ? t(titleKey) : title ?? t("common.appName");
 
   const switchLocale = (newLocale: Locale) => {
-    router.push(`/${newLocale}${pathname}`);
+    router.replace(pathname, { locale: newLocale });
   };
 
   return (

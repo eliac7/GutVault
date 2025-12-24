@@ -45,7 +45,7 @@ export function AboutSection() {
             <span>{t("privacy")}</span>
             <Link
               href="/privacy"
-              className="font-medium text-teal-600 dark:text-cyan-400 hover:underline"
+              className="font-medium text-teal-600 dark:text-cyan-400 hover:underline text-right"
               target="_blank"
             >
               {t("privacyDescription")}

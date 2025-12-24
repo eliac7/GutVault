@@ -66,7 +66,7 @@ export function BristolPicker({
                   : "bg-transparent border-transparent hover:bg-slate-100 dark:hover:bg-slate-800"
               )}
             >
-              <BristolImage type={type} className="size-8" />
+              <BristolImage type={type} className="size-8 " />
               <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400">
                 {t(`logging.bristol.type${type}.label`)}
               </span>
