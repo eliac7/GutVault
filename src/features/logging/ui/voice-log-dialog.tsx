@@ -32,10 +32,14 @@ import {
   useTranslatedSpeechLanguages,
   type SpeechLanguageCode,
 } from "../hooks/use-speech-recognition";
+import { useRateLimit } from "../hooks/use-rate-limit";
+import { getDeviceId } from "../lib/device-id";
+import { RATE_LIMIT_CONFIG } from "../lib/rate-limit-config";
 import { BristolPicker } from "./bristol-picker";
 import { ChipSelector } from "./chip-selector";
 import { FodmapPicker } from "./fodmap-picker";
 import { LevelSlider } from "./level-slider";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 
 const DEFAULT_VOICE_LANGUAGE: SpeechLanguageCode = "en-US";
 
@@ -56,6 +60,10 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
   const [parsedData, setParsedData] = useState<ParsedLogEntry | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+
+  // Rate limiting
+  const rateLimit = useRateLimit({ type: "VOICE_LOG" });
+  const deviceId = getDeviceId();
 
   // Get language preference from DB
   const savedLanguage = useLiveQuery(() =>
@@ -118,16 +126,49 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
       return;
     }
 
+    await rateLimit.checkStatus();
+    if (!rateLimit.isAllowed) {
+      const timeUntilReset = rateLimit.getTimeUntilReset();
+      setErrorMessage(
+        t("voiceDialog.rateLimitExceeded", {
+          remaining: rateLimit.remaining,
+          resetTime: timeUntilReset || "soon",
+        }) ||
+          `Rate limit exceeded. Please try again in ${
+            timeUntilReset || "a while"
+          }.`
+      );
+      setStep("error");
+      return;
+    }
+
     stopListening();
     setStep("processing");
 
-    const result = await parseVoiceLog(textToProcess, language);
+    const result = await parseVoiceLog(textToProcess, language, deviceId);
+
+    // Refresh rate limit status after server-side increment
+    await rateLimit.checkStatus();
 
     if (result.success) {
       setParsedData(result.data);
       setStep("review");
     } else {
-      setErrorMessage(result.error);
+      // Check if it's a rate limit error
+      if ("rateLimit" in result) {
+        const timeUntilReset = rateLimit.getTimeUntilReset();
+        setErrorMessage(
+          t("voiceDialog.rateLimitExceeded", {
+            remaining: result.rateLimit.remaining,
+            resetTime: timeUntilReset || "soon",
+          }) ||
+            `Rate limit exceeded. Please try again in ${
+              timeUntilReset || "a while"
+            }.`
+        );
+      } else {
+        setErrorMessage(result.error);
+      }
       setStep("error");
     }
   };
@@ -201,62 +242,138 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                   exit={{ opacity: 0, y: -20 }}
                   className="text-center"
                 >
-                  {/* Language Selector */}
-                  <div className="relative mb-4">
-                    <button
-                      onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-                      disabled={isListening}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
-                    >
-                      <ReactCountryFlag
-                        countryCode={
-                          speechLanguages.find((l) => l.code === language)
-                            ?.flag || "US"
-                        }
-                        className="size-6"
-                        svg
-                      />
-                      <span>
-                        {
-                          speechLanguages.find((l) => l.code === language)
-                            ?.label
-                        }
-                      </span>
-                    </button>
+                  {/* Language Selector and Rate Limit */}
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <div className="relative">
+                      <button
+                        onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                        disabled={isListening}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+                      >
+                        <ReactCountryFlag
+                          countryCode={
+                            speechLanguages.find((l) => l.code === language)
+                              ?.flag || "US"
+                          }
+                          className="size-6"
+                          svg
+                        />
+                        <span>
+                          {
+                            speechLanguages.find((l) => l.code === language)
+                              ?.label
+                          }
+                        </span>
+                      </button>
 
-                    {/* Language Dropdown */}
-                    <AnimatePresence>
-                      {showLanguageMenu && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 max-h-64 overflow-y-auto bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-10"
-                        >
-                          {speechLanguages.map((lang) => (
-                            <button
-                              key={lang.code}
-                              onClick={() => handleLanguageChange(lang.code)}
-                              className={`w-full px-4 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${
-                                language === lang.code
-                                  ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
-                                  : "text-slate-700 dark:text-slate-300"
-                              }`}
-                            >
-                              <ReactCountryFlag
-                                countryCode={lang.flag}
-                                svg
-                                className="size-6"
-                              />
-                              <span>{lang.label}</span>
-                              {language === lang.code && (
-                                <Check className="w-4 h-4 ml-auto" />
-                              )}
-                            </button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                      {/* Language Dropdown */}
+                      <AnimatePresence>
+                        {showLanguageMenu && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 max-h-64 overflow-y-auto bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-10"
+                          >
+                            {speechLanguages.map((lang) => (
+                              <button
+                                key={lang.code}
+                                onClick={() => handleLanguageChange(lang.code)}
+                                className={`w-full px-4 py-2.5 text-left text-sm flex items-center gap-3 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ${
+                                  language === lang.code
+                                    ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
+                                    : "text-slate-700 dark:text-slate-300"
+                                }`}
+                              >
+                                <ReactCountryFlag
+                                  countryCode={lang.flag}
+                                  svg
+                                  className="size-6"
+                                />
+                                <span>{lang.label}</span>
+                                {language === lang.code && (
+                                  <Check className="w-4 h-4 ml-auto" />
+                                )}
+                              </button>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Rate Limit Indicator */}
+                    {rateLimit.status && (
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium ${
+                              rateLimit.remaining <= 2
+                                ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                                : rateLimit.remaining <= 5
+                                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                            }`}
+                            title={
+                              rateLimit.remaining > 0
+                                ? t("voiceDialog.rateLimitRemaining", {
+                                    remaining: rateLimit.remaining,
+                                  })
+                                : t("voiceDialog.rateLimitExceededShort")
+                            }
+                          >
+                            {rateLimit.remaining}/{rateLimit.status.limit}{" "}
+                            {t("voiceDialog.rateLimitRemainingShort")}
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="space-y-1">
+                            {rateLimit.remaining > 0 ? (
+                              <>
+                                <p>
+                                  {t("voiceDialog.rateLimitRemaining", {
+                                    remaining: rateLimit.remaining,
+                                  })}
+                                </p>
+                                <p className="text-xs opacity-80">
+                                  {t("voiceDialog.rateLimitResetsIn", {
+                                    resetTime:
+                                      rateLimit.getTimeUntilReset() ||
+                                      t("voiceDialog.lessThanAMinute"),
+                                  })}
+                                </p>
+                              </>
+                            ) : (
+                              <>
+                                <p>{t("voiceDialog.rateLimitExceededShort")}</p>
+                                <p className="text-xs opacity-80">
+                                  {t("voiceDialog.rateLimitResetsIn", {
+                                    resetTime:
+                                      rateLimit.getTimeUntilReset() ||
+                                      t("voiceDialog.lessThanAMinute"),
+                                  })}
+                                </p>
+                              </>
+                            )}
+                            <p className="text-xs opacity-60 border-t border-slate-200 dark:border-slate-700 pt-1 mt-1">
+                              {(() => {
+                                const windowHours =
+                                  RATE_LIMIT_CONFIG.VOICE_LOG.WINDOW_SECONDS /
+                                  3600;
+                                return windowHours === 1
+                                  ? t("voiceDialog.rateLimitWindowInfo", {
+                                      limit: rateLimit.status.limit,
+                                      windowHours,
+                                    })
+                                  : t("voiceDialog.rateLimitWindowInfoPlural", {
+                                      limit: rateLimit.status.limit,
+                                      windowHours,
+                                    });
+                              })()}
+                            </p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
                   </div>
 
                   {/* Mic Animation */}
@@ -565,7 +682,11 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                 {isListening ? (
                   <Button
                     onClick={handleProcess}
-                    disabled={!displayTranscript.trim()}
+                    disabled={
+                      !displayTranscript.trim() ||
+                      !rateLimit.isAllowed ||
+                      rateLimit.isLoading
+                    }
                     className="flex-1 h-14 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white disabled:opacity-50"
                   >
                     <Check className="w-5 h-5 mr-2" />
@@ -574,7 +695,8 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                 ) : (
                   <Button
                     onClick={startListening}
-                    className="flex-1 h-14 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white"
+                    disabled={!rateLimit.isAllowed || rateLimit.isLoading}
+                    className="flex-1 h-14 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white disabled:opacity-50"
                   >
                     <Mic className="w-5 h-5 mr-2" />
                     {t("voiceDialog.startListening")}

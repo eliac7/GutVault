@@ -3,6 +3,8 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateObject } from "ai";
 import { z } from "zod";
+import { checkRateLimit } from "../lib/rate-limit";
+import type { RateLimitError } from "../lib/rate-limit-config";
 
 const MODEL = process.env.OPENROUTER_MODEL || "mistralai/devstral-2512:free";
 
@@ -14,18 +16,41 @@ const chatModel = openrouter.chat(MODEL);
 const foodAnalysisSchema = z.object({
   name: z.string().describe("The English name of the food (normalized)"),
   status: z.enum(["low", "medium", "high"]).describe("The FODMAP status"),
-  category: z.string().optional().describe("The food category (e.g., Vegetable, Fruit, Dairy)"),
-  notes: z.string().optional().describe("Brief explanation of why it has this status (e.g., 'High in fructans')"),
+  category: z
+    .string()
+    .optional()
+    .describe("The food category (e.g., Vegetable, Fruit, Dairy)"),
+  notes: z
+    .string()
+    .optional()
+    .describe(
+      "Brief explanation of why it has this status (e.g., 'High in fructans')"
+    ),
 });
 
 export type FoodAnalysisResult = z.infer<typeof foodAnalysisSchema>;
 
 export async function analyzeFood(
   foodName: string,
+  deviceId: string,
   language: string = "English"
-): Promise<{ success: true; data: FoodAnalysisResult } | { success: false; error: string }> {
+): Promise<
+  | { success: true; data: FoodAnalysisResult }
+  | { success: false; error: string }
+  | RateLimitError
+> {
   if (!foodName.trim()) {
     return { success: false, error: "Empty food name" };
+  }
+
+  // Check rate limit before processing
+  const rateLimitResult = await checkRateLimit(deviceId, "FOOD_ANALYSIS");
+  if (!rateLimitResult.allowed) {
+    return {
+      success: false,
+      error: "Rate limit exceeded. Please try again later.",
+      rateLimit: rateLimitResult,
+    };
   }
 
   try {

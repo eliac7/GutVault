@@ -400,7 +400,15 @@
       "failedToSave": "Αποτυχία αποθήκευσης καταγραφής. Δοκίμασε ξανά.",
       "doneSpeaking": "Τελείωσα",
       "startListening": "Έναρξη ακρόασης",
-      "tryAgain": "Προσπάθησε ξανά"
+      "tryAgain": "Προσπάθησε ξανά",
+      "rateLimitExceeded": "Υπέρβαση ορίου αιτημάτων. Έχεις {remaining} αιτήματα διαθέσιμα. Δοκίμασε ξανά σε {resetTime}.",
+      "rateLimitRemaining": "{remaining} αιτήματα διαθέσιμα",
+      "rateLimitExceededShort": "Υπέρβαση ορίου",
+      "rateLimitRemainingShort": "διαθέσιμα",
+      "lessThanAMinute": "λιγότερο από ένα λεπτό",
+      "rateLimitResetsIn": "Επαναφορά σε {resetTime}",
+      "rateLimitWindowInfo": "Όριο: {limit} αιτήματα ανά {windowHours} ώρα",
+      "rateLimitWindowInfoPlural": "Όριο: {limit} αιτήματα ανά {windowHours} ώρες"
     }
   },
   "flare": {

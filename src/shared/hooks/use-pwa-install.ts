@@ -17,7 +17,7 @@ declare global {
   }
 }
 
-const DISMISSED_KEY = "pwa-install-dismissed";
+const DISMISSED_KEY = "gutvault_pwa_install_dismissed";
 const DISMISSED_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 export function usePwaInstall() {

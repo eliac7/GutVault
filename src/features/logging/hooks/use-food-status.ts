@@ -2,6 +2,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/shared/db";
 import { FODMAP_DATA, type FodmapStatus } from "../lib/fodmap-data";
 import { analyzeFood } from "../actions/analyze-food";
+import { getDeviceId } from "../lib/device-id";
 
 export function useFoodStatus(foodName: string) {
   const normalizedName = foodName.trim();
@@ -46,7 +47,8 @@ export async function checkAndCacheFood(foodName: string, language?: string) {
 
   // If not, ask AI
   try {
-    const result = await analyzeFood(normalizedName, language);
+    const deviceId = getDeviceId();
+    const result = await analyzeFood(normalizedName, deviceId, language);
 
     if (result.success) {
       await db.cachedFoods.put({

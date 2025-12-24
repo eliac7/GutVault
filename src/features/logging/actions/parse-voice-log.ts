@@ -10,6 +10,8 @@ import {
 } from "@/shared/db";
 import { z } from "zod";
 import { SpeechLanguageCode } from "../hooks/use-speech-recognition";
+import { checkRateLimit } from "../lib/rate-limit";
+import type { RateLimitError } from "../lib/rate-limit-config";
 
 const MODEL = process.env.OPENROUTER_MODEL || "mistralai/devstral-2512:free";
 
@@ -79,12 +81,25 @@ export type ParsedLogEntry = z.infer<typeof logEntrySchema>;
 
 export async function parseVoiceLog(
   transcript: string,
-  language: SpeechLanguageCode
+  language: SpeechLanguageCode,
+  deviceId: string
 ): Promise<
-  { success: true; data: ParsedLogEntry } | { success: false; error: string }
+  | { success: true; data: ParsedLogEntry }
+  | { success: false; error: string }
+  | RateLimitError
 > {
   if (!transcript.trim()) {
     return { success: false, error: "Empty transcript" };
+  }
+
+  // Check rate limit before processing
+  const rateLimitResult = await checkRateLimit(deviceId, "VOICE_LOG");
+  if (!rateLimitResult.allowed) {
+    return {
+      success: false,
+      error: "Rate limit exceeded. Please try again later.",
+      rateLimit: rateLimitResult,
+    };
   }
 
   try {

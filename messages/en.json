@@ -400,7 +400,15 @@
       "failedToSave": "Failed to save log. Please try again.",
       "doneSpeaking": "Done Speaking",
       "startListening": "Start Listening",
-      "tryAgain": "Try Again"
+      "tryAgain": "Try Again",
+      "rateLimitExceeded": "Rate limit exceeded. You have {remaining} requests remaining. Please try again in {resetTime}.",
+      "rateLimitRemaining": "{remaining} requests remaining",
+      "rateLimitExceededShort": "Rate limit exceeded",
+      "rateLimitRemainingShort": "remaining",
+      "lessThanAMinute": "less than a minute",
+      "rateLimitResetsIn": "Resets in {resetTime}",
+      "rateLimitWindowInfo": "Limit: {limit} requests per {windowHours} hour",
+      "rateLimitWindowInfoPlural": "Limit: {limit} requests per {windowHours} hours"
     }
   },
   "flare": {
