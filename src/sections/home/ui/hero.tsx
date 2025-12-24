@@ -35,9 +35,11 @@ export const Hero = () => {
                   <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline">
-                See How It Works
-              </Button>
+              <Link href="#how-it-works">
+                <Button size="lg" variant="outline" className="w-full">
+                  See How It Works
+                </Button>
+              </Link>
             </div>
           </div>
 
