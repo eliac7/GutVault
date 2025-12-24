@@ -409,6 +409,12 @@
       "rateLimitResetsIn": "Resets in {resetTime}",
       "rateLimitWindowInfo": "Limit: {limit} requests per {windowHours} hour",
       "rateLimitWindowInfoPlural": "Limit: {limit} requests per {windowHours} hours"
+    },
+    "fodmapPicker": {
+      "label": "Foods & FODMAP Status",
+      "searchPlaceholder": "Search for a food...",
+      "noResults": "No results for \"{query}\"",
+      "addAndAnalyze": "Add & Analyze \"{query}\""
     }
   },
   "flare": {

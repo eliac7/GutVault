@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { checkAndCacheFood } from "../hooks/use-food-status";
 import { FodmapChip } from "./fodmap-chip";
 import { FodmapSearchInput } from "./fodmap-search-input";
@@ -11,9 +12,11 @@ interface FodmapPickerProps {
 }
 
 export function FodmapPicker({ selectedFoods, onChange }: FodmapPickerProps) {
+  const t = useTranslations("logging.fodmapPicker");
+
   const addFood = (foodName: string) => {
     onChange([...selectedFoods, foodName]);
-    
+
     // Trigger AI check in background
     const userLanguage =
       typeof navigator !== "undefined" ? navigator.language : undefined;
@@ -27,13 +30,10 @@ export function FodmapPicker({ selectedFoods, onChange }: FodmapPickerProps) {
   return (
     <div className="space-y-3">
       <label className="text-sm font-medium text-slate-500 dark:text-slate-400">
-        Foods & FODMAP Status
+        {t("label")}
       </label>
 
-      <FodmapSearchInput 
-        selectedFoods={selectedFoods} 
-        onSelect={addFood} 
-      />
+      <FodmapSearchInput selectedFoods={selectedFoods} onSelect={addFood} />
 
       <div className="flex flex-wrap gap-2">
         {selectedFoods.map((food) => (

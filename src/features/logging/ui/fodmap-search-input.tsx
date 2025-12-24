@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Search, Sparkles } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { useFodmapSearch } from "../hooks/use-fodmap-search";
@@ -12,6 +13,7 @@ interface FodmapSearchInputProps {
 }
 
 export function FodmapSearchInput({ selectedFoods, onSelect }: FodmapSearchInputProps) {
+  const t = useTranslations("logging.fodmapPicker");
   const [query, setQuery] = React.useState("");
   const [isOpen, setIsOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -49,7 +51,7 @@ export function FodmapSearchInput({ selectedFoods, onSelect }: FodmapSearchInput
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          placeholder="Search for a food..."
+          placeholder={t("searchPlaceholder")}
           className="w-full pl-10 pr-4 py-3 bg-slate-100 dark:bg-slate-800 rounded-2xl border-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-500/20 transition-all"
         />
       </div>
@@ -88,14 +90,14 @@ export function FodmapSearchInput({ selectedFoods, onSelect }: FodmapSearchInput
       {query && filteredData.length === 0 && isOpen && (
         <div className="absolute top-full left-0 right-0 mt-2 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl z-50 text-center animate-in fade-in slide-in-from-top-2 duration-200">
           <p className="text-sm text-slate-500 mb-2">
-            No results for &quot;{query}&quot;
+            {t("noResults", { query })}
           </p>
           <button
             onClick={() => handleSelect(query)}
             className="text-xs font-semibold text-emerald-500 hover:text-emerald-600 flex items-center justify-center gap-1 mx-auto"
           >
             <Sparkles className="w-3 h-3" />
-            Add & Analyze &quot;{query}&quot;
+            {t("addAndAnalyze", { query })}
           </button>
         </div>
       )}

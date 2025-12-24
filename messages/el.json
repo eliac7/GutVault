@@ -409,6 +409,12 @@
       "rateLimitResetsIn": "Επαναφορά σε {resetTime}",
       "rateLimitWindowInfo": "Όριο: {limit} αιτήματα ανά {windowHours} ώρα",
       "rateLimitWindowInfoPlural": "Όριο: {limit} αιτήματα ανά {windowHours} ώρες"
+    },
+    "fodmapPicker": {
+      "label": "Τροφές & Κατάσταση FODMAP",
+      "searchPlaceholder": "Αναζήτηση τροφής…",
+      "noResults": "Δεν βρέθηκαν αποτελέσματα για \"{query}\"",
+      "addAndAnalyze": "Προσθήκη & Ανάλυση \"{query}\""
     }
   },
   "flare": {
