@@ -63,7 +63,7 @@ export function BristolSelector({ value, onChange }: BristolSelectorProps) {
                 type={type}
                 className="size-10 md:size-20 lg:size-40"
               />
-              <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 mt-1">
+              <span className="text-sm font-bold text-slate-700 dark:text-slate-300 mt-1">
                 {type}
               </span>
             </button>
