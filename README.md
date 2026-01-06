@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![License](https://img.shields.io/badge/license-PolyForm_Noncommercial-blue.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-16.0-black)
 ![Dexie.js](https://img.shields.io/badge/Dexie.js-4.2-blue)
 ![Tailwind](https://img.shields.io/badge/Tailwind-v4-cyan)
@@ -210,4 +210,4 @@ Contributions are more than welcome. Please follow these steps:
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the PolyForm Noncommercial License 1.0.0. See `LICENSE` for more information.

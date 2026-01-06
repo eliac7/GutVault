@@ -4,6 +4,7 @@
   "description": "A privacy-first, offline-ready IBS tracker featuring AI voice logging and local-first architecture. Built with Next.js 16, Tailwind v4, shadcn/ui, and Dexie.js",
   "private": true,
   "author": "Ilias Nikolaos Thalassochoritis",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -1,21 +1,49 @@
-MIT License
+PolyForm Noncommercial License 1.0.0
 
 Copyright (c) 2025 Ilias Nikolaos Thalassochoritis
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. Purpose
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This license allows you to use your freedom to create and share software with the world for noncommercial purposes.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. Agreement
+
+This license is a legal agreement between You and the Licensor for the use of the Software. By using the Software, You agree to the terms of this license. The Licensor grants You the rights in this license conditioned on Your agreement to these terms.
+If Tou do not agree to the terms of this license, You must not use the Software.
+
+3. Meaning of Terms
+
+The following capitalized terms have the meanings provided in this section.
+
+Commercial Use represents any use of the Software for a commercial purpose or in a commercial context, including but not limited to:
+a. using the Software to provide a service or product for a fee,
+b. using the Software for any business or commercial operations, or
+c. using the Software in a way that generates revenue or other commercial advantage.
+
+Licensor means the individual or entity offering the Software under this license.
+
+Software means the software, documentation, and other materials accompanying this license.
+
+You means the individual or entity using the Software.
+
+4. Rights
+
+Subject to the terms of this license, the Licensor grants You a non-exclusive, worldwide, royalty-free license to:
+a. use the Software for any purpose other than Commercial Use,
+b. modify the Software, and
+c. distribute the Software and Your modifications, provided that:
+i. such distribution is under the terms of this license,
+ii. You include a copy of this license with the Software, and
+iii. You retain all copyright, trademark, and other proprietary notices.
+
+5. Restrictions
+
+You may not use the Software for Commercial Use. If You want to use the Software for Commercial Use, You must obtain a separate license from the Licensor.
+
+6. Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+7. Termination
+
+This license will terminate automatically if You fail to comply with its terms. Upon termination, You must stop using the Software.
