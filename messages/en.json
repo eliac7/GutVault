@@ -514,6 +514,11 @@
       "step1": "Tap the share button",
       "step2": "Tap \"Add to Home Screen\""
     },
+    "firefoxInstructions": {
+      "title": "To install:",
+      "step1": "Click the address bar icon",
+      "step2": "Select \"Install App\""
+    },
     "gotIt": "Got it",
     "notNow": "Not now",
     "installing": "Installing...",

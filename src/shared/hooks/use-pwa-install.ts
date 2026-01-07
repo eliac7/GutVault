@@ -25,6 +25,7 @@ export function usePwaInstall() {
     useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const [isFirefox, setIsFirefox] = useState(false);
   const [isDismissed, setIsDismissed] = useState(true); // Start as true to prevent flash
   const [isInstalling, setIsInstalling] = useState(false);
 
@@ -42,6 +43,10 @@ export function usePwaInstall() {
       /iPad|iPhone|iPod/.test(navigator.userAgent) &&
       !(window as Window & { MSStream?: unknown }).MSStream;
     setIsIOS(isIOSDevice);
+
+    // Check Firefox
+    const isFirefoxBrowser = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+    setIsFirefox(isFirefoxBrowser);
 
     // Check if dismissed recently
     const dismissedAt = localStorage.getItem(DISMISSED_KEY);
@@ -111,14 +116,16 @@ export function usePwaInstall() {
   }, []);
 
   const canShowPrompt =
-    !isInstalled && !isDismissed && (!!installPrompt || isIOS);
+    !isInstalled && !isDismissed && (!!installPrompt || isIOS || isFirefox);
 
   return {
     canShowPrompt,
     isInstalled,
     isIOS,
+    isFirefox,
     isInstalling,
     promptInstall,
     dismiss,
+    installPrompt,
   };
 }
