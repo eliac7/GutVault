@@ -8,6 +8,7 @@ import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { localeNames, type Locale } from "@/i18n/config";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
+import Image from "next/image";
 
 interface AppHeaderProps {
   title?: string;
@@ -47,8 +48,14 @@ export function AppHeader({
             </Button>
           ) : (
             <Link href="/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-linear-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">G</span>
+              <div className="size-8 rounded-lg overflow-hidden flex items-center justify-center">
+                <Image
+                  src="/logo.png"
+                  alt="GutVault"
+                  width={28}
+                  height={28}
+                  className="rounded-sm"
+                />
               </div>
             </Link>
           )}
