@@ -45,7 +45,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
 - **📝 Comprehensive Manual Logging:** - **Bowel Movements:** Interactive Bristol Stool Scale visuals (Types 1-7).
   - **Symptoms:** Intensity sliders (1-10) with dynamic color coding and emoji indicators.
   - **Stress & Anxiety:** dedicated tracking with 1-10 stress slider and granular anxiety markers (e.g., "Overwhelmed", "Brain Fog").
-  - **Meals:** Tag trigger foods (Gluten, Dairy, etc.) alongside free text.
+  - **Meals:** Tag trigger foods (Gluten, Dairy, Medication, etc.) alongside free text.
   - **Medications:** Track names and dosages.
 - **🧠 Smart FODMAP Analysis:**
   - **AI-Powered:** Uses LLMs to determine the FODMAP status of any food item.

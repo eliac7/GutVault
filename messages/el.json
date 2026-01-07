@@ -332,7 +332,8 @@
       "garlic": "Σκόρδο",
       "artificial_sweeteners": "Γλυκαντικά",
       "carbonated_drinks": "Αναψυκτικά με ανθρακικό",
-      "processed_foods": "Επεξεργασμένα τρόφιμα"
+      "processed_foods": "Επεξεργασμένα τρόφιμα",
+      "medication": "Φάρμακα"
     },
     "anxietyMarkers": {
       "calm": "Ήρεμος/η",

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/shared/ui/button";
 import { ChevronRight, Database, Shield, Zap } from "lucide-react";
+import packageJson from "../../../../package.json";
 
 export const Hero = () => {
   return (
@@ -12,7 +13,7 @@ export const Hero = () => {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950 border border-emerald-100 dark:border-emerald-800 w-fit">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-400 uppercase tracking-wide">
-                v1.0 Public Beta
+                v{packageJson.version} Public Beta
               </span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-[1.15]">

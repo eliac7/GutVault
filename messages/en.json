@@ -332,7 +332,8 @@
       "garlic": "Garlic",
       "artificial_sweeteners": "Sweeteners",
       "carbonated_drinks": "Carbonated",
-      "processed_foods": "Processed"
+      "processed_foods": "Processed",
+      "medication": "Medication"
     },
     "anxietyMarkers": {
       "calm": "Calm",

@@ -118,7 +118,7 @@ Context about IBS tracking:
 - Stress levels: 1-10 scale where 1 is relaxed and 10 is extremely stressed
 - Common IBS symptoms: bloating, cramping, gas, nausea, urgency, incomplete evacuation
 - Anxiety/Mental State markers: calm, nervous, anxious, stressed, overwhelmed, panic, brain_fog, restless
-- Common trigger foods: dairy, gluten, caffeine, alcohol, spicy foods, fatty foods
+- Common trigger foods: dairy, gluten, caffeine, alcohol, spicy foods, fatty foods, medication
 
 Be helpful and extract as much relevant information as possible from the user's description.
 If they mention going to the bathroom, it's likely a bowel_movement log.

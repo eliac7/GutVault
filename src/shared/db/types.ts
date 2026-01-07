@@ -48,7 +48,8 @@ export type TriggerFood =
   | "garlic"
   | "artificial_sweeteners"
   | "carbonated_drinks"
-  | "processed_foods";
+  | "processed_foods"
+  | "medication";
 
 // Log entry type
 export type LogType = "bowel_movement" | "meal" | "symptom" | "medication";
@@ -136,6 +137,7 @@ export const TRIGGER_FOOD_LABELS: Record<TriggerFood, string> = {
   artificial_sweeteners: "Sweeteners",
   carbonated_drinks: "Carbonated",
   processed_foods: "Processed",
+  medication: "Medication",
 };
 
 export interface AppSetting {
