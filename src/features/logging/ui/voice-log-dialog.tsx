@@ -21,7 +21,7 @@ import {
   SheetTitle,
 } from "@/shared/ui/sheet";
 import { useLiveQuery } from "dexie-react-hooks";
-import { Check, Loader2, Mic, MicOff, Sparkles, X } from "lucide-react";
+import { Check, Loader2, Mic, MicOff, Sparkles, X, RotateCcw } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -692,6 +692,25 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                     <Check className="w-5 h-5 mr-2" />
                     {t("voiceDialog.doneSpeaking")}
                   </Button>
+                ) : displayTranscript.trim() ? (
+                  <div className="flex gap-3 w-full">
+                    <Button
+                      variant="outline"
+                      onClick={startListening}
+                      className="flex-1 h-14 rounded-2xl"
+                    >
+                      <RotateCcw className="w-5 h-5 mr-2" />
+                      {t("voiceDialog.tryAgain")}
+                    </Button>
+                    <Button
+                      onClick={handleProcess}
+                      disabled={!rateLimit.isAllowed || rateLimit.isLoading}
+                      className="flex-1 h-14 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white disabled:opacity-50"
+                    >
+                      <Check className="w-5 h-5 mr-2" />
+                      {t("voiceDialog.doneSpeaking")}
+                    </Button>
+                  </div>
                 ) : (
                   <Button
                     onClick={startListening}
