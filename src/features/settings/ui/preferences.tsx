@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Palette, Globe, Bell, Clock } from "lucide-react";
+import { Palette, Globe, Bell, Clock, Activity } from "lucide-react";
 import { Card } from "@/shared/ui/card";
 import { useTheme } from "next-themes";
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/shared/db";
+import { db, type IBSType } from "@/shared/db";
 import {
   Select,
   SelectContent,
@@ -22,6 +22,7 @@ import ReactCountryFlag from "react-country-flag";
 import { useTranslations } from "next-intl";
 
 const DEFAULT_VOICE_LANGUAGE: SpeechLanguageCode = "en-US";
+const DEFAULT_IBS_TYPE: IBSType = "unsure";
 
 export function Preferences() {
   const { theme, setTheme } = useTheme();
@@ -42,8 +43,16 @@ export function Preferences() {
     (settings?.find((s) => s.id === "voiceLanguage")
       ?.value as SpeechLanguageCode) ?? DEFAULT_VOICE_LANGUAGE;
 
+  const ibsType =
+    (settings?.find((s) => s.id === "ibsType")?.value as IBSType) ??
+    DEFAULT_IBS_TYPE;
+
   const handleLanguageChange = async (code: SpeechLanguageCode) => {
     await db.settings.put({ id: "voiceLanguage", value: code });
+  };
+
+  const handleIbsTypeChange = async (type: IBSType) => {
+    await db.settings.put({ id: "ibsType", value: type });
   };
 
   // Reminders
@@ -88,6 +97,33 @@ export function Preferences() {
         </h2>
 
         <div className="space-y-4">
+          {/* IBS Type */}
+          <div>
+            <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+              {t("ibsType")}
+            </label>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+              {t("ibsTypeDescription")}
+            </p>
+            <Select
+              value={ibsType}
+              onValueChange={(value) => handleIbsTypeChange(value as IBSType)}
+            >
+              <SelectTrigger className="w-full p-3 h-auto rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-slate-900 dark:text-slate-100">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="unsure">
+                  {t("ibsTypes.unsure")}
+                </SelectItem>
+                <SelectItem value="ibs-c">{t("ibsTypes.ibs-c")}</SelectItem>
+                <SelectItem value="ibs-d">{t("ibsTypes.ibs-d")}</SelectItem>
+                <SelectItem value="ibs-m">{t("ibsTypes.ibs-m")}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           {/* Theme */}
           <div>
             <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">

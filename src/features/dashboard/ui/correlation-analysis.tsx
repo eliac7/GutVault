@@ -1,6 +1,6 @@
 "use client";
 
-import { useLogs } from "@/shared/db";
+import { useLogs, db, type IBSType } from "@/shared/db";
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/shared/ui/alert";
 import { AlertCircle, TrendingUp, Brain } from "lucide-react";
@@ -17,12 +17,18 @@ import {
 import { useMemo } from "react";
 import { BristolType } from "@/shared/db/types";
 import { useTranslations } from "next-intl";
+import { useLiveQuery } from "dexie-react-hooks";
 
 const MINIUM_CORRELATION_THRESHOLD = 3;
 
 export function CorrelationAnalysis() {
   const logs = useLogs();
   const t = useTranslations("dashboard.correlations");
+
+  // Get IBS Type setting
+  const settings = useLiveQuery(() => db.settings.toArray());
+  const ibsType =
+    (settings?.find((s) => s.id === "ibsType")?.value as IBSType) ?? "unsure";
 
   const { foodCorrelations, stressCorrelation } = useMemo(() => {
     if (!logs) return { foodCorrelations: [], stressCorrelation: null };
@@ -36,7 +42,12 @@ export function CorrelationAnalysis() {
     const sortedLogs = [...logs].sort(
       (a, b) => a.timestamp.getTime() - b.timestamp.getTime()
     );
-    const badBristolTypes: BristolType[] = [1, 2, 6, 7];
+
+    // Adjust bad outcomes based on IBS Type
+    let badBristolTypes: BristolType[] = [1, 2, 6, 7]; // Default/Unsure/Mixed
+    if (ibsType === "ibs-c") badBristolTypes = [1, 2];
+    if (ibsType === "ibs-d") badBristolTypes = [6, 7];
+
     const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
     sortedLogs.forEach((log, index) => {
@@ -119,7 +130,7 @@ export function CorrelationAnalysis() {
           ? { high: highStressScore, low: lowStressScore }
           : null,
     };
-  }, [logs]);
+  }, [logs, ibsType]);
 
   if (!logs || logs.length === 0) {
     return (

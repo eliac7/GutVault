@@ -1,6 +1,9 @@
 // Bristol Stool Scale (Types 1-7)
 export type BristolType = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
+// IBS Types
+export type IBSType = "ibs-c" | "ibs-d" | "ibs-m" | "unsure";
+
 // Pain Level (1-10)
 export type PainLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 

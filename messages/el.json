@@ -170,6 +170,14 @@
       "remindersEnabledTitle": "Οι υπενθυμίσεις ενεργοποιήθηκαν",
       "remindersEnabledBody": "Θα σου υπενθυμίζουμε να κάνεις καθημερινά καταγραφή.",
       "remindMeAt": "Υπενθύμιση στις:",
+      "ibsType": "Τύπος ΣΕΕ",
+      "ibsTypeDescription": "Βοηθά στην προσαρμογή των προτάσεων",
+      "ibsTypes": {
+        "ibs-c": "ΣΕΕ-Δ (Δυσκοιλιότητα)",
+        "ibs-d": "ΣΕΕ-Δ (Διάρροια)",
+        "ibs-m": "ΣΕΕ-Μ (Μικτό)",
+        "unsure": "Δεν ξέρω / Άλλο"
+      },
       "selectLanguagePlaceholder": "Επιλογή γλώσσας"
     },
     "security": {

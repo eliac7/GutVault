@@ -5,6 +5,7 @@ export type {
   NewLogEntry,
   LogType,
   BristolType,
+  IBSType,
   PainLevel,
   StressLevel,
   Symptom,

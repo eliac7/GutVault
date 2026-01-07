@@ -170,6 +170,14 @@
       "remindersEnabledTitle": "Reminders enabled!",
       "remindersEnabledBody": "You'll be reminded to log daily.",
       "remindMeAt": "Remind me at:",
+      "ibsType": "IBS Type",
+      "ibsTypeDescription": "Helps tailor insights and recommendations",
+      "ibsTypes": {
+        "ibs-c": "IBS-C (Constipation)",
+        "ibs-d": "IBS-D (Diarrhea)",
+        "ibs-m": "IBS-M (Mixed)",
+        "unsure": "Unsure / Other"
+      },
       "selectLanguagePlaceholder": "Select language"
     },
     "security": {

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   addLog,
   updateLog,
@@ -10,7 +10,10 @@ import {
   type StressLevel,
   type Symptom,
   type TriggerFood,
+  db,
+  type IBSType,
 } from "@/shared/db";
+import { useLiveQuery } from "dexie-react-hooks";
 
 interface UseLogFormProps {
   initialLog?: LogEntry | null;
@@ -30,6 +33,25 @@ export function useLogForm({ initialLog, onSuccess }: UseLogFormProps) {
   const [medication, setMedication] = useState("");
   const [medicationDose, setMedicationDose] = useState("");
   const [notes, setNotes] = useState("");
+
+  // Get IBS Type setting
+  const settings = useLiveQuery(() => db.settings.toArray());
+  const ibsType =
+    (settings?.find((s) => s.id === "ibsType")?.value as IBSType) ?? "unsure";
+
+  // Set default Bristol type based on IBS Type for new logs
+  useEffect(() => {
+    if (initialLog) return;
+    if (bristolType !== null) return;
+
+    if (ibsType === "ibs-c") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setBristolType(2);
+    } else if (ibsType === "ibs-d") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setBristolType(6);
+    }
+  }, [ibsType, initialLog, bristolType]);
 
   const resetForm = useCallback(() => {
     setStep("type");

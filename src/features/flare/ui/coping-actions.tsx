@@ -5,22 +5,50 @@ import { Card } from "@/shared/ui/card";
 import { Check } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { useTranslations } from "next-intl";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db, type IBSType } from "@/shared/db";
 
 export function CopingActions() {
   const t = useTranslations("flare");
   const [done, setDone] = React.useState<Set<string>>(new Set());
 
-  const DEFAULT_ACTIONS = [
-    { id: "heat", label: t("copingActions.0") },
-    { id: "breathe", label: t("copingActions.1") },
-    { id: "ground", label: t("copingActions.2") },
-    { id: "position", label: t("copingActions.3") },
-    { id: "sip", label: t("copingActions.4") },
-    { id: "massage", label: t("copingActions.5") },
-    { id: "tea", label: t("copingActions.6") },
-    { id: "music", label: t("copingActions.7") },
-    { id: "screens", label: t("copingActions.8") },
-  ];
+  // Get IBS Type setting
+  const settings = useLiveQuery(() => db.settings.toArray());
+  const ibsType = (settings?.find((s) => s.id === "ibsType")?.value as IBSType) ?? "unsure";
+
+  const DEFAULT_ACTIONS = React.useMemo(() => {
+    const actions = [
+      { id: "heat", label: t("copingActions.0") },
+      { id: "breathe", label: t("copingActions.1") },
+      { id: "ground", label: t("copingActions.2") },
+      { id: "position", label: t("copingActions.3") },
+      { id: "sip", label: t("copingActions.4") },
+      { id: "massage", label: t("copingActions.5") },
+      { id: "tea", label: t("copingActions.6") },
+      { id: "music", label: t("copingActions.7") },
+      { id: "screens", label: t("copingActions.8") },
+    ];
+
+    if (ibsType === "ibs-c") {
+      // Prioritize: Massage, Heat, Tea, Position
+      const priorities = ["massage", "heat", "tea", "position"];
+      return [
+        ...actions.filter((a) => priorities.includes(a.id)).sort((a, b) => priorities.indexOf(a.id) - priorities.indexOf(b.id)),
+        ...actions.filter((a) => !priorities.includes(a.id)),
+      ];
+    }
+
+    if (ibsType === "ibs-d") {
+      // Prioritize: Sip, Breathe, Ground, Rest/Position
+      const priorities = ["sip", "breathe", "ground", "position"];
+      return [
+        ...actions.filter((a) => priorities.includes(a.id)).sort((a, b) => priorities.indexOf(a.id) - priorities.indexOf(b.id)),
+        ...actions.filter((a) => !priorities.includes(a.id)),
+      ];
+    }
+
+    return actions;
+  }, [ibsType, t]);
 
   function toggle(id: string) {
     setDone((prev) => {

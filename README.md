@@ -41,6 +41,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
   - Automatically extracts: Foods, Symptoms, Bristol Stool Scale, Pain Levels, and Medications.
   - **Rate Limiting:** Built-in rate limiting (10 voice logs/hour, 20 food analyses/hour) to prevent API overuse with real-time status indicators.
 - **🔔 Daily Reminders:** Built-in browser notifications to remind you to log your symptoms at a specific time every day.
+- **👤 Personalized Profile:** Customize your experience by setting your IBS type (Constipation, Diarrhea, Mixed) for tailored insights, coping strategies, and smart defaults.
 - **📝 Comprehensive Manual Logging:** - **Bowel Movements:** Interactive Bristol Stool Scale visuals (Types 1-7).
   - **Symptoms:** Intensity sliders (1-10) with dynamic color coding and emoji indicators.
   - **Stress & Anxiety:** dedicated tracking with 1-10 stress slider and granular anxiety markers (e.g., "Overwhelmed", "Brain Fog").
@@ -52,6 +53,7 @@ All user data is stored persistently within the user's browser using **IndexedDB
   - **Local Caching:** Results are saved to your local database, making them instantly searchable for future entries without re-analyzing.
   - **Rate Limited:** Prevents excessive API usage with per-device rate limiting (20 analyses/hour).
 - **📈 Smart Correlations:** - Looks ahead 24 hours from every meal to detect associations with high pain or irregular bowel movements.
+  - **Type-Aware Analysis:** Adjusts "bad outcome" definitions based on your IBS type (e.g., treating constipation as the primary issue for IBS-C).
   - **Stress Analysis:** Identifies if high stress days are more likely to result in symptom flare-ups.
   - **Trigger Probability:** Visual bar charts showing the likelihood of specific foods causing symptoms.
 - **🔍 Advanced History Management:** - Filter logs by **Date Range**, **Bristol Type**, or **Text Search** (find specific notes or foods).
