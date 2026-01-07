@@ -5,7 +5,7 @@ export const SocialProof = () => {
     { icon: ServerOff, text: "Offline-first" },
     { icon: Database, text: "Local-only storage" },
     { icon: Smartphone, text: "Installable PWA" },
-    { icon: Shield, text: "MIT Licensed" },
+    { icon: Shield, text: "Non-Commercial License" },
   ];
 
   return (

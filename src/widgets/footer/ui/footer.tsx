@@ -37,7 +37,7 @@ export default function Footer() {
               View on GitHub
             </a>
             <div className="inline-flex items-center px-3 py-1.5 rounded-lg border border-slate-700 dark:border-slate-800 bg-slate-800 dark:bg-slate-900 text-xs font-medium">
-              MIT License
+              PolyForm Non-Commercial
             </div>
           </div>
         </div>
