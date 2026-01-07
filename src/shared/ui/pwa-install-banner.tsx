@@ -4,8 +4,10 @@ import { motion, AnimatePresence } from "motion/react";
 import { Download, X, Share, Plus } from "lucide-react";
 import { usePwaInstall } from "@/shared/hooks/use-pwa-install";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export function PwaInstallBanner() {
+  const t = useTranslations("pwa");
   const { canShowPrompt, isIOS, isInstalling, promptInstall, dismiss } =
     usePwaInstall();
 
@@ -50,12 +52,12 @@ export function PwaInstallBanner() {
               {/* Content */}
               <div className="flex-1 min-w-0 pr-4">
                 <h3 className="font-bold text-slate-900 dark:text-white">
-                  Install GutVault
+                  {t("installTitle")}
                 </h3>
                 <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
                   {isIOS
-                    ? "Add to your home screen for the best experience"
-                    : "Install for quick access & offline use"}
+                    ? t("installDescriptionIOS")
+                    : t("installDescription")}
                 </p>
               </div>
             </div>
@@ -64,7 +66,7 @@ export function PwaInstallBanner() {
               // iOS instructions
               <div className="mt-4 rounded-xl bg-slate-50 p-3 dark:bg-slate-700/50">
                 <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
-                  To install:
+                  {t("iosInstructions.title")}
                 </p>
                 <ol className="mt-2 space-y-2 text-xs text-slate-500 dark:text-slate-400">
                   <li className="flex items-center gap-2">
@@ -72,7 +74,7 @@ export function PwaInstallBanner() {
                       1
                     </span>
                     <span className="flex items-center gap-1">
-                      Tap the share button{" "}
+                      {t("iosInstructions.step1")}{" "}
                       <Share className="h-3.5 w-3.5 text-blue-500" />
                     </span>
                   </li>
@@ -81,7 +83,7 @@ export function PwaInstallBanner() {
                       2
                     </span>
                     <span className="flex items-center gap-1">
-                      Tap &quot;Add to Home Screen&quot;{" "}
+                      {t("iosInstructions.step2")}{" "}
                       <Plus className="h-3.5 w-3.5" />
                     </span>
                   </li>
@@ -90,7 +92,7 @@ export function PwaInstallBanner() {
                   onClick={dismiss}
                   className="mt-3 w-full rounded-lg bg-slate-200 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-300 dark:bg-slate-600 dark:text-slate-200 dark:hover:bg-slate-500"
                 >
-                  Got it
+                  {t("gotIt")}
                 </button>
               </div>
             ) : (
@@ -100,7 +102,7 @@ export function PwaInstallBanner() {
                   onClick={dismiss}
                   className="flex-1 rounded-xl bg-slate-100 px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
                 >
-                  Not now
+                  {t("notNow")}
                 </button>
                 <button
                   onClick={promptInstall}
@@ -108,7 +110,7 @@ export function PwaInstallBanner() {
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-500 to-teal-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-emerald-500/30 transition-all hover:shadow-xl hover:shadow-emerald-500/40 disabled:opacity-70"
                 >
                   <Download className="h-4 w-4" />
-                  {isInstalling ? "Installing..." : "Install"}
+                  {isInstalling ? t("installing") : t("install")}
                 </button>
               </div>
             )}

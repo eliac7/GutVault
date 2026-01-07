@@ -504,5 +504,19 @@
       "arSA": "العربية",
       "hiIN": "हिन्दी"
     }
+  },
+  "pwa": {
+    "installTitle": "Install GutVault",
+    "installDescriptionIOS": "Add to your home screen for the best experience",
+    "installDescription": "Install for quick access & offline use",
+    "iosInstructions": {
+      "title": "To install:",
+      "step1": "Tap the share button",
+      "step2": "Tap \"Add to Home Screen\""
+    },
+    "gotIt": "Got it",
+    "notNow": "Not now",
+    "installing": "Installing...",
+    "install": "Install"
   }
 }
