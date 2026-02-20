@@ -1,24 +1,17 @@
 "use server";
 
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { generateObject } from "ai";
+import { generateText, Output } from "ai";
 
 import {
   ANXIETY_MARKER_LABELS,
   SYMPTOM_LABELS,
   TRIGGER_FOOD_LABELS,
 } from "@/shared/db";
+import { chatModel } from "@/shared/lib/openrouter";
 import { z } from "zod";
 import { SpeechLanguageCode } from "../hooks/use-speech-recognition";
 import { checkRateLimit } from "../lib/rate-limit";
 import type { RateLimitError } from "../lib/rate-limit-config";
-
-const MODEL = process.env.OPENROUTER_MODEL || "mistralai/devstral-2512:free";
-
-const openrouter = createOpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY,
-});
-const chatModel = openrouter.chat(MODEL);
 
 const logEntrySchema = z.object({
   type: z
@@ -30,7 +23,7 @@ const logEntrySchema = z.object({
     .max(7)
     .optional()
     .describe(
-      "Bristol stool scale type 1-7 if mentioned. Type 1-2 = constipation, 3-4 = normal, 5-7 = diarrhea"
+      "Bristol stool scale type 1-7 if mentioned. Type 1-2 = constipation, 3-4 = normal, 5-7 = diarrhea",
     ),
   painLevel: z
     .number()
@@ -52,9 +45,9 @@ const logEntrySchema = z.object({
     .array(
       z.enum(
         Object.keys(ANXIETY_MARKER_LABELS) as [
-          keyof typeof ANXIETY_MARKER_LABELS
-        ]
-      )
+          keyof typeof ANXIETY_MARKER_LABELS,
+        ],
+      ),
     )
     .optional()
     .describe("Any mental state or anxiety markers mentioned"),
@@ -82,7 +75,7 @@ export type ParsedLogEntry = z.infer<typeof logEntrySchema>;
 export async function parseVoiceLog(
   transcript: string,
   language: SpeechLanguageCode,
-  deviceId: string
+  deviceId: string,
 ): Promise<
   | { success: true; data: ParsedLogEntry }
   | { success: false; error: string }
@@ -103,14 +96,15 @@ export async function parseVoiceLog(
   }
 
   try {
-    const { object } = await generateObject({
+    const { output } = await generateText({
       model: chatModel,
-      schema: logEntrySchema,
+      output: Output.object({ schema: logEntrySchema }),
       system: `You are a health tracking assistant for an IBS (Irritable Bowel Syndrome) app called GutVault.
 Your job is to parse natural language voice logs from users into structured health data.
 
 The user spoke in ${language}, so consider regional language variations and colloquialisms when parsing.
-IMPORTANT: Respond in the same language as the user's input. If the user speaks in Greek, provide notes and any textual content in Greek. If they speak in English, respond in English.
+IMPORTANT: You MUST respond with a valid JSON object matching the schema. Do not include any explanatory text outside the JSON structure.
+For text fields like notes, you can use the user's language (Greek or English), but the JSON structure itself must be valid.
 
 Context about IBS tracking:
 - Bristol Stool Scale: Type 1 (hard lumps) to Type 7 (watery). Types 3-4 are considered normal.
@@ -123,15 +117,17 @@ Context about IBS tracking:
 Be helpful and extract as much relevant information as possible from the user's description.
 If they mention going to the bathroom, it's likely a bowel_movement log.
 If they mention eating or drinking, it's likely a meal log.
-If they only mention how they feel without food/bathroom context, it's a symptom log.`,
+If they only mention how they feel without food/bathroom context, it's a symptom log.
+
+CRITICAL: Return ONLY a valid JSON object. Do not include any text before or after the JSON.`,
       prompt: `Parse this voice log from a user tracking their IBS symptoms:
 
 "${transcript}"
 
-Extract all relevant health information mentioned.`,
+Extract all relevant health information mentioned and return it as a JSON object matching the required schema.`,
     });
 
-    return { success: true, data: object };
+    return { success: true, data: output };
   } catch (error) {
     console.error("Failed to parse voice log:", error);
     return {

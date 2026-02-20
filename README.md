@@ -143,11 +143,11 @@ The application requires the following environment variables:
 
 ### AI Features
 
-| Variable               | Description                                    | Default                        |
-| :--------------------- | :--------------------------------------------- | :----------------------------- |
-| `NEXT_PUBLIC_SITE_URL` | The Site URL of the app running in production. | Required                       |
-| `OPENROUTER_API_KEY`   | API Key for OpenRouter to access LLMs.         | Required                       |
-| `OPENROUTER_MODEL`     | The specific model ID to use for parsing.      | `mistralai/devstral-2512:free` |
+| Variable               | Description                                    | Default                 |
+| :--------------------- | :--------------------------------------------- | :---------------------- |
+| `NEXT_PUBLIC_SITE_URL` | The Site URL of the app running in production. | Required                |
+| `OPENROUTER_KEY`       | API Key for OpenRouter to access LLMs.         | Required                |
+| `OPENROUTER_MODEL`     | The specific model ID to use for parsing.      | `z-ai/glm-4.5-air:free` |
 
 ### Rate Limiting (Redis)
 
