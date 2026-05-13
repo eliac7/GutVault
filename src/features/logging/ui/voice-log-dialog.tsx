@@ -21,10 +21,18 @@ import {
   SheetTitle,
 } from "@/shared/ui/sheet";
 import { useLiveQuery } from "dexie-react-hooks";
-import { Check, Loader2, Mic, MicOff, Sparkles, X, RotateCcw } from "lucide-react";
+import {
+  Check,
+  Loader2,
+  Mic,
+  MicOff,
+  Sparkles,
+  X,
+  RotateCcw,
+} from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { parseVoiceLog, type ParsedLogEntry } from "../actions/parse-voice-log";
 import {
@@ -60,6 +68,26 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
   const [parsedData, setParsedData] = useState<ParsedLogEntry | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const [isLongProcessing, setIsLongProcessing] = useState(false);
+
+  // Monitor long processing time
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (step === "processing") {
+      timeoutId = setTimeout(() => {
+        setIsLongProcessing(true);
+      }, 8000);
+    } else {
+      setIsLongProcessing(false);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [step]);
 
   // Rate limiting
   const rateLimit = useRateLimit({ type: "VOICE_LOG" });
@@ -67,7 +95,9 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
 
   // Get language preference from DB
   const savedLanguage = useLiveQuery(() =>
-    db.settings.get("voiceLanguage").then((s) => s?.value as SpeechLanguageCode)
+    db.settings
+      .get("voiceLanguage")
+      .then((s) => s?.value as SpeechLanguageCode),
   );
   const language = savedLanguage ?? DEFAULT_VOICE_LANGUAGE;
   const speechLanguages = useTranslatedSpeechLanguages();
@@ -108,6 +138,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
     setParsedData(null);
     setErrorMessage("");
     setShowLanguageMenu(false);
+    setIsLongProcessing(false);
     resetTranscript();
   };
 
@@ -136,7 +167,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
         }) ||
           `Rate limit exceeded. Please try again in ${
             timeUntilReset || "a while"
-          }.`
+          }.`,
       );
       setStep("error");
       return;
@@ -164,7 +195,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
           }) ||
             `Rate limit exceeded. Please try again in ${
               timeUntilReset || "a while"
-            }.`
+            }.`,
         );
       } else {
         setErrorMessage(result.error);
@@ -310,8 +341,8 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                               rateLimit.remaining <= 2
                                 ? "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
                                 : rateLimit.remaining <= 5
-                                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
-                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                                  ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
                             }`}
                             title={
                               rateLimit.remaining > 0
@@ -458,9 +489,13 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
                     {t("voiceDialog.processingTitle")}
                   </h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
-                    {t("voiceDialog.processingDescription")}
-                  </p>
+                  <div className="min-h-10 flex flex-col justify-center">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 transition-opacity duration-300">
+                      {isLongProcessing
+                        ? t("voiceDialog.processingLonger")
+                        : t("voiceDialog.processingDescription")}
+                    </p>
+                  </div>
                 </motion.div>
               )}
 
@@ -487,10 +522,10 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                         {parsedData.type === "bowel_movement"
                           ? "💩"
                           : parsedData.type === "meal"
-                          ? "🍽️"
-                          : parsedData.type === "symptom"
-                          ? "🤕"
-                          : "💊"}
+                            ? "🍽️"
+                            : parsedData.type === "symptom"
+                              ? "🤕"
+                              : "💊"}
                       </span>
                       <div>
                         <p className="font-medium text-slate-900 dark:text-slate-100 capitalize">
@@ -583,7 +618,7 @@ export function VoiceLogDialog({ open, onOpenChange }: VoiceLogDialogProps) {
                         (value) => ({
                           value: value as AnxietyMarker,
                           label: tAnxiety(value as AnxietyMarker),
-                        })
+                        }),
                       )}
                       selected={
                         (parsedData.anxietyMarkers as AnxietyMarker[]) || []

@@ -400,6 +400,7 @@
       "example2": "Bathroom break, type 4, no pain",
       "processingTitle": "Processing with AI...",
       "processingDescription": "AI is extracting health data from your voice log.",
+      "processingLonger": "This is taking a little longer than usual...",
       "reviewIntro": "Review and edit your log before saving:",
       "logTypeLabel": "Log Type",
       "doseWithValue": "Dose: {dose}",
